@@ -5,5 +5,3 @@ format: jb-book
 root: intro
 chapters:
 - file: polutan
-- file: polutan2
-- file: markdown-notebooks

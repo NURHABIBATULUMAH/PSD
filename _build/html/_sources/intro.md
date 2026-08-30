@@ -1,11 +1,46 @@
-# Proyek Sains Data
+# Profile
 
-This is a small sample book to give you a feel for how book content is
-structured.
-It shows off a few of the major file types, as well as some sample content.
-It does not go in-depth into any particular topic - check out [the Jupyter Book documentation](https://jupyterbook.org) for more information.
+**_______________________________________________________________________________________________________________________**
 
-Check out the content pages bundled with this sample book to see more.
+<table align="left">
+    <tr>
+        <td><b>Nama</b></td>
+        <td> </td>
+        <td>:</td>
+        <td>Nurhabibatul Umah</td>
+    </tr>
+    <tr>
+        <td><b>NIM</b></td>
+        <td> </td>
+        <td>:</td>
+        <td>240411100169</td>
+    </tr>
+    <tr>
+        <td><b>Program Studi</b></td>
+        <td> </td>
+        <td>:</td>
+        <td>Teknik Informatika</td>
+    </tr>
+    <tr>
+        <td><b>Semester</b></td>
+        <td> </td>
+        <td>:</td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td><b>Mata Kuliah</b></td>
+        <td> </td>
+        <td>:</td>
+        <td>Proyek Sains Data</td>
+    </tr>
+</table>
+
+<br clear="left"/>
+
+**_______________________________________________________________________________________________________________________**
+
+
+## Materi dan Tugas dari Matakuliah Proyek Sains Data:
 
 ```{tableofcontents}
 ```
