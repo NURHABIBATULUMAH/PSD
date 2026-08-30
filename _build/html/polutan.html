@@ -437,13 +437,20 @@ document.write(`
 <p>Udara merupakan komponen ekosistem yang sangat vital bagi kelangsungan hidup manusia dan makhluk hidup lainnya. Namun, seiring dengan pesatnya pertumbuhan ekonomi dan pembangunan wilayah, kualitas udara menghadapi tantangan besar akibat meningkatnya polusi.</p>
 <p>Kabupaten Tuban dikenal sebagai salah satu pusat pertumbuhan industri dan ekonomi strategis di jalur Pantura Jawa Timur. Wilayah Tuban menjadi pusat dari berbagai aktivitas industri skala besar, mulai dari industri semen (PT Semen Indonesia/Solusi Bangun Indonesia), kawasan kilang minyak, aktivitas pertambangan batu kapur/tambang mineral, hingga industri manufaktur dan pergudangan pendukung.</p>
 <p>Selain sektor industri, mobilitas transportasi darat di jalur logistik utama pantura serta aktivitas perkotaan turut menyumbang emisi gas kendaraan bermotor (seperti <span class="math notranslate nohighlight">\(CO\)</span>, <span class="math notranslate nohighlight">\(NO_2\)</span>, dan partikulat debu) Emisi dari cerobong asap pabrik, debu aktivitas industri, dan gas buang kendaraan melepaskan berbagai polutan berbahaya ke udara bebas, seperti Particulate Matter (<span class="math notranslate nohighlight">\(PM_{2.5}\)</span> dan <span class="math notranslate nohighlight">\(PM_{10}\)</span>), Karbon Monoksida (<span class="math notranslate nohighlight">\(CO\)</span>), Nitrogen Dioksida (<span class="math notranslate nohighlight">\(NO_2\)</span>), Sulfur Dioksida (<span class="math notranslate nohighlight">\(SO_2\)</span>), dan Ozone (<span class="math notranslate nohighlight">\(O_3\)</span>).</p>
+<p>Melalui pemanfaatan data citra satelit Copernicus Sentinel-5P, tugas ini melacak fluktuasi konsentrasi empat jenis gas polutan utama yang sangat berdampak pada kesehatan lingkungan, yaitu:</p>
+<ul class="simple">
+<li><p>Nitrogen Dioksida (NO₂)</p></li>
+<li><p>Karbon Monoksida (CO)</p></li>
+<li><p>Belerang Dioksida (SO₂)</p></li>
+<li><p>Ozon (O₃)</p></li>
+</ul>
 <p>Oleh karena itu, dalam tugas ini, dilakukan proses pengumpulan data (crawling) historis kualitas udara di wilayah Kabupaten Tuban dalam rentang waktu 1 tahun terakhir hingga 31 Agustus 2026.</p>
 </section>
 <section id="bussiness-understanding">
 <h2>Bussiness Understanding<a class="headerlink" href="#bussiness-understanding" title="Link to this heading">#</a></h2>
 <section id="tujuan">
 <h3>1. Tujuan<a class="headerlink" href="#tujuan" title="Link to this heading">#</a></h3>
-<p>Tujuan utama dari analisis ini adalah untuk mengetahui, mengukur, dan memetakan tingkat serta tren kualitas udara di wilayah Kabupaten Tuban secara objektif. Analisis ini berfokus pada pengolahan data historis polusi udara meliputi parameter/fitur seperti <span class="math notranslate nohighlight">\(PM_{2.5}\)</span>, <span class="math notranslate nohighlight">\(PM_{10}\)</span>, <span class="math notranslate nohighlight">\(CO\)</span>, <span class="math notranslate nohighlight">\(NO_2\)</span>, <span class="math notranslate nohighlight">\(SO_2\)</span>, dan <span class="math notranslate nohighlight">\(O_3\)</span> selama satu tahun terakhir hingga 31 Agustus 2026.</p>
+<p>Tujuan utama dari analisis ini adalah untuk mengetahui, mengukur, dan memetakan tingkat serta tren kualitas udara di wilayah Kabupaten Tuban secara objektif. Analisis ini berfokus pada pengolahan data historis polusi udara meliputi parameter/fitur yang termasuk ke dalam satelit <strong>Copernicus Sentinel-5P</strong> <span class="math notranslate nohighlight">\(CO\)</span>, <span class="math notranslate nohighlight">\(NO_2\)</span>, <span class="math notranslate nohighlight">\(SO_2\)</span>, dan <span class="math notranslate nohighlight">\(O_3\)</span> selama satu tahun terakhir hingga 31 Agustus 2026.</p>
 <p>Melalui pemanfaatan teknik crawling data dan visualisasi time series, analisis ini bertujuan untuk melihat pola tingkat polusi dan mengidentifikasi titik-titik waktu di mana kualitas udara mengalami penurunan yang signifikan di wilayah Tuban.</p>
 </section>
 <section id="manfaat">
@@ -534,45 +541,7 @@ WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">Visit <a href="https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=YMZT-ASZW" title="Authenticate at https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=YMZT-ASZW" target="_blank" rel="noopener noreferrer">https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=YMZT-ASZW</a> <a href="#" onclick="navigator.clipboard.writeText('https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=YMZT-ASZW');return false;" title="Copy authentication URL to clipboard">&#128203;</a> to authenticate.</div><div class="output text_html"><code>[##################################---]</code> ⌛ Authorization pending</div><div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">openeo</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;openeo.dataspace.copernicus.eu&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">authenticate_oidc</span><span class="p">()</span>
-
-<span class="nn">File ~\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages\openeo\rest\connection.py:689,</span> in <span class="ni">Connection.authenticate_oidc</span><span class="nt">(self, provider_id, client_id, client_secret, store_refresh_token, use_pkce, display, max_poll_time)</span>
-<span class="g g-Whitespace">    </span><span class="mi">685</span> <span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Trying device code flow.&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">686</span> <span class="n">authenticator</span> <span class="o">=</span> <span class="n">OidcDeviceAuthenticator</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">687</span>     <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span> <span class="n">use_pkce</span><span class="o">=</span><span class="n">use_pkce</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">,</span> <span class="n">max_poll_time</span><span class="o">=</span><span class="n">max_poll_time</span>
-<span class="g g-Whitespace">    </span><span class="mi">688</span> <span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">689</span> <span class="n">con</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_authenticate_oidc</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">690</span>     <span class="n">authenticator</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">691</span>     <span class="n">provider_id</span><span class="o">=</span><span class="n">provider_id</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">692</span>     <span class="n">store_refresh_token</span><span class="o">=</span><span class="n">store_refresh_token</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">693</span>     <span class="c1"># TODO: expose `auto_renew_from_refresh_token` directly as option instead of reusing `store_refresh_token` arg?</span>
-<span class="g g-Whitespace">    </span><span class="mi">694</span>     <span class="n">auto_renew_from_refresh_token</span><span class="o">=</span><span class="n">store_refresh_token</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">695</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">696</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Authenticated using device code flow.&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">697</span> <span class="k">return</span> <span class="n">con</span>
-
-<span class="nn">File ~\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages\openeo\rest\connection.py:405,</span> in <span class="ni">Connection._authenticate_oidc</span><span class="nt">(self, authenticator, provider_id, store_refresh_token, auto_renew_from_refresh_token, fallback_refresh_token, oidc_auth_renewer)</span>
-<span class="g g-Whitespace">    </span><span class="mi">401</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">402</span><span class="sd"> Authenticate through OIDC and set up bearer token (based on OIDC access_token) for further requests.</span>
-<span class="g g-Whitespace">    </span><span class="mi">403</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">404</span> <span class="n">request_refresh_token</span> <span class="o">=</span> <span class="n">store_refresh_token</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">oidc_auth_renewer</span> <span class="ow">and</span> <span class="n">auto_renew_from_refresh_token</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">405</span> <span class="n">tokens</span> <span class="o">=</span> <span class="n">authenticator</span><span class="o">.</span><span class="n">get_tokens</span><span class="p">(</span><span class="n">request_refresh_token</span><span class="o">=</span><span class="n">request_refresh_token</span><span class="p">)</span>
-<span class="nn">    406 _log.info(&quot;Obtained tokens: {t}&quot;.format(t=[k for k, v</span> in <span class="ni">tokens._asdict().items</span><span class="nt">() if v]))</span>
-<span class="g g-Whitespace">    </span><span class="mi">408</span> <span class="n">refresh_token</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">refresh_token</span> <span class="ow">or</span> <span class="n">fallback_refresh_token</span>
-
-<span class="nn">File ~\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages\openeo\rest\auth\oidc.py:928,</span> in <span class="ni">OidcDeviceAuthenticator.get_tokens</span><span class="nt">(self, request_refresh_token)</span>
-<span class="g g-Whitespace">    </span><span class="mi">926</span> <span class="k">while</span> <span class="n">elapsed</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_poll_time</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">927</span>     <span class="n">poll_ui</span><span class="o">.</span><span class="n">show_progress</span><span class="p">()</span>
-<span class="ne">--&gt; </span><span class="mi">928</span>     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">930</span>     <span class="k">if</span> <span class="n">elapsed</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">next_poll</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">931</span>         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">932</span>             <span class="sa">f</span><span class="s2">&quot;Doing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grant_type</span><span class="si">!r}</span><span class="s2"> token request </span><span class="si">{</span><span class="n">token_endpoint</span><span class="si">!r}</span><span class="s2"> with post data fields </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">post_data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">!r}</span><span class="s2"> (client_id </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">client_id</span><span class="si">!r}</span><span class="s2">)&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">933</span>         <span class="p">)</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Authenticated using refresh token.
 </pre></div>
 </div>
 </div>
@@ -626,20 +595,19 @@ WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:00 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: send &#39;start&#39;
-0:00:02 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: created (progress 0%)
-0:00:07 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: queued (progress 0%)
-0:00:14 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: queued (progress 0%)
-0:00:22 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: queued (progress 0%)
-0:00:31 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: queued (progress 0%)
-0:00:44 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: queued (progress 0%)
-0:00:59 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: queued (progress 0%)
-0:01:18 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: queued (progress 0%)
-0:01:42 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: running (progress N/A)
-0:02:12 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: running (progress N/A)
-0:02:50 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: running (progress N/A)
-0:03:36 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: running (progress N/A)
-0:04:35 Job &#39;j-260827071650456ab548fcb4c9f19526&#39;: finished (progress 100%)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:00 Job &#39;j-260830150251429fbe7b321199d63b55&#39;: send &#39;start&#39;
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:02 Job &#39;j-260830150251429fbe7b321199d63b55&#39;: queued (progress 0%)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:08 Job &#39;j-260830150251429fbe7b321199d63b55&#39;: queued (progress 0%)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:15 Job &#39;j-260830150251429fbe7b321199d63b55&#39;: queued (progress 0%)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:23 Job &#39;j-260830150251429fbe7b321199d63b55&#39;: running (progress N/A)
 </pre></div>
 </div>
 </div>
