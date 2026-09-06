@@ -1,0 +1,1016 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Integrasi Data Kualitas Udara di Tuban menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime &#8212; Profile habiba</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=ab63e892" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cloud-polutan';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Kualitas Polusi Udara di Daerah Tuban" href="polutan.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.jpeg" class="logo__image only-light" alt="Profile habiba - Home"/>
+    <script>document.write(`<img src="_static/logo.jpeg" class="logo__image only-dark" alt="Profile habiba - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Profile
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="polutan.html">Kualitas Polusi Udara di Daerah Tuban</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Integrasi Data Kualitas Udara di Tuban menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/NURHABIBATULUMAH/PSD" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/NURHABIBATULUMAH/PSD/issues/new?title=Issue%20on%20page%20%2Fcloud-polutan.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/cloud-polutan.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Integrasi Data Kualitas Udara di Tuban menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pembuatan-akun-dan-layanan-postgresql-di-aiven">1. Pembuatan Akun dan Layanan PostgreSQL di Aiven</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pengambilan-kredensial-dan-sertifikat-ssl-aiven">2. Pengambilan Kredensial dan Sertifikat SSL Aiven</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menghubungkan-aiven-postgresql-ke-pgadmin">3. Menghubungkan Aiven PostgreSQL ke pgAdmin</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-file-csv-kualitas-udara-ke-postgresql">4. Import File CSV Kualitas Udara Ke PostgreSQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrasi-data-menggunakan-knime">5. Integrasi Data Menggunakan Knime</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-rumus-dan-contoh-perhitungan-dari-seluruh-fitur-pada-nodes-statistik">6. Penjelasan, Rumus, dan Contoh Perhitungan dari Seluruh Fitur pada Nodes <em>Statistik</em></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#column">1. Column</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#min">2. Min</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#max">3. Max</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean">4. Mean</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-deviasi">5. Standard Deviasi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variansi">6. Variansi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#skewness">7. Skewness</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kurtosis">8. Kurtosis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-sum">9. Overall Sum</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-missing-value">10. No Missing Value</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-nans">11. No Nans</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-s-positive-infinity">12. No. +∞s (Positive Infinity)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-s-negative-infinity">13. No. -∞s (Negative Infinity)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#median">14. Median</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#row-count">15. Row Count</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="integrasi-data-kualitas-udara-di-tuban-menggunakan-aiven-cloud-postgresql-pgadmin-dan-knime">
+<h1>Integrasi Data Kualitas Udara di Tuban menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime<a class="headerlink" href="#integrasi-data-kualitas-udara-di-tuban-menggunakan-aiven-cloud-postgresql-pgadmin-dan-knime" title="Link to this heading">#</a></h1>
+<p>Pada tugas ini memuat dokumentasi panduan langkah untuk manajemen analisis data kualitas udara di Kabupaten Tuban.</p>
+<section id="pembuatan-akun-dan-layanan-postgresql-di-aiven">
+<h2>1. Pembuatan Akun dan Layanan PostgreSQL di Aiven<a class="headerlink" href="#pembuatan-akun-dan-layanan-postgresql-di-aiven" title="Link to this heading">#</a></h2>
+<p>Langkah awal untuk menyediakan server database berbasis cloud yang dapat diakses dari mana saja.</p>
+<ol class="arabic simple">
+<li><p>Buka situs Aiven Console lalu buat akun baru atau masuk (login) menggunakan kredensial Anda</p></li>
+<li><p>Pada halaman beranda konsol, klik tombol Create service</p></li>
+<li><p>Pilih layanan database PostgreSQL</p></li>
+<li><p>Pilih penyedia cloud (misalnya DigitalOcean, AWS, atau Google Cloud) serta pilih region server yang terdekat</p></li>
+<li><p>Pilih paket layanan (bisa menggunakan paket Free tier atau Startup yang tersedia)</p></li>
+<li><p>Beri nama layanan, lalu klik Create service</p></li>
+<li><p>Tunggu beberapa saat hingga status layanan berubah menjadi Running</p></li>
+</ol>
+</section>
+<section id="pengambilan-kredensial-dan-sertifikat-ssl-aiven">
+<h2>2. Pengambilan Kredensial dan Sertifikat SSL Aiven<a class="headerlink" href="#pengambilan-kredensial-dan-sertifikat-ssl-aiven" title="Link to this heading">#</a></h2>
+<p>Sebelum menghubungkan database ke pgAdmin, Anda memerlukan informasi koneksi serta sertifikat keamanan.</p>
+<ol class="arabic simple">
+<li><p>Masuk ke halaman Overview dari layanan PostgreSQL yang baru saja Anda buat di Aiven</p></li>
+<li><p>Cari bagian Connection information:</p></li>
+</ol>
+<p>Simpan semua informasi ini untuk mengkoneksikan ke pgadmin</p>
+<p><img alt="Foto Saya" src="_images/overview.png" /></p>
+</section>
+<section id="menghubungkan-aiven-postgresql-ke-pgadmin">
+<h2>3. Menghubungkan Aiven PostgreSQL ke pgAdmin<a class="headerlink" href="#menghubungkan-aiven-postgresql-ke-pgadmin" title="Link to this heading">#</a></h2>
+<p>Menghubungkan aplikasi manajemen basis data lokal (pgAdmin) ke server cloud Aiven</p>
+<ol class="arabic simple">
+<li><p>Buka aplikasi pgAdmin</p></li>
+<li><p>Klik kanan pada folder Servers di panel kiri, pilih Create &gt; Server…</p></li>
+<li><p>Pada tab General, isi nama server (misal: Aiven Postgres)</p></li>
+</ol>
+<p>Berikut tampilan ketika sudah berhasil terkoneksi dengan server aiven</p>
+<p><img alt="Foto Saya" src="_images/aiven.png" /></p>
+</section>
+<section id="import-file-csv-kualitas-udara-ke-postgresql">
+<h2>4. Import File CSV Kualitas Udara Ke PostgreSQL<a class="headerlink" href="#import-file-csv-kualitas-udara-ke-postgresql" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Di panel kiri pgAdmin, arahkan ke database Anda &gt; Schemas &gt; public &gt; Tables</p></li>
+<li><p>Klik kanan pada tabel kualitas_udara, lalu pilih Import/Export Data…</p></li>
+<li><p>Pada tab General:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Atur toggle Import/Export menjadi Import</p></li>
+<li><p>Pilih file KualitasUdaraTuban.csv pada bagian Filename</p></li>
+<li><p>Atur Format ke csv dan pastikan Header diatur ke Yes</p></li>
+</ul>
+<p>Berikut tampilan ketika data sudah berhasil di import ke pgAdmin:</p>
+<p><img alt="Foto Saya" src="_images/kualitas.png" /></p>
+</section>
+<section id="integrasi-data-menggunakan-knime">
+<h2>5. Integrasi Data Menggunakan Knime<a class="headerlink" href="#integrasi-data-menggunakan-knime" title="Link to this heading">#</a></h2>
+<p>Menghubungkan data dari Aiven PostgreSQL ke KNIME Analytics Platform untuk pengolahan lebih lanjut. Konfigurasikan Host, Port, Database name, User, dan Password yang disesuaikan dengan kredensial Aiven.</p>
+<p>Berikut nodes - nodes yang digunakan:</p>
+<p><img alt="Foto Saya" src="_images/knime_polusi.png" /></p>
+</section>
+<section id="penjelasan-rumus-dan-contoh-perhitungan-dari-seluruh-fitur-pada-nodes-statistik">
+<h2>6. Penjelasan, Rumus, dan Contoh Perhitungan dari Seluruh Fitur pada Nodes <em>Statistik</em><a class="headerlink" href="#penjelasan-rumus-dan-contoh-perhitungan-dari-seluruh-fitur-pada-nodes-statistik" title="Link to this heading">#</a></h2>
+<p>Pada implementasi knime, kolom yang digunakan adalah <strong>CO</strong> dan <strong>O3</strong>, berikut hasil dari statistiknya</p>
+<p><img alt="Foto Saya" src="_images/statistik1.png" /></p>
+<p><img alt="Foto Saya" src="_images/statistik2.png" /></p>
+<section id="column">
+<h3>1. Column<a class="headerlink" href="#column" title="Link to this heading">#</a></h3>
+<p>Pada fitur <strong>Column</strong> berisi nama kolom yaitu sebagai polutan apa saja yang ada pada data, pada data tersebut terdapat <strong>CO</strong> dan <strong>O3</strong>.</p>
+</section>
+<section id="min">
+<h3>2. Min<a class="headerlink" href="#min" title="Link to this heading">#</a></h3>
+<p>Pada fitur min berisi nilai minimal dari data pada setiap kolom, untuk nilai min dari pada <strong>CO</strong> dan <strong>O3</strong> sebagai berikut:</p>
+<ul class="simple">
+<li><p><strong>CO</strong> = 0.0213</p></li>
+<li><p><strong>O3</strong> = 0.1096</p></li>
+</ul>
+</section>
+<section id="max">
+<h3>3. Max<a class="headerlink" href="#max" title="Link to this heading">#</a></h3>
+<p>Pada fitur max berisi nilai maximal dari data pada setiap kolom, untuk nilai max dari pada <strong>CO</strong> dan <strong>O3</strong> sebagai berikut:</p>
+<ul class="simple">
+<li><p><strong>CO</strong> = 0.0432</p></li>
+<li><p><strong>O3</strong> = 0.1229</p></li>
+</ul>
+</section>
+<section id="mean">
+<h3>4. Mean<a class="headerlink" href="#mean" title="Link to this heading">#</a></h3>
+<p>Pada fitur mean berisi nilai rata-rata keseluruhan dari data valid, dihitung dengan menjumlahkan seluruh nilai data lalu dibagi dengan jumlah data valid (<span class="math notranslate nohighlight">\(n\)</span>).</p>
+<p><strong>Rumus Mean:</strong></p>
+<div class="math notranslate nohighlight">
+\[\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i\]</div>
+<p><strong>Contoh perhitungan:</strong></p>
+<div class="math notranslate nohighlight">
+\[\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i = \frac{x_1 + x_2 + x_3 + x_4 + \dots + x_{366}}{366}\]</div>
+<div class="math notranslate nohighlight">
+\[\bar{x} = \frac{0.026743609 + 0.024387146 + 0.024431376 + \dots + x_{366}}{366}\]</div>
+<p>Sehingga pada kolom <strong>CO</strong> dan <strong>O3</strong> diperoleh mean:</p>
+<ul class="simple">
+<li><p><strong>CO</strong> = 0.0298</p></li>
+<li><p><strong>O3</strong> = 0.1158</p></li>
+</ul>
+</section>
+<section id="standard-deviasi">
+<h3>5. Standard Deviasi<a class="headerlink" href="#standard-deviasi" title="Link to this heading">#</a></h3>
+<p>Standard Deviasi digunakan untuk mengetahui seberapa jauh sebaran angka - angka di dalam dataset dari nilai rata - rata. Jika nilai standard deviasi kecil artinya data-data berkumpul rapat disekitar nilai rata-rata, tetapi jika nilai standard deviasi besar artinya data menyebar sangat luas dan jauh dari rata - rata.</p>
+<p><strong>Rumus Standard Deviasi:</strong></p>
+<p>Berikut adalah rumus <strong>standard deviasi sample:</strong></p>
+<div class="math notranslate nohighlight">
+\[s = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n - 1}}\]</div>
+<p>Keterangan:</p>
+<p><span class="math notranslate nohighlight">\(s\)</span> = Standar deviasi sampel</p>
+<p><span class="math notranslate nohighlight">\(x_i\)</span> = Nilai data ke-<span class="math notranslate nohighlight">\(i\)</span></p>
+<p><span class="math notranslate nohighlight">\(\bar{x}\)</span> = Nilai rata-rata (mean)</p>
+<p><span class="math notranslate nohighlight">\(n\)</span> = Jumlah total data valid (count)</p>
+<p>Berikut adalah rumus <strong>standard deviasi populasi:</strong></p>
+<div class="math notranslate nohighlight">
+\[\sigma = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (x_i - \mu)^2}\]</div>
+<p>Keterangan:</p>
+<p><span class="math notranslate nohighlight">\(\sigma\)</span> = Standar deviasi populasi</p>
+<p><span class="math notranslate nohighlight">\(x_i\)</span> = Nilai data ke-<span class="math notranslate nohighlight">\(i\)</span></p>
+<p><span class="math notranslate nohighlight">\(\mu\)</span> = Nilai rata-rata populasi (population mean)</p>
+<p><span class="math notranslate nohighlight">\(N\)</span> = Jumlah total keseluruhan data populasi</p>
+<p><strong>Contoh perhitungan:</strong></p>
+<p>Pada perhitungan ini akan dicontohnya untuk standard deviasi populasi, karena pada kolom <strong>CO</strong> terdapat missing value sebanyak 95, maka untuk <span class="math notranslate nohighlight">\(N\)</span> pembagi menjadi <span class="math notranslate nohighlight">\(366 - 95 = 271\)</span></p>
+<div class="math notranslate nohighlight">
+\[\sigma = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (x_i - \mu)^2}\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma = \sqrt{\frac{1}{271} \sum_{i=1}^{271} (0.026743609 - 0.029867452)^2}\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma = \sqrt{\frac{1}{271} \left[ (0.026743609 - 0.029867452)^2 + (0.024387146 - 0.029867452)^2 + (0.024431376 - 0.029867452)^2 + \dots + (x_{271} - 0.029867452)^2 \right]}\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma = \sqrt{\frac{1}{271} \left[ (-0.003123843)^2 + (-0.005480306)^2 + (-0.005436076)^2 + \dots + (x_{271} - \mu)^2 \right]}\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma = \sqrt{\frac{1}{271} \left[ 0.000009758 + 0.000030034 + 0.000029551 + \dots + (x_{271} - \mu)^2 \right]}\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma = \sqrt{\frac{\sum_{i=1}^{271} (x_i - \mu)^2}{271}}\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma = \sqrt{\frac{0.0033169111}{271}} = \sqrt{0.0000122395} = \mathbf{0.0034985} \approx \mathbf{0.00350}\]</div>
+<p>Sehingga pada kolom <strong>CO</strong> dan <strong>O3</strong> diperoleh standard deviasi:</p>
+<ul class="simple">
+<li><p><strong>CO</strong> = 0.003498503</p></li>
+<li><p><strong>O3</strong> = 0.002523989</p></li>
+</ul>
+</section>
+<section id="variansi">
+<h3>6. Variansi<a class="headerlink" href="#variansi" title="Link to this heading">#</a></h3>
+<p>Pada fitur variansi ini merupakan ukuran penyebaran statistik yang mengukur seberapa jauh setiap angka dalam kumpulan data tersebar dari nilai rata-ratanya. Hubungannya dengan <strong>standard deviasi</strong> adalah variansi merupakan kuadrat dari standard deviasi (<span class="math notranslate nohighlight">\(\text{Varians} = s^2\)</span> atau <span class="math notranslate nohighlight">\(\sigma^2\)</span>). Variansi sangat kecil, berarti data berkumpul sangat dekat dengan nilai rata - rata (stabil), tetapi jika variansi sangat besar berarti data menyebar sangat jauh dengan nilai rata - rata (bervariasi).</p>
+<p><strong>Rumus variansi:</strong></p>
+<p>Berikut adalah rumus <strong>variansi sample:</strong> Digunakan jika data hanya mengambil sebagian kecil (sampel) dari populasi</p>
+<div class="math notranslate nohighlight">
+\[s^2 = \frac{1}{n - 1} \sum_{i=1}^{n} (x_i - \bar{x})^2\]</div>
+<p>Berikut adalah rumus <strong>standard variansi populasi:</strong> Digunakan jika data mencakup keseluruhan populasi secara penuh</p>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (x_i - \mu)^2\]</div>
+<p><strong>Contoh Perhitungan:</strong></p>
+<p>Untuk perhitungan pada variansi cukup dengan mengkuadratkan standard deviasi yang sudah kita ketahui, yaitu sebagai berikut untuk contoh perhitungan variansi populasi pada <strong>CO</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\text{Varians} = \sigma^2\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Varians} = 0.003498503^2\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Varians} = 1.22E-05\]</div>
+<p><span class="math notranslate nohighlight">\(1.22E-05\)</span> merupakan bilangan desimal positif yang nilainya sangat kecil atau mendeketi <span class="math notranslate nohighlight">\(0\)</span></p>
+<p>Sehingga pada kolom <strong>CO</strong> dan <strong>O3</strong> diperoleh standard deviasi:</p>
+<ul class="simple">
+<li><p><strong>CO</strong> = 1.22E-05</p></li>
+<li><p><strong>O3</strong> = 6.37E-06</p></li>
+</ul>
+<p>Dari hasil variansi pada <strong>CO</strong> dan <strong>O3</strong> merupakan bilangan desimal positif yang sangat kecil, maka pada tools knime hasilnya adalah <span class="math notranslate nohighlight">\(0\)</span>.</p>
+</section>
+<section id="skewness">
+<h3>7. Skewness<a class="headerlink" href="#skewness" title="Link to this heading">#</a></h3>
+<p>Skewnes merupakan bentuk penyebaran data apakah simestris atau tidak simetris (miring) terhadap nilai rata - ratanya. Kurvan distribusi normal yang sempurna memiliki nilai skewnes = <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<p>Berdasarkan arah kemiringannya dibedakan menjadi :</p>
+<ul class="simple">
+<li><p>Skewness Positif (Right Skewed) : Nilainya &gt; 0, kurva menjulur ke kanan artinya data sebagian besar berkumpul di kiri (nilai rendah) tetapi ada beberapa data yang bernilai tinggi</p></li>
+<li><p>Skewness Negatif (Left Skewed) : Nilainya &lt; 0, kurva menjulur ke kiri artinya sebagian besar data terkonsentrasi di sisi kanan (nilai tinggi) dengan beberapa nilai rendah</p></li>
+<li><p>Simetris : Nilainya mendekati 0, distribusi data seimbang antara kiri dan kanan</p></li>
+</ul>
+<p><strong>Rumus skewness:</strong></p>
+<p>Berikut adalah rumus <strong>skewness populasi:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{Skewness} = \frac{n}{(n - 1)(n - 2)} \sum_{i=1}^{n} \left( \frac{x_i - \bar{x}}{s} \right)^3\]</div>
+<p>Keterangan:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n =\)</span> jumlah total data valid</p></li>
+<li><p><span class="math notranslate nohighlight">\(\bar{x} =\)</span> rata-rata</p></li>
+<li><p><span class="math notranslate nohighlight">\(s =\)</span> standar deviasi sample</p></li>
+</ul>
+<p><strong>Contoh Perhitungan:</strong></p>
+<p>Untuk perhitungan pada skewness dari kolom <strong>CO</strong> dan mengikuti rumus di atas maka cara perhitungannya adalah:</p>
+<ul class="simple">
+<li><p>menghitung rata - rata terlebih dahulu <span class="math notranslate nohighlight">\(\mu\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\mu = \frac{\sum_{i=1}^{271} x_i}{271} = \frac{8.09407961}{271} = \mathbf{0.02986745}\]</div>
+<p><span class="math notranslate nohighlight">\(271\)</span> adalah nilai <span class="math notranslate nohighlight">\(n\)</span> yang dimana merupakan jumlah data yang valid</p>
+<ul class="simple">
+<li><p>menghitung standard deviasi populasi (<span class="math notranslate nohighlight">\(\sigma\)</span>) yang dapat dihitung seperting nomor 5 tadi</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{\sum_{i=1}^{271} (x_i - \mu)^2}{271} = \frac{0.0033169111}{271} = 0.0000122395\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma = \sqrt{0.0000122395} = \mathbf{0.00349850}\]</div>
+<p>Maka diperoleh :</p>
+<p>Jumlah data valid (<span class="math notranslate nohighlight">\(n\)</span>): <span class="math notranslate nohighlight">\(271\)</span></p>
+<p>Rata-rata (<span class="math notranslate nohighlight">\(\bar{x}\)</span>): <span class="math notranslate nohighlight">\(0.02986745\)</span></p>
+<p>Standar deviasi sampel (<span class="math notranslate nohighlight">\(s\)</span>): <span class="math notranslate nohighlight">\(0.00349850\)</span></p>
+<ul class="simple">
+<li><p>Subtitusi rumus skewness perkalian awal</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\frac{n}{(n - 1)(n - 2)}\]</div>
+<p><span class="math notranslate nohighlight">\(n = 271\)</span>, maka:</p>
+<div class="math notranslate nohighlight">
+\[\frac{271}{(271 - 1)(271 - 2)} = \frac{271}{(270)(269)} = \frac{271}{72630} \approx \mathbf{0.00373125}\]</div>
+<ul class="simple">
+<li><p>Menghitung data harian <span class="math notranslate nohighlight">\(x_i\)</span> dari ke-271, dikurangi rata-rata, dibagi standar deviasi, lalu dipangkatkan tiga</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\left( \frac{x_1 - 0.02986745}{0.003505} \right)^3 + \left( \frac{x_2 - 0.02986745}{0.003505} \right)^3 + \dots + \left( \frac{x_{271} - 0.02986745}{0.003505} \right)^3\]</div>
+<p>Selanjutnya jika seluruh ke-271 hasil pangkat tiga tersebut dijumlahkan (<span class="math notranslate nohighlight">\(\sum\)</span>), diperoleh total akumulasi:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{271} \left( \frac{x_i - \bar{x}}{s} \right)^3 \approx \mathbf{141.5065}\]</div>
+<ul class="simple">
+<li><p>Perkalian akhir dari penjumlahan akumulasi dengan perkalian awal</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{Skewness} = 0.00373125 \times 141.5065 = \mathbf{0.528}\]</div>
+<p>Sehingga pada kolom <strong>CO</strong> dan <strong>O3</strong> diperoleh skewness:</p>
+<ul class="simple">
+<li><p><strong>CO</strong> = 0.528</p></li>
+<li><p><strong>O3</strong> = 0.454</p></li>
+</ul>
+</section>
+<section id="kurtosis">
+<h3>8. Kurtosis<a class="headerlink" href="#kurtosis" title="Link to this heading">#</a></h3>
+<p>Kurtosis adalah ukuran statistik yang mendeskripsikan seberapa runcing atau landai puncak suatu distribusi data dibandingkan dengan distribusi normal standar.</p>
+<p>Berdasarkan bentuk puncaknya, kurtosis dibagi menjadi tiga:</p>
+<ol class="arabic simple">
+<li><p>Mesokurtic (Kurtosis Normal):</p></li>
+</ol>
+<ul class="simple">
+<li><p>Nilai excess kurtosis mendekati 0 (atau nilai kurtosis mentah bernilai 3)</p></li>
+<li><p>Bentuk puncaknya normal, seimbang, dan menyerupai kurva lonceng standar</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>Leptokurtic (Puncak Lancjang / Runcing)</p></li>
+</ol>
+<ul class="simple">
+<li><p>Nilainya &gt; 0 (untuk excess kurtosis) atau &gt; 3</p></li>
+<li><p>Bentuk puncaknya sangat tinggi dan lancip, dengan ekor yang tebal. Mengindikasikan bahwa data sangat terkonsentrasi di sekitar rata-rata, tetapi memiliki potensi kemunculan nilai ekstrem (outlier) yang lebih tinggi</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>Platykurtic (Puncak Landai / Datar)</p></li>
+</ol>
+<ul class="simple">
+<li><p>Nilainya &lt; 0 (untuk excess kurtosis) atau &lt; 3</p></li>
+<li><p>Bentuk puncaknya datar, lebar, dan landai, dengan ekor yang tipis. Ini menunjukkan bahwa data tersebar lebih merata dan jarang memiliki lonjakan nilai ekstrem</p></li>
+</ul>
+<p><strong>Rumus Kurtosis:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{Kurtosis} = \left[ \frac{n(n+1)}{(n-1)(n-2)(n-3)} \sum_{i=1}^{n} \left( \frac{x_i - \bar{x}}{s} \right)^4 \right] - \frac{3(n-1)^2}{(n-2)(n-3)}\]</div>
+<p>Keterangan:</p>
+<p><span class="math notranslate nohighlight">\(n\)</span> = Jumlah total data valid (<span class="math notranslate nohighlight">\(n = 271\)</span> untuk parameter CO)</p>
+<p><span class="math notranslate nohighlight">\(x_i\)</span> = Setiap nilai data satu per satu</p>
+<p><span class="math notranslate nohighlight">\(\bar{x}\)</span> = Rata-rata (mean)</p>
+<p><span class="math notranslate nohighlight">\(s\)</span> = Standar deviasi sampel</p>
+<p><strong>Contoh Perhitungan:</strong></p>
+<p>Dari rumus yang sudah diketahui, untuk perhitungannya maka mensubtitusikan rumus dengan data:</p>
+<ul class="simple">
+<li><p>Menghitung perkalian awal</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\frac{n(n+1)}{(n-1)(n-2)(n-3)}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{271(271+1)}{(271-1)(271-2)(271-3)}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{271(272)}{(270)(269)(268)}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{73712}{19464720}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{73,712}{19,464,720} \approx \mathbf{0.0037869}\]</div>
+<ul class="simple">
+<li><p>Menghitung pangkat 4 <span class="math notranslate nohighlight">\(\left( \frac{x_i - \bar{x}}{s} \right)^4\)</span></p></li>
+</ul>
+<p>Setiap data harian <span class="math notranslate nohighlight">\(x_i\)</span> dikurangi rata-rata, dibagi standar deviasi sampel, lalu dipangkatkan empat</p>
+<div class="math notranslate nohighlight">
+\[\left( \frac{x_1 - \bar{x}}{s} \right)^4 + \left( \frac{x_2 - \bar{x}}{s} \right)^4 + \dots + \left( \frac{x_{271} - \bar{x}}{s} \right)^4\]</div>
+<p>Jika seluruh ke-271 hasil pangkat empat tersebut dijumlahkan (<span class="math notranslate nohighlight">\(\sum\)</span>), diperoleh total akumulasi momen keempat:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{271} \left( \frac{x_i - \bar{x}}{s} \right)^4 \approx \mathbf{920.78}\]</div>
+<ul class="simple">
+<li><p>Menghitung pengurang belakang</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\frac{3(n-1)^2}{(n-2)(n-3)}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{3(271-1)^2}{(271-2)(271-3)}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{3(270)^2}{(269)(268)}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{3(72900)}{72092}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{218,700}{72,092} \approx \mathbf{3.03362}\]</div>
+<ul class="simple">
+<li><p>Kalkulasi Akhir</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{Kurtosis} = (\text{Suku Depan} \times \text{Total Akumulasi Pangkat Empat}) - \text{Suku Belakang}\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Kurtosis} = (0.0037869 \times 920.78) - 3.03362\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Kurtosis} = 3.4869 - 3.03362 \approx \mathbf{0.4533}\]</div>
+<p>Sehingga pada kolom <strong>CO</strong> dan <strong>O3</strong> diperoleh skewness:</p>
+<ul class="simple">
+<li><p><strong>CO</strong> = 0.45330936135141897</p></li>
+<li><p><strong>O3</strong> = -0.2307263752595727</p></li>
+</ul>
+</section>
+<section id="overall-sum">
+<h3>9. Overall Sum<a class="headerlink" href="#overall-sum" title="Link to this heading">#</a></h3>
+<p>Overall sum adalah jumlah total keseluruhan dari seluruh nilai data valid yang terdapat pada suatu kolom atau fitur tertentu (setelah mengabaikan baris data yang kosong atau missing values)</p>
+<p><strong>Rumus Overal Sum:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{Overall Sum} = \sum_{i=1}^{n} x_i = x_1 + x_2 + x_3 + \dots + x_n\]</div>
+<p>Keterangan:</p>
+<p><span class="math notranslate nohighlight">\(n\)</span> = Jumlah total data valid (<span class="math notranslate nohighlight">\(n = 271\)</span> untuk fitur CO)</p>
+<p><span class="math notranslate nohighlight">\(x_i\)</span> = Setiap nilai data satu per satu yang valid</p>
+<p><strong>Contoh Perhitungan:</strong></p>
+<p>Dari rumus yang sudah diketahui, untuk perhitungannya maka mensubtitusikan rumus dengan data:</p>
+<div class="math notranslate nohighlight">
+\[x_1 + x_2 + x_3 + \dots + x_{271}\]</div>
+<p>Jika seluruh ke-271 nilai data valid pada kolom tersebut dijumlahkan satu per satu, diperoleh total keseluruhan:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{271} x_i \approx \mathbf{8.094}\]</div>
+<p>Sehingga pada kolom <strong>CO</strong> dan <strong>O3</strong> diperoleh overall sum:</p>
+<p><strong>CO</strong> = 8.09407961</p>
+<p><strong>O3</strong> = 41.46912850</p>
+</section>
+<section id="no-missing-value">
+<h3>10. No Missing Value<a class="headerlink" href="#no-missing-value" title="Link to this heading">#</a></h3>
+<p>No Missing Values adalah jumlah baris data yang kosong, tidak tercatat, atau bernilai null pada suatu kolom atau fitur tertentu di dalam dataset.</p>
+<p><strong>Rumus No Missing Value:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{Missing Values} = N_{\text{total}} - n\]</div>
+<p>Keterangan:</p>
+<p><span class="math notranslate nohighlight">\(N_{\text{total}}\)</span> = Jumlah total seluruh baris data dalam dataset (<span class="math notranslate nohighlight">\(N_{\text{total}} = 366\)</span> untuk satu tahun penuh)</p>
+<p><span class="math notranslate nohighlight">\(n\)</span> = Jumlah total data valid yang terisi dan berhasil dibaca oleh sistem</p>
+<p><strong>Contoh Perhitungan:</strong></p>
+<p>Dari rumus yang sudah diketahui, untuk perhitungannya maka mensubtitusikan rumus dengan data:</p>
+<p>Menghitung selisih antara total baris data dengan jumlah data valid yang terisi</p>
+<div class="math notranslate nohighlight">
+\[\text{Missing Values} = 366 - 271\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Missing Values} = \mathbf{95}\]</div>
+<p>Sehingga pada kolom <strong>CO</strong> dan <strong>O3</strong> diperoleh jumlah missing values:</p>
+<p><strong>CO</strong> = 95</p>
+<p><strong>O3</strong> = 8</p>
+</section>
+<section id="no-nans">
+<h3>11. No Nans<a class="headerlink" href="#no-nans" title="Link to this heading">#</a></h3>
+<p>No NaNs adalah jumlah baris data yang bernilai Not a Number (NaN) pada suatu fitur tertentu di dalam dataset. Nilai NaN biasanya muncul akibat adanya kesalahan komputasi atau hasil dari operasi matematika yang tidak terdefinisi (seperti <span class="math notranslate nohighlight">\(0/0\)</span> atau akar kuadrat bilangan negatif).</p>
+<p><strong>Rumus No Nans:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{No NaNs} = \sum_{i=1}^{N_{\text{total}}} \mathbb{I}(x_i \text{ is NaN})\]</div>
+<p>Keterangan:</p>
+<p><span class="math notranslate nohighlight">\(N_{\text{total}}\)</span> = Jumlah total seluruh baris data dalam dataset (<span class="math notranslate nohighlight">\(N_{\text{total}} = 366\)</span> untuk satu tahun penuh)</p>
+<p><span class="math notranslate nohighlight">\(\mathbb{I}(\dots)\)</span> = Fungsi indikator yang bernilai 1 jika elemen data merupakan NaN dan 0 jika bukan</p>
+<p><strong>Contoh Perhitungan:</strong></p>
+<p>Dari rumus yang sudah diketahui, untuk perhitungannya maka mensubtitusikan rumus dengan data:</p>
+<p>Karena seluruh data yang ada tidak memiliki cacat komputasi atau hasil operasi ilegal (data yang kosong tercatat sebagai Missing Values, bukan kerusakan format NaN), maka total akumulasi nilainya adalah:</p>
+<div class="math notranslate nohighlight">
+\[\text{No. NaNs} = \mathbf{0}\]</div>
+<p>Sehingga pada kolom <strong>CO</strong> dan <strong>O3</strong> diperoleh jumlah NaNs:</p>
+<p><strong>CO</strong> = 0</p>
+<p><strong>O3</strong> = 0</p>
+</section>
+<section id="no-s-positive-infinity">
+<h3>12. No. +∞s (Positive Infinity)<a class="headerlink" href="#no-s-positive-infinity" title="Link to this heading">#</a></h3>
+<p>No. +∞s adalah jumlah baris data yang bernilai tak terhingga positif (positive infinity / <span class="math notranslate nohighlight">\(+\infty\)</span>) pada suatu kolom atau fitur tertentu di dalam dataset. Nilai ini biasanya muncul akibat adanya operasi aritmatika yang hasilnya melampaui batas kapasitas penyimpanan komputer atau hasil pembagian angka positif dengan nol (misalnya <span class="math notranslate nohighlight">\(x / 0\)</span> di mana <span class="math notranslate nohighlight">\(x &gt; 0\)</span>).</p>
+<p><strong>Rumus No +∞s</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{No. +\infty s} = \sum_{i=1}^{N_{\text{total}}} \mathbb{I}(x_i = +\infty)\]</div>
+<p>Keterangan:</p>
+<p><span class="math notranslate nohighlight">\(N_{\text{total}}\)</span> = Jumlah total seluruh baris data dalam dataset (<span class="math notranslate nohighlight">\(N_{\text{total}} = 366\)</span> untuk satu tahun penuh)</p>
+<p><span class="math notranslate nohighlight">\(\mathbb{I}(\dots)\)</span> = Fungsi indikator yang bernilai 1 jika elemen data bernilai tak terhingga positif dan 0 jika bukan</p>
+<p><strong>Contoh Perhitungan:</strong></p>
+<p>Dari rumus yang sudah diketahui, untuk perhitungannya maka mensubtitusikan rumus dengan data:</p>
+<p>Melakukan pemindaian (scanning) pada setiap baris data untuk mendeteksi adanya hasil pembagian dengan nol atau limpahan nilai positif tak berhingga</p>
+<div class="math notranslate nohighlight">
+\[\text{Pemeriksaan keseluruhan baris data dari baris ke-1 sampai ke-366}\]</div>
+<p>Karena seluruh data pengukuran parameter kualitas udara tersimpan dalam rentang angka riil yang wajar dan tidak ditemukan hasil komputasi yang melampaui batas tak terhingga positif, maka total akumulasi nilainya adalah:</p>
+<div class="math notranslate nohighlight">
+\[\text{No. +\infty s} = \mathbf{0}\]</div>
+<p>Sehingga pada kolom <strong>CO</strong> dan <strong>O3</strong> diperoleh jumlah +∞s:</p>
+<p><strong>CO</strong> = 0</p>
+<p><strong>O3</strong> = 0</p>
+</section>
+<section id="no-s-negative-infinity">
+<h3>13. No. -∞s (Negative Infinity)<a class="headerlink" href="#no-s-negative-infinity" title="Link to this heading">#</a></h3>
+<p>No. -∞s adalah jumlah baris data yang bernilai tak terhingga negatif (negative infinity / <span class="math notranslate nohighlight">\(-\infty\)</span>) pada suatu kolom atau fitur tertentu di dalam dataset. Nilai ini biasanya muncul akibat adanya operasi aritmatika seperti pembagian angka negatif dengan nol (misalnya <span class="math notranslate nohighlight">\(-x / 0\)</span>) atau hasil fungsi logaritma dari nilai nol.</p>
+<p><strong>Rumus No. -∞s:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{No. -\infty s} = \sum_{i=1}^{N_{\text{total}}} \mathbb{I}(x_i = -\infty)\]</div>
+<p>Keterangan:</p>
+<p><span class="math notranslate nohighlight">\(N_{\text{total}}\)</span> = Jumlah total seluruh baris data dalam dataset (<span class="math notranslate nohighlight">\(N_{\text{total}} = 366\)</span> untuk satu tahun penuh)</p>
+<p><span class="math notranslate nohighlight">\(\mathbb{I}(\dots)\)</span> = Fungsi indikator yang bernilai 1 jika elemen data bernilai tak terhingga negatif dan 0 jika bukan</p>
+<p><strong>Contoh Perhitungan:</strong></p>
+<p>Dari rumus yang sudah diketahui, untuk perhitungannya maka mensubtitusikan rumus dengan data:</p>
+<p>Melakukan pemindaian (scanning) pada setiap baris data untuk mendeteksi adanya hasil operasi yang menghasilkan nilai negatif tak berhingga</p>
+<div class="math notranslate nohighlight">
+\[\text{Pemeriksaan keseluruhan baris data dari baris ke-1 sampai ke-366}\]</div>
+<p>Karena seluruh data pengukuran parameter kualitas udara berupa angka positif yang valid dan tidak ditemukan hasil komputasi yang menuju tak terhingga negatif, maka total akumulasi nilainya adalah:</p>
+<div class="math notranslate nohighlight">
+\[\text{No. -\infty s} = \mathbf{0}\]</div>
+<p>Sehingga pada kolom <strong>CO</strong> dan <strong>O3</strong> diperoleh jumlah -∞s:</p>
+<p><strong>CO</strong> = 0</p>
+<p><strong>O3</strong> = 0</p>
+</section>
+<section id="median">
+<h3>14. Median<a class="headerlink" href="#median" title="Link to this heading">#</a></h3>
+<p>Median adalah nilai tengah dari sekumpulan data valid yang telah diurutkan dari nilai terkecil hingga terbesar. Jika jumlah data (<span class="math notranslate nohighlight">\(n\)</span>) ganjil, median adalah nilai yang berada tepat di tengah. Jika <span class="math notranslate nohighlight">\(n\)</span> genap, median adalah rata-rata dari dua nilai yang berada di tengah.</p>
+<p><strong>Rumus Median:</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{Median} = \begin{cases}  x_{\left(\frac{n+1}{2}\right)} &amp; \text{jika } n \text{ ganjil} \\  \frac{1}{2} \left( x_{\left(\frac{n}{2}\right)} + x_{\left(\frac{n}{2} + 1\right)} \right) &amp; \text{jika } n \text{ genap}  \end{cases}\end{split}\]</div>
+<p>Keterangan:</p>
+<p><span class="math notranslate nohighlight">\(n\)</span> = Jumlah total data valid</p>
+<p><span class="math notranslate nohighlight">\(x\)</span> = Data yang telah diurutkan secara ascending (dari kecil ke besar)</p>
+<p><strong>Contoh Perhitungan:</strong></p>
+<p>Dari rumus yang sudah diketahui, untuk perhitungannya maka mensubtitusikan rumus dengan data:</p>
+<p>Mengurutkan seluruh data valid dari terkecil hingga terbesar, lalu menentukan posisi titik tengahnya berdasarkan jumlah <span class="math notranslate nohighlight">\(n\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{Posisi Median} = \frac{n + 1}{2}\]</div>
+<p>Jika disubstitusikan untuk parameter CO (<span class="math notranslate nohighlight">\(n = 271\)</span>, yang merupakan bilangan ganjil):</p>
+<div class="math notranslate nohighlight">
+\[\text{Posisi Median} = \frac{271 + 1}{2} = \frac{272}{2} = \text{Data ke-136}\]</div>
+<p>Setelah mencari data pada urutan ke-136 dari kumpulan data valid yang telah diurutkan, diperoleh nilai tengahnya:</p>
+<div class="math notranslate nohighlight">
+\[\text{Median} \approx \mathbf{0.0295}\]</div>
+<p>Sehingga pada kolom <strong>CO</strong> dan <strong>O3</strong> diperoleh nilai median:</p>
+<p><strong>CO</strong> = 0.0295 (atau sesuai dengan titik tengah urutan data valid masing-masing parameter)</p>
+<p><strong>O3</strong> = 0.1155 (mengikuti sebaran titik tengah data valid parameter O3)</p>
+</section>
+<section id="row-count">
+<h3>15. Row Count<a class="headerlink" href="#row-count" title="Link to this heading">#</a></h3>
+<p>Row Count adalah jumlah total baris yang terdapat di dalam suatu kolom, mencakup seluruh data baik yang terisi penuh (valid) maupun baris yang kosong (missing values).</p>
+<p><strong>Rumus Row Count:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{Row Count} = N_{\text{total}} = n + \text{Missing Values}\]</div>
+<p>Keterangan:</p>
+<p><span class="math notranslate nohighlight">\(N_{\text{total}}\)</span> = Jumlah total seluruh baris data dalam dataset</p>
+<p><span class="math notranslate nohighlight">\(n\)</span> = Jumlah total data valid yang terisi</p>
+<p><span class="math notranslate nohighlight">\(\text{Missing Values}\)</span> = Jumlah baris data yang kosong atau null</p>
+<p><strong>Contoh Perhitungan:</strong></p>
+<p>Dari rumus yang sudah diketahui, untuk perhitungannya maka mensubtitusikan rumus dengan data:</p>
+<p>Menjumlahkan total data valid dengan jumlah baris yang kosong (missing values) pada parameter CO:</p>
+<div class="math notranslate nohighlight">
+\[\text{Row Count} = 271 + 95\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Row Count} = \mathbf{366}\]</div>
+<p>(Begitu pula jika dihitung dari parameter O3:</p>
+<p><span class="math notranslate nohighlight">\(358 \text{ (data valid)} + 8 \text{ (missing values)} = 366\)</span>).</p>
+<p>Sehingga pada kolom <strong>CO</strong> dan <strong>O3</strong> diperoleh total row count:</p>
+<p><strong>CO</strong> = 366</p>
+<p><strong>O3</strong> = 366</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="polutan.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Kualitas Polusi Udara di Daerah Tuban</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pembuatan-akun-dan-layanan-postgresql-di-aiven">1. Pembuatan Akun dan Layanan PostgreSQL di Aiven</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pengambilan-kredensial-dan-sertifikat-ssl-aiven">2. Pengambilan Kredensial dan Sertifikat SSL Aiven</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menghubungkan-aiven-postgresql-ke-pgadmin">3. Menghubungkan Aiven PostgreSQL ke pgAdmin</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-file-csv-kualitas-udara-ke-postgresql">4. Import File CSV Kualitas Udara Ke PostgreSQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrasi-data-menggunakan-knime">5. Integrasi Data Menggunakan Knime</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-rumus-dan-contoh-perhitungan-dari-seluruh-fitur-pada-nodes-statistik">6. Penjelasan, Rumus, dan Contoh Perhitungan dari Seluruh Fitur pada Nodes <em>Statistik</em></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#column">1. Column</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#min">2. Min</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#max">3. Max</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean">4. Mean</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-deviasi">5. Standard Deviasi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variansi">6. Variansi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#skewness">7. Skewness</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kurtosis">8. Kurtosis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overall-sum">9. Overall Sum</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-missing-value">10. No Missing Value</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-nans">11. No Nans</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-s-positive-infinity">12. No. +∞s (Positive Infinity)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-s-negative-infinity">13. No. -∞s (Negative Infinity)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#median">14. Median</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#row-count">15. Row Count</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nurhabibatul Umah
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
