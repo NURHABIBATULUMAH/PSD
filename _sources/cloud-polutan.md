@@ -1,4 +1,4 @@
-# Integrasi Data Kualitas Udara di Tuban menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime
+# Eksplorasi Data: Integrasi Data menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime
 
 Pada tugas ini memuat dokumentasi panduan langkah untuk manajemen analisis data kualitas udara di Kabupaten Tuban.
 
