@@ -182,7 +182,7 @@ Berikut adalah rumus **variansi sample:** Digunakan jika data hanya mengambil se
 
 $$s^2 = \frac{1}{n - 1} \sum_{i=1}^{n} (x_i - \bar{x})^2$$
 
-Berikut adalah rumus **standard variansi populasi:** Digunakan jika data mencakup keseluruhan populasi secara penuh
+Berikut adalah rumus **variansi populasi:** Digunakan jika data mencakup keseluruhan populasi secara penuh
 
 $$\sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (x_i - \mu)^2$$
 
@@ -583,9 +583,7 @@ $$\text{Row Count} = 271 + 95$$
 
 $$\text{Row Count} = \mathbf{366}$$
 
-(Begitu pula jika dihitung dari parameter O3: 
-
-$358 \text{ (data valid)} + 8 \text{ (missing values)} = 366$).
+(Begitu pula jika dihitung dari parameter O3: $358 \text{ (data valid)} + 8 \text{ (missing values)} = 366$).
 
 Sehingga pada kolom **CO** dan **O3** diperoleh total row count:
 
