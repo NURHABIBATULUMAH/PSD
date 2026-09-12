@@ -4,11 +4,12 @@
 format: jb-book
 root: intro
 chapters:
-- file: tuban/polutan-kerek
+- file: tuban/index
   sections: 
   - file: tuban/polutan
   - file: tuban/cloud-polutan
-- file: kerek/polutan-kerek
+- file: kerek/index
   sections:
   - file: kerek/polutan-kerek
+  - file: kerek/cloud-kerek
   - file: kerek/ekstraksi-fitur
