@@ -1,0 +1,131 @@
+Traceback (most recent call last):
+  File "C:\Users\Fatihul Umam\AppData\Local\Programs\Python\Python313\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+    ~~~~~~~~~^
+        nb,
+        ^^^
+    ...<4 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Fatihul Umam\AppData\Local\Programs\Python\Python313\Lib\site-packages\nbclient\client.py", line 1323, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Fatihul Umam\AppData\Local\Programs\Python\Python313\Lib\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\Fatihul Umam\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Fatihul Umam\AppData\Local\Programs\Python\Python313\Lib\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+        cell, index, execution_count=self.code_cells_executed + 1
+    )
+  File "C:\Users\Fatihul Umam\AppData\Local\Programs\Python\Python313\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "C:\Users\Fatihul Umam\AppData\Local\Programs\Python\Python313\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('NO2-Kerek-TSFEL.csv')
+cols_to_drop = [c for c in ['id', 'nama', 'daerah'] if c in df.columns]
+fitur = df.drop(cols_to_drop, axis=1) if cols_to_drop else df
+
+scaler = StandardScaler()
+fitur_scaled = scaler.fit_transform(fitur)
+fitur_pca = PCA(n_components=37).fit_transform(fitur_scaled)
+
+inertia = []
+K_range = range(2, 11)
+for k in K_range:
+    kmeans_temp = KMeans(n_clusters=k, random_state=42, n_init=10)
+    kmeans_temp.fit(fitur_pca)
+    inertia.append(kmeans_temp.inertia_)
+
+plt.figure(figsize=(8, 5))
+plt.plot(K_range, inertia, marker='o', linestyle='--')
+plt.title('Evaluasi Jumlah Cluster dengan Elbow Method (NO2)')
+plt.xlabel('Jumlah Cluster (K)')
+plt.ylabel('Inersia (Jarak Kuadrat)')
+plt.grid(True)
+plt.show()
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mValueError[39m                                Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[1][39m[32m, line 13[39m
+[32m      9[39m fitur = df.drop(cols_to_drop, axis=[32m1[39m) [38;5;28;01mif[39;00m cols_to_drop [38;5;28;01melse[39;00m df
+[32m     10[39m 
+[32m     11[39m scaler = StandardScaler()
+[32m     12[39m fitur_scaled = scaler.fit_transform(fitur)
+[32m---> [39m[32m13[39m fitur_pca = PCA(n_components=[32m37[39m).fit_transform(fitur_scaled)
+[32m     14[39m 
+[32m     15[39m inertia = []
+[32m     16[39m K_range = range([32m2[39m, [32m11[39m)
+
+[36mFile [39m[32m~\AppData\Local\Programs\Python\Python313\Lib\site-packages\sklearn\utils\_set_output.py:316[39m, in [36m_wrap_method_output.<locals>.wrapped[39m[34m(self, X, *args, **kwargs)[39m
+[32m    314[39m [38;5;129m@wraps[39m(f)
+[32m    315[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mwrapped[39m([38;5;28mself[39m, X, *args, **kwargs):
+[32m--> [39m[32m316[39m     data_to_wrap = [30;43mf[39;49m[30;43m([39;49m[30;43mself[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mX[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43m*[39;49m[30;43margs[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43m*[39;49m[30;43m*[39;49m[30;43mkwargs[39;49m[30;43m)[39;49m
+[32m    317[39m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(data_to_wrap, [38;5;28mtuple[39m):
+[32m    318[39m         [38;5;66;03m# only wrap the first output for cross decomposition[39;00m
+[32m    319[39m         return_tuple = (
+[32m    320[39m             _wrap_data_with_container(method, data_to_wrap[[32m0[39m], X, [38;5;28mself[39m),
+[32m    321[39m             *data_to_wrap[[32m1[39m:],
+[32m    322[39m         )
+
+[36mFile [39m[32m~\AppData\Local\Programs\Python\Python313\Lib\site-packages\sklearn\base.py:1336[39m, in [36m_fit_context.<locals>.decorator.<locals>.wrapper[39m[34m(estimator, *args, **kwargs)[39m
+[32m   1329[39m     estimator._validate_params()
+[32m   1331[39m [38;5;28;01mwith[39;00m config_context(
+[32m   1332[39m     skip_parameter_validation=(
+[32m   1333[39m         prefer_skip_nested_validation [38;5;129;01mor[39;00m global_skip_validation
+[32m   1334[39m     )
+[32m   1335[39m ):
+[32m-> [39m[32m1336[39m     [38;5;28;01mreturn[39;00m [30;43mfit_method[39;49m[30;43m([39;49m[30;43mestimator[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43m*[39;49m[30;43margs[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43m*[39;49m[30;43m*[39;49m[30;43mkwargs[39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~\AppData\Local\Programs\Python\Python313\Lib\site-packages\sklearn\decomposition\_pca.py:466[39m, in [36mPCA.fit_transform[39m[34m(self, X, y)[39m
+[32m    443[39m [38;5;129m@_fit_context[39m(prefer_skip_nested_validation=[38;5;28;01mTrue[39;00m)
+[32m    444[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mfit_transform[39m([38;5;28mself[39m, X, y=[38;5;28;01mNone[39;00m):
+[32m    445[39m [38;5;250m    [39m[33;03m"""Fit the model with X and apply the dimensionality reduction on X.[39;00m
+[32m    446[39m 
+[32m    447[39m [33;03m    Parameters[39;00m
+[32m   (...)[39m[32m    464[39m [33;03m    C-ordered array, use 'np.ascontiguousarray'.[39;00m
+[32m    465[39m [33;03m    """[39;00m
+[32m--> [39m[32m466[39m     U, S, _, X, x_is_centered, xp = [30;43mself[39;49m[30;43m.[39;49m[30;43m_fit[39;49m[30;43m([39;49m[30;43mX[39;49m[30;43m)[39;49m
+[32m    467[39m     [38;5;28;01mif[39;00m U [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[32m    468[39m         U = U[:, : [38;5;28mself[39m.n_components_]
+
+[36mFile [39m[32m~\AppData\Local\Programs\Python\Python313\Lib\site-packages\sklearn\decomposition\_pca.py:540[39m, in [36mPCA._fit[39m[34m(self, X)[39m
+[32m    538[39m [38;5;66;03m# Call different fits for either full or truncated SVD[39;00m
+[32m    539[39m [38;5;28;01mif[39;00m [38;5;28mself[39m._fit_svd_solver [38;5;129;01min[39;00m ([33m"[39m[33mfull[39m[33m"[39m, [33m"[39m[33mcovariance_eigh[39m[33m"[39m):
+[32m--> [39m[32m540[39m     [38;5;28;01mreturn[39;00m [30;43mself[39;49m[30;43m.[39;49m[30;43m_fit_full[39;49m[30;43m([39;49m[30;43mX[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mn_components[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mxp[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mis_array_api_compliant[39;49m[30;43m)[39;49m
+[32m    541[39m [38;5;28;01melif[39;00m [38;5;28mself[39m._fit_svd_solver [38;5;129;01min[39;00m [[33m"[39m[33marpack[39m[33m"[39m, [33m"[39m[33mrandomized[39m[33m"[39m]:
+[32m    542[39m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m._fit_truncated(X, n_components, xp)
+
+[36mFile [39m[32m~\AppData\Local\Programs\Python\Python313\Lib\site-packages\sklearn\decomposition\_pca.py:554[39m, in [36mPCA._fit_full[39m[34m(self, X, n_components, xp, is_array_api_compliant)[39m
+[32m    550[39m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(
+[32m    551[39m             [33m"[39m[33mn_components=[39m[33m'[39m[33mmle[39m[33m'[39m[33m is only supported if n_samples >= n_features[39m[33m"[39m
+[32m    552[39m         )
+[32m    553[39m [38;5;28;01melif[39;00m [38;5;129;01mnot[39;00m [32m0[39m <= n_components <= [38;5;28mmin[39m(n_samples, n_features):
+[32m--> [39m[32m554[39m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(
+[32m    555[39m         [33mf[39m[33m"[39m[33mn_components=[39m[38;5;132;01m{[39;00mn_components[38;5;132;01m}[39;00m[33m must be between 0 and [39m[33m"[39m
+[32m    556[39m         [33mf[39m[33m"[39m[33mmin(n_samples, n_features)=[39m[38;5;132;01m{[39;00m[38;5;28mmin[39m(n_samples,[38;5;250m [39mn_features)[38;5;132;01m}[39;00m[33m with [39m[33m"[39m
+[32m    557[39m         [33mf[39m[33m"[39m[33msvd_solver=[39m[38;5;132;01m{[39;00m[38;5;28mself[39m._fit_svd_solver[38;5;132;01m!r}[39;00m[33m"[39m
+[32m    558[39m     )
+[32m    560[39m [38;5;28mself[39m.mean_ = xp.mean(X, axis=[32m0[39m)
+[32m    561[39m [38;5;66;03m# When X is a scipy sparse matrix, self.mean_ is a numpy matrix, so we need[39;00m
+[32m    562[39m [38;5;66;03m# to transform it to a 1D array. Note that this is not the case when X[39;00m
+[32m    563[39m [38;5;66;03m# is a scipy sparse array.[39;00m
+[32m    564[39m [38;5;66;03m# TODO: remove the following two lines when scikit-learn only depends[39;00m
+[32m    565[39m [38;5;66;03m# on scipy versions that no longer support scipy.sparse matrices.[39;00m
+
+[31mValueError[39m: n_components=37 must be between 0 and min(n_samples, n_features)=1 with svd_solver='full'
+

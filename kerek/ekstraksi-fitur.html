@@ -58,9 +58,12 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'kerek/ekstraksi-fitur';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="K-Means Clustering Polutan" href="clustering-polutan.html" />
     <link rel="prev" title="Eksplorasi Data: Integrasi Data menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime" href="cloud-kerek.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -189,6 +192,7 @@
 <li class="toctree-l2"><a class="reference internal" href="polutan-kerek.html">Kolekting Data: Kualitas Polusi Udara di Kecamatan Kerek, Tuban</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cloud-kerek.html">Eksplorasi Data: Integrasi Data menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">PreProcessing: Deteksi Outlier &amp; Imputasi Missing Value serta Ekstraksi Fitur Pada NO2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustering-polutan.html">K-Means Clustering Polutan</a></li>
 </ul>
 </details></li>
 </ul>
@@ -387,11 +391,13 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outliers-pada-data-kualitas-udara-di-kecamatan-kerek">1. Deteksi Outliers pada Data Kualitas Udara di Kecamatan Kerek</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outliers-pada-no2-untuk-ekstraksi-fitur">2. Deteksi Outliers pada NO2 Untuk Ekstraksi Fitur</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merubah-outliers-no2-menjadi-nan-serta-imputasi-missing-values-dan-outliers-nan">3. Merubah Outliers NO2 Menjadi NaN serta Imputasi Missing Values dan Outliers (NaN)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-library-tsfel-untuk-ekstraksi-fitur">4. Install Library TSFEL Untuk Ekstraksi Fitur</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-menjadi-68-fitur">5. Ekstraksi Menjadi 68 Fitur</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mengelompokkan-fitur-hasil-ekstraksi-berdasarkan-domain">6. Mengelompokkan Fitur Hasil Ekstraksi Berdasarkan Domain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merubah-outliers-menjadi-nan-serta-imputasi-missing-values-dan-outliers-nan">2. Merubah Outliers Menjadi NaN serta Imputasi Missing Values dan Outliers (NaN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-data-sebelum-dan-sesudah-imputasi">3 Visualisasi Data Sebelum dan Sesudah Imputasi</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-timeseries-gabungan-tiga-polutan">4 Visualisasi Timeseries Gabungan Tiga Polutan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-library-tsfel-untuk-ekstraksi-fitur">5. Install Library TSFEL Untuk Ekstraksi Fitur</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-setiap-fitur-serta-contoh-perhitungan-manual">6. Penjelasan Setiap Fitur Serta Contoh Perhitungan Manual</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-menjadi-68-fitur">7. Ekstraksi Menjadi 68 Fitur</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mengelompokkan-fitur-hasil-ekstraksi-berdasarkan-domain">8. Mengelompokkan Fitur Hasil Ekstraksi Berdasarkan Domain</a></li>
 </ul>
             </nav>
         </div>
@@ -412,7 +418,7 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># Membaca data gabungan kualitas udara Tuban</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;mystorage/KualitasUdaraKerek.csv&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;KualitasUdaraKerek.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Daftar kolom fitur polutan yang akan dicek outlier-nya</span>
 <span class="c1"># (Sesuaikan dengan nama kolom polutan yang ada di DataFrame Anda)</span>
@@ -442,136 +448,56 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">4</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Membaca data gabungan kualitas udara Tuban</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;mystorage/KualitasUdaraKerek.csv&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># Daftar kolom fitur polutan yang akan dicek outlier-nya</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="c1"># (Sesuaikan dengan nama kolom polutan yang ada di DataFrame Anda)</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="n">fitur_polutan</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CO&#39;</span><span class="p">,</span> <span class="s1">&#39;NO2&#39;</span><span class="p">,</span> <span class="s1">&#39;SO2&#39;</span><span class="p">,</span> <span class="s1">&#39;O3&#39;</span><span class="p">]</span>
-
-<span class="nn">File ~\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages\pandas\io\parsers\readers.py:1026,</span> in <span class="ni">read_csv</span><span class="nt">(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, date_format, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, encoding_errors, dialect, on_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options, dtype_backend)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1013</span> <span class="n">kwds_defaults</span> <span class="o">=</span> <span class="n">_refine_defaults_read</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1014</span>     <span class="n">dialect</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1015</span>     <span class="n">delimiter</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>   <span class="mi">1022</span>     <span class="n">dtype_backend</span><span class="o">=</span><span class="n">dtype_backend</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1023</span> <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1024</span> <span class="n">kwds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds_defaults</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">1026</span> <span class="k">return</span> <span class="n">_read</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
-
-<span class="nn">File ~\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages\pandas\io\parsers\readers.py:620,</span> in <span class="ni">_read</span><span class="nt">(filepath_or_buffer, kwds)</span>
-<span class="g g-Whitespace">    </span><span class="mi">617</span> <span class="n">_validate_names</span><span class="p">(</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;names&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-<span class="g g-Whitespace">    </span><span class="mi">619</span> <span class="c1"># Create the parser.</span>
-<span class="ne">--&gt; </span><span class="mi">620</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">TextFileReader</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">622</span> <span class="k">if</span> <span class="n">chunksize</span> <span class="ow">or</span> <span class="n">iterator</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">623</span>     <span class="k">return</span> <span class="n">parser</span>
-
-<span class="nn">File ~\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages\pandas\io\parsers\readers.py:1620,</span> in <span class="ni">TextFileReader.__init__</span><span class="nt">(self, f, engine, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1617</span>     <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwds</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span>
-<span class="g g-Whitespace">   </span><span class="mi">1619</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="p">:</span> <span class="n">IOHandles</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="ne">-&gt; </span><span class="mi">1620</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
-
-<span class="nn">File ~\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages\pandas\io\parsers\readers.py:1880,</span> in <span class="ni">TextFileReader._make_engine</span><span class="nt">(self, f, engine)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1878</span>     <span class="k">if</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1879</span>         <span class="n">mode</span> <span class="o">+=</span> <span class="s2">&quot;b&quot;</span>
-<span class="ne">-&gt; </span><span class="mi">1880</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="o">=</span> <span class="n">get_handle</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1881</span>     <span class="n">f</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1882</span>     <span class="n">mode</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1883</span>     <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-<span class="g g-Whitespace">   </span><span class="mi">1884</span>     <span class="n">compression</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-<span class="g g-Whitespace">   </span><span class="mi">1885</span>     <span class="n">memory_map</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memory_map&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
-<span class="g g-Whitespace">   </span><span class="mi">1886</span>     <span class="n">is_text</span><span class="o">=</span><span class="n">is_text</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1887</span>     <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding_errors&quot;</span><span class="p">,</span> <span class="s2">&quot;strict&quot;</span><span class="p">),</span>
-<span class="g g-Whitespace">   </span><span class="mi">1888</span>     <span class="n">storage_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;storage_options&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-<span class="g g-Whitespace">   </span><span class="mi">1889</span> <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1890</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-<span class="g g-Whitespace">   </span><span class="mi">1891</span> <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="o">.</span><span class="n">handle</span>
-
-<span class="nn">File ~\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages\pandas\io\common.py:873,</span> in <span class="ni">get_handle</span><span class="nt">(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)</span>
-<span class="g g-Whitespace">    </span><span class="mi">868</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">869</span>     <span class="c1"># Check whether the filename is to be opened in binary mode.</span>
-<span class="g g-Whitespace">    </span><span class="mi">870</span>     <span class="c1"># Binary mode does not support &#39;encoding&#39; and &#39;newline&#39;.</span>
-<span class="g g-Whitespace">    </span><span class="mi">871</span>     <span class="k">if</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">and</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">872</span>         <span class="c1"># Encoding</span>
-<span class="ne">--&gt; </span><span class="mi">873</span>         <span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">874</span>             <span class="n">handle</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">875</span>             <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">876</span>             <span class="n">encoding</span><span class="o">=</span><span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">877</span>             <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">878</span>             <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">879</span>         <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">880</span>     <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">881</span>         <span class="c1"># Binary mode</span>
-<span class="g g-Whitespace">    </span><span class="mi">882</span>         <span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
-
-<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;mystorage/KualitasUdaraKerek.csv&#39;
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="deteksi-outliers-pada-no2-untuk-ekstraksi-fitur">
-<h2>2. Deteksi Outliers pada NO2 Untuk Ekstraksi Fitur<a class="headerlink" href="#deteksi-outliers-pada-no2-untuk-ekstraksi-fitur" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
-<span class="c1"># Membaca data NO2</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;mystorage/NO2 Kerek.csv&quot;</span><span class="p">)</span>
-
-<span class="c1"># Daftar kolom fitur polutan yang akan dicek outlier-nya</span>
-<span class="n">fitur_polutan</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO2&#39;</span><span class="p">]</span>
-
-<span class="k">for</span> <span class="n">kolom</span> <span class="ow">in</span> <span class="n">fitur_polutan</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">kolom</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="c1"># Konversi kolom ke tipe data numerik (jika ada teks/string/anomali, akan diubah jadi NaN)</span>
-        <span class="n">df</span><span class="p">[</span><span class="n">kolom</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">kolom</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
-        
-        <span class="n">Q1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">kolom</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
-        <span class="n">Q3</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">kolom</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
-        <span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
-
-        <span class="n">lower_bound</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="p">(</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span><span class="p">)</span>
-        <span class="n">upper_bound</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span><span class="p">)</span>
-
-        <span class="n">outliers_iqr</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span>
-            <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">kolom</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">|</span> 
-            <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">kolom</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound</span><span class="p">)</span>
-        <span class="p">]</span>
-
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;=== Parameter: </span><span class="si">{</span><span class="n">kolom</span><span class="si">}</span><span class="s2"> ===&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Jumlah Outlier : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_iqr</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers_iqr</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">outliers_iqr</span><span class="p">[[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">kolom</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">35</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Parameter: NO2 ===
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Parameter: CO ===
 Jumlah Outlier : 4
-                         date       NO2
-62   2026-08-10T00:00:00.000Z  0.000105
-167  2026-03-29T00:00:00.000Z  0.000094
-296  2025-09-23T00:00:00.000Z  0.000097
-364  2026-05-27T00:00:00.000Z  0.000108
+                         date        CO
+38   2025-10-07T00:00:00.000Z  0.042697
+40   2025-10-09T00:00:00.000Z  0.041038
+335  2026-07-31T00:00:00.000Z  0.039562
+349  2026-08-14T00:00:00.000Z  0.039993
+-----------------------------------
+
+=== Parameter: NO2 ===
+Jumlah Outlier : 3
+                         date      NO2
+24   2025-09-23T00:00:00.000Z  0.00010
+270  2026-05-27T00:00:00.000Z  0.00011
+345  2026-08-10T00:00:00.000Z  0.00011
+-----------------------------------
+
+=== Parameter: SO2 ===
+Jumlah Outlier : 10
+                         date     SO2
+9    2025-09-08T00:00:00.000Z -0.0004
+12   2025-09-11T00:00:00.000Z -0.0004
+23   2025-09-22T00:00:00.000Z  0.0006
+120  2025-12-28T00:00:00.000Z  0.0004
+268  2026-05-25T00:00:00.000Z  0.0005
+-----------------------------------
+
+=== Parameter: O3 ===
+Jumlah Outlier : 5
+                        date        O3
+1   2025-08-31T00:00:00.000Z  0.122804
+56  2025-10-25T00:00:00.000Z  0.123395
+57  2025-10-26T00:00:00.000Z  0.122382
+58  2025-10-27T00:00:00.000Z  0.122729
+62  2025-10-31T00:00:00.000Z  0.122300
 -----------------------------------
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="merubah-outliers-no2-menjadi-nan-serta-imputasi-missing-values-dan-outliers-nan">
-<h2>3. Merubah Outliers NO2 Menjadi NaN serta Imputasi Missing Values dan Outliers (NaN)<a class="headerlink" href="#merubah-outliers-no2-menjadi-nan-serta-imputasi-missing-values-dan-outliers-nan" title="Link to this heading">#</a></h2>
+<section id="merubah-outliers-menjadi-nan-serta-imputasi-missing-values-dan-outliers-nan">
+<h2>2. Merubah Outliers Menjadi NaN serta Imputasi Missing Values dan Outliers (NaN)<a class="headerlink" href="#merubah-outliers-menjadi-nan-serta-imputasi-missing-values-dan-outliers-nan" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># 1. Load data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;mystorage/NO2 Kerek.csv&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;NO2 Kerek.csv&quot;</span><span class="p">)</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
 
@@ -603,9 +529,235 @@ Jumlah Outlier : 4
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#CO</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># 1. Load data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;CO Kerek.csv&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CO&#39;</span><span class="p">]</span>
+
+<span class="c1"># 2. Ubah outliers pada data asli menjadi NaN terlebih dahulu</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+    <span class="n">Q1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">Q3</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+    <span class="n">lower_bound</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+    <span class="n">upper_bound</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+    
+    <span class="c1"># Ganti nilai di luar batas IQR menjadi NaN</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound</span><span class="p">),</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="c1"># 3. Sekarang lakukan imputasi (missing value asli + outliers yang jadi NaN) sekaligus</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+
+<span class="c1"># 4. Cek hasil akhir</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sisa Missing Value:&quot;</span><span class="p">,</span> <span class="n">df_clean</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="n">df_clean</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;CO-Kerek-Clean.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sisa Missing Value: 0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#SO2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># 1. Load data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;SO2 Kerek.csv&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SO2&#39;</span><span class="p">]</span>
+
+<span class="c1"># 2. Ubah outliers pada data asli menjadi NaN terlebih dahulu</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+    <span class="n">Q1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">Q3</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+    <span class="n">lower_bound</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+    <span class="n">upper_bound</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+    
+    <span class="c1"># Ganti nilai di luar batas IQR menjadi NaN</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound</span><span class="p">),</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="c1"># 3. Sekarang lakukan imputasi (missing value asli + outliers yang jadi NaN) sekaligus</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+
+<span class="c1"># 4. Cek hasil akhir</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sisa Missing Value:&quot;</span><span class="p">,</span> <span class="n">df_clean</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="n">df_clean</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;SO2-Kerek-Clean.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sisa Missing Value: 0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualisasi-data-sebelum-dan-sesudah-imputasi">
+<h2>3 Visualisasi Data Sebelum dan Sesudah Imputasi<a class="headerlink" href="#visualisasi-data-sebelum-dan-sesudah-imputasi" title="Link to this heading">#</a></h2>
+<p>Visualisasi membandingkan data yang masih memiliki outlier dengan data yang sudah di-interpolasi.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Load original data with outliers</span>
+<span class="n">df_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;KualitasUdaraKerek.csv&#39;</span><span class="p">)</span>
+<span class="n">df_raw</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+<span class="n">df_raw</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">pollutants</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO2&#39;</span><span class="p">,</span> <span class="s1">&#39;CO&#39;</span><span class="p">,</span> <span class="s1">&#39;SO2&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">pol</span> <span class="ow">in</span> <span class="n">pollutants</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Load cleaned data</span>
+        <span class="n">df_clean</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s1">-Kerek-Clean.csv&#39;</span><span class="p">)</span>
+        <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+        <span class="n">df_clean</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="c1"># Hitung IQR untuk batas atas dan bawah</span>
+        <span class="n">Q1</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="n">pol</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+        <span class="n">Q3</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="n">pol</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+        <span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+        <span class="n">lower_bound</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+        <span class="n">upper_bound</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+        
+        <span class="c1"># Cari titik outlier di data asli</span>
+        <span class="n">outliers</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[(</span><span class="n">df_raw</span><span class="p">[</span><span class="n">pol</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="n">pol</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound</span><span class="p">)]</span>
+        
+        <span class="c1"># Styling</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.facecolor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;#dcdcdc&#39;</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.facecolor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;#b9c1c6&#39;</span>
+        
+        <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        
+        <span class="c1"># --- Plot 1: Data Asli (Sebelum Penanganan) ---</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df_raw</span><span class="p">[</span><span class="n">pol</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#004b91&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">pol</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">outliers</span><span class="p">[</span><span class="n">pol</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Outliers&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">upper_bound</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkorange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Upper Bound (IQR)&#39;</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Lower Bound (IQR)&#39;</span><span class="p">)</span>
+        
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deteksi Outlier Data </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s1"> (Metode IQR) - Sebelum Penanganan&#39;</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Kadar </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">fancybox</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;#dcdcdc&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># Set x-ticks hanya awal dan akhir tanggal</span>
+        <span class="n">first_date</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">last_date</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="n">first_date</span><span class="p">,</span> <span class="n">last_date</span><span class="p">])</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="n">first_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">),</span> <span class="n">last_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)])</span>
+        
+        <span class="c1"># --- Plot 2: Data Bersih (Setelah Penanganan) ---</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_clean</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">pol</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#004b91&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">pol</span><span class="p">)</span>
+        <span class="c1"># Biarkan legend ada meskipun tidak ada outlier lagi, sesuai gaya</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Outliers&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">upper_bound</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkorange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Upper Bound (IQR)&#39;</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Lower Bound (IQR)&#39;</span><span class="p">)</span>
+        
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deteksi Outlier Data </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s1"> (Metode IQR) - Setelah Penanganan&#39;</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Tanggal&#39;</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Kadar </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">fancybox</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;#dcdcdc&#39;</span><span class="p">)</span>
+        
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="n">first_date</span><span class="p">,</span> <span class="n">last_date</span><span class="p">])</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="n">first_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">),</span> <span class="n">last_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)])</span>
+        
+        <span class="c1"># Tambahkan border pada figure mirip seperti di gambar</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="s1">&#39;#7e8c95&#39;</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;File </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s1">-Kerek-Clean.csv tidak ditemukan.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/81d2b38e3efe5fc3e85499a3e60e56a8d1aed2157686ab60fd714a48a1613ecc.png" src="../_images/81d2b38e3efe5fc3e85499a3e60e56a8d1aed2157686ab60fd714a48a1613ecc.png" />
+<img alt="../_images/33ea36c98da88322d9f49640da33af268da790ba3c878877ea02003ba5506c72.png" src="../_images/33ea36c98da88322d9f49640da33af268da790ba3c878877ea02003ba5506c72.png" />
+<img alt="../_images/b685fc358437983ef966954ed3cec6618f0a99ca829257076ae44b6ff21a1b6b.png" src="../_images/b685fc358437983ef966954ed3cec6618f0a99ca829257076ae44b6ff21a1b6b.png" />
+</div>
+</div>
+</section>
+<section id="visualisasi-timeseries-gabungan-tiga-polutan">
+<h2>4 Visualisasi Timeseries Gabungan Tiga Polutan<a class="headerlink" href="#visualisasi-timeseries-gabungan-tiga-polutan" title="Link to this heading">#</a></h2>
+<p>Visualisasi ini menampilkan data ketiga polutan (NO2, CO, SO2) dalam satu grafik setelah dilakukan interpolasi.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.dates</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mdates</span>
+
+<span class="c1"># Load data bersih untuk ketiga polutan</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">df_no2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;NO2-Kerek-Clean.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+    <span class="n">df_co</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;CO-Kerek-Clean.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+    <span class="n">df_so2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;SO2-Kerek-Clean.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Styling</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.facecolor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;#dcdcdc&#39;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.facecolor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;#b9c1c6&#39;</span>
+    
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    
+    <span class="c1"># Plot NO2 (Merah)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_no2</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df_no2</span><span class="p">[</span><span class="s1">&#39;NO2&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;NO2&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Plot CO (Emas/Kuning)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_co</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df_co</span><span class="p">[</span><span class="s1">&#39;CO&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#d4ac0d&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;CO&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Plot SO2 (Hijau Tua)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_so2</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df_so2</span><span class="p">[</span><span class="s1">&#39;SO2&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkgreen&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;SO2&#39;</span><span class="p">)</span>
+    
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Visualisasi Timeseries Tiga Polutan (NO2, CO, SO2) dalam 1 Grafik&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Tanggal&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Kadar Polutan&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Konfigurasi sumbu X</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">mdates</span><span class="o">.</span><span class="n">MonthLocator</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">mdates</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">&#39;%b&#39;</span><span class="p">))</span>
+    
+    <span class="c1"># Grid gelap</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    
+    <span class="c1"># Legend kotak</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center right&#39;</span><span class="p">,</span> <span class="n">fancybox</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;#dcdcdc&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Border tebal figure</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="s1">&#39;#7e8c95&#39;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;File tidak ditemukan:&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/df28c34c9be7b65d725679dcd7b921805e44db5266c396e2b2ea5a5719618523.png" src="../_images/df28c34c9be7b65d725679dcd7b921805e44db5266c396e2b2ea5a5719618523.png" />
+</div>
+</div>
 </section>
 <section id="install-library-tsfel-untuk-ekstraksi-fitur">
-<h2>4. Install Library TSFEL Untuk Ekstraksi Fitur<a class="headerlink" href="#install-library-tsfel-untuk-ekstraksi-fitur" title="Link to this heading">#</a></h2>
+<h2>5. Install Library TSFEL Untuk Ekstraksi Fitur<a class="headerlink" href="#install-library-tsfel-untuk-ekstraksi-fitur" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">tsfel</span>
@@ -613,79 +765,53 @@ Jumlah Outlier : 4
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting tsfel
-  Downloading tsfel-0.2.0-py3-none-any.whl.metadata (9.4 kB)
-Requirement already satisfied: ipython&gt;=7.4.0 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from tsfel) (9.14.1)
-Requirement already satisfied: numpy&gt;=1.18.5 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from tsfel) (2.4.6)
-Requirement already satisfied: pandas&gt;=1.5.3 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from tsfel) (3.0.3)
-Collecting PyWavelets&gt;=1.4.1 (from tsfel)
-  Downloading pywavelets-1.10.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (7.6 kB)
-Requirement already satisfied: requests&gt;=2.31.0 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from tsfel) (2.34.2)
-Collecting scikit-learn&gt;=0.21.3 (from tsfel)
-  Downloading scikit_learn-1.9.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.3 kB)
-Requirement already satisfied: scipy&gt;=1.7.3 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from tsfel) (1.17.1)
-Requirement already satisfied: setuptools&gt;=47.1.1 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from tsfel) (82.0.1)
-Collecting statsmodels&gt;=0.12.0 (from tsfel)
-  Downloading statsmodels-0.15.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.6 kB)
-Requirement already satisfied: decorator&gt;=5.1.0 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (5.3.1)
-Requirement already satisfied: ipython-pygments-lexers&gt;=1.0.0 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (1.1.1)
-Requirement already satisfied: jedi&gt;=0.18.2 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.19.2)
-Requirement already satisfied: matplotlib-inline&gt;=0.1.6 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.2.2)
-Requirement already satisfied: pexpect&gt;4.6 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (4.9.0)
-Requirement already satisfied: prompt_toolkit&lt;3.1.0,&gt;=3.0.41 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (3.0.52)
-Requirement already satisfied: psutil&gt;=7 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (7.2.2)
-Requirement already satisfied: pygments&gt;=2.14.0 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (2.20.0)
-Requirement already satisfied: stack_data&gt;=0.6.0 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.6.3)
-Requirement already satisfied: traitlets&gt;=5.13.0 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (5.15.1)
-Requirement already satisfied: wcwidth in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from prompt_toolkit&lt;3.1.0,&gt;=3.0.41-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.8.1)
-Requirement already satisfied: parso&lt;0.9.0,&gt;=0.8.4 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from jedi&gt;=0.18.2-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.8.7)
-Requirement already satisfied: python-dateutil&gt;=2.8.2 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from pandas&gt;=1.5.3-&gt;tsfel) (2.9.0.post0)
-Requirement already satisfied: ptyprocess&gt;=0.5 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from pexpect&gt;4.6-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.7.0)
-Requirement already satisfied: six&gt;=1.5 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&gt;=1.5.3-&gt;tsfel) (1.17.0)
-Requirement already satisfied: charset_normalizer&lt;4,&gt;=2 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from requests&gt;=2.31.0-&gt;tsfel) (3.4.7)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from requests&gt;=2.31.0-&gt;tsfel) (3.18)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.26 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from requests&gt;=2.31.0-&gt;tsfel) (2.7.0)
-Requirement already satisfied: certifi&gt;=2023.5.7 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from requests&gt;=2.31.0-&gt;tsfel) (2026.5.20)
-Collecting joblib&gt;=1.4.0 (from scikit-learn&gt;=0.21.3-&gt;tsfel)
-  Downloading joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)
-Collecting narwhals&gt;=2.0.1 (from scikit-learn&gt;=0.21.3-&gt;tsfel)
-  Downloading narwhals-2.26.0-py3-none-any.whl.metadata (15 kB)
-Collecting threadpoolctl&gt;=3.5.0 (from scikit-learn&gt;=0.21.3-&gt;tsfel)
-  Downloading threadpoolctl-3.6.0-py3-none-any.whl.metadata (13 kB)
-Collecting cloudpickle&gt;=3.0 (from joblib&gt;=1.4.0-&gt;scikit-learn&gt;=0.21.3-&gt;tsfel)
-  Downloading cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
-Requirement already satisfied: executing&gt;=1.2.0 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from stack_data&gt;=0.6.0-&gt;ipython&gt;=7.4.0-&gt;tsfel) (2.2.1)
-Requirement already satisfied: asttokens&gt;=2.1.0 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from stack_data&gt;=0.6.0-&gt;ipython&gt;=7.4.0-&gt;tsfel) (3.0.1)
-Requirement already satisfied: pure_eval in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from stack_data&gt;=0.6.0-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.2.3)
-Collecting patsy&gt;=0.5.6 (from statsmodels&gt;=0.12.0-&gt;tsfel)
-  Downloading patsy-1.0.3-py2.py3-none-any.whl.metadata (3.7 kB)
-Requirement already satisfied: packaging&gt;=21.3 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from statsmodels&gt;=0.12.0-&gt;tsfel) (26.2)
-Collecting formulaic&gt;=1.1.0 (from statsmodels&gt;=0.12.0-&gt;tsfel)
-  Downloading formulaic-1.2.2-py3-none-any.whl.metadata (7.0 kB)
-Collecting interface-meta&gt;=1.2.0 (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel)
-  Downloading interface_meta-2.0.1-py3-none-any.whl.metadata (6.4 kB)
-Requirement already satisfied: typing-extensions&gt;=4.2.0 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel) (4.15.0)
-Collecting wrapt&gt;=1.0 (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel)
-  Downloading wrapt-2.4.1-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (7.4 kB)
-Downloading tsfel-0.2.0-py3-none-any.whl (63 kB)
-Downloading pywavelets-1.10.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (4.5 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4.5/4.5 MB</span> <span class=" -Color -Color-Red">42.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading scikit_learn-1.9.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (9.2 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">9.2/9.2 MB</span> <span class=" -Color -Color-Red">75.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading joblib-1.6.0-py3-none-any.whl (306 kB)
-Downloading cloudpickle-3.1.2-py3-none-any.whl (22 kB)
-Downloading narwhals-2.26.0-py3-none-any.whl (474 kB)
-Downloading statsmodels-0.15.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (12.0 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">12.0/12.0 MB</span> <span class=" -Color -Color-Red">56.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>00:01
-?25hDownloading formulaic-1.2.2-py3-none-any.whl (118 kB)
-Downloading interface_meta-2.0.1-py3-none-any.whl (15 kB)
-Downloading patsy-1.0.3-py2.py3-none-any.whl (233 kB)
-Downloading threadpoolctl-3.6.0-py3-none-any.whl (18 kB)
-Downloading wrapt-2.4.1-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (236 kB)
-Installing collected packages: wrapt, threadpoolctl, PyWavelets, patsy, narwhals, interface-meta, cloudpickle, joblib, scikit-learn, formulaic, statsmodels, tsfel
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">12/12</span> [tsfel]m10/12 [statsmodels]]
-Successfully installed PyWavelets-1.10.0 cloudpickle-3.1.2 formulaic-1.2.2 interface-meta-2.0.1 joblib-1.6.0 narwhals-2.26.0 patsy-1.0.3 scikit-learn-1.9.1 statsmodels-0.15.0 threadpoolctl-3.6.0 tsfel-0.2.0 wrapt-2.4.1
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: tsfel in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (0.2.0)
+Requirement already satisfied: ipython&gt;=7.4.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (9.10.0)
+Requirement already satisfied: numpy&gt;=1.18.5 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (2.4.2)
+Requirement already satisfied: pandas&gt;=1.5.3 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (2.2.2)
+Requirement already satisfied: PyWavelets&gt;=1.4.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (1.9.0)
+Requirement already satisfied: requests&gt;=2.31.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (2.32.5)
+Requirement already satisfied: scikit-learn&gt;=0.21.3 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (1.8.0)
+Requirement already satisfied: scipy&gt;=1.7.3 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (1.17.1)
+Requirement already satisfied: setuptools&gt;=47.1.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (84.0.0)
+Requirement already satisfied: statsmodels&gt;=0.12.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (0.15.0)
+Requirement already satisfied: colorama&gt;=0.4.4 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.4.6)
+Requirement already satisfied: decorator&gt;=4.3.2 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (5.2.1)
+Requirement already satisfied: ipython-pygments-lexers&gt;=1.0.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (1.1.1)
+Requirement already satisfied: jedi&gt;=0.18.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.19.2)
+Requirement already satisfied: matplotlib-inline&gt;=0.1.5 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.2.1)
+Requirement already satisfied: prompt_toolkit&lt;3.1.0,&gt;=3.0.41 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (3.0.52)
+Requirement already satisfied: pygments&gt;=2.11.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (2.19.2)
+Requirement already satisfied: stack_data&gt;=0.6.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.6.3)
+Requirement already satisfied: traitlets&gt;=5.13.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (5.14.3)
+Requirement already satisfied: wcwidth in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from prompt_toolkit&lt;3.1.0,&gt;=3.0.41-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.6.0)
+Requirement already satisfied: parso&lt;0.9.0,&gt;=0.8.4 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from jedi&gt;=0.18.1-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.8.6)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas&gt;=1.5.3-&gt;tsfel) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas&gt;=1.5.3-&gt;tsfel) (2026.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas&gt;=1.5.3-&gt;tsfel) (2025.3)
+Requirement already satisfied: six&gt;=1.5 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&gt;=1.5.3-&gt;tsfel) (1.17.0)
+Requirement already satisfied: charset_normalizer&lt;4,&gt;=2 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from requests&gt;=2.31.0-&gt;tsfel) (3.4.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from requests&gt;=2.31.0-&gt;tsfel) (3.11)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from requests&gt;=2.31.0-&gt;tsfel) (2.6.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from requests&gt;=2.31.0-&gt;tsfel) (2026.1.4)
+Requirement already satisfied: joblib&gt;=1.3.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from scikit-learn&gt;=0.21.3-&gt;tsfel) (1.5.3)
+Requirement already satisfied: threadpoolctl&gt;=3.2.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from scikit-learn&gt;=0.21.3-&gt;tsfel) (3.6.0)
+Requirement already satisfied: executing&gt;=1.2.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from stack_data&gt;=0.6.0-&gt;ipython&gt;=7.4.0-&gt;tsfel) (2.2.1)
+Requirement already satisfied: asttokens&gt;=2.1.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from stack_data&gt;=0.6.0-&gt;ipython&gt;=7.4.0-&gt;tsfel) (3.0.1)
+Requirement already satisfied: pure-eval in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from stack_data&gt;=0.6.0-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.2.3)
+Requirement already satisfied: patsy&gt;=0.5.6 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from statsmodels&gt;=0.12.0-&gt;tsfel) (1.0.3)
+Requirement already satisfied: packaging&gt;=21.3 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from statsmodels&gt;=0.12.0-&gt;tsfel) (26.0)
+Requirement already satisfied: formulaic&gt;=1.1.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from statsmodels&gt;=0.12.0-&gt;tsfel) (1.2.2)
+Requirement already satisfied: interface-meta&gt;=1.2.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel) (2.0.1)
+Requirement already satisfied: narwhals&gt;=1.17 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel) (2.22.0)
+Requirement already satisfied: typing-extensions&gt;=4.2.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel) (4.15.0)
+Requirement already satisfied: wrapt&gt;=1.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel) (2.2.1)
 Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
+WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
+WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
 </pre></div>
 </div>
 </div>
@@ -697,11 +823,18 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (3.0.3)
-Requirement already satisfied: numpy&gt;=1.26.0 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from pandas) (2.4.6)
-Requirement already satisfied: python-dateutil&gt;=2.8.2 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from pandas) (2.9.0.post0)
-Requirement already satisfied: six&gt;=1.5 in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas) (1.17.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (2.2.2)
+Requirement already satisfied: numpy&gt;=1.26.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas) (2.4.2)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas) (2026.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas) (2025.3)
+Requirement already satisfied: six&gt;=1.5 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas) (1.17.0)
 Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
+WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
+WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
 </pre></div>
 </div>
 </div>
@@ -713,15 +846,75 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in /opt/conda/envs/esa-snap/lib/python3.12/site-packages (2.4.6)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (2.4.2)
 Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
+WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
+WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
 </pre></div>
 </div>
 </div>
 </div>
 </section>
+<section id="penjelasan-setiap-fitur-serta-contoh-perhitungan-manual">
+<h2>6. Penjelasan Setiap Fitur Serta Contoh Perhitungan Manual<a class="headerlink" href="#penjelasan-setiap-fitur-serta-contoh-perhitungan-manual" title="Link to this heading">#</a></h2>
+<p>Wavelet Entropy adalah fitur ekstraksi deret waktu yang mengukur tingkat kerumitan, ketidakteraturan (disorder), atau penyebaran energi dari suatu sinyal (dalam hal ini, data polutan seperti <span class="math notranslate nohighlight">\(NO_2\)</span>) pada berbagai skala frekuensi/waktu yang berbeda.</p>
+<ul class="simple">
+<li><p>Nilai Entropi Rendah : Sinyal Teratur/Stabil: Energi sinyal hanya terkonsentrasi pada sedikit skala saja</p></li>
+<li><p>Nilai Entropi Tinggi : Sinyal Kompleks/Fluktuatif/Acak: Energi sinyal tersebar merata ke banyak skala</p></li>
+</ul>
+<p>Rumus Matematis TSFEL
+Di dalam pustaka TSFEL, perhitungan <code class="docutils literal notranslate"><span class="pre">wavelet_entropy</span></code> menggunakan wavelet <strong>Mexican Hat</strong> (<code class="docutils literal notranslate"><span class="pre">mexh</span></code>) dengan rentang skala (<em>width</em>) dari <span class="math notranslate nohighlight">\(a = 1\)</span> sampai <span class="math notranslate nohighlight">\(10\)</span> (<code class="docutils literal notranslate"><span class="pre">max_width=10</span></code>).</p>
+<p>Langkah-langkah formulanya adalah sebagai berikut:</p>
+<ol class="arabic simple">
+<li><p><strong>Transformasi Wavelet &amp; Energi per Skala (<span class="math notranslate nohighlight">\(E_a\)</span>):</strong>
+Sinyal ditransformasikan menggunakan wavelet pada skala <span class="math notranslate nohighlight">\(a\)</span> (<span class="math notranslate nohighlight">\(a = 1, 2, \dots, 10\)</span>). Energi pada setiap skala dihitung dari kuadrat koefisien wavelet-nya:
+$<span class="math notranslate nohighlight">\(E_a = \sum (\text{koefisien wavelet pada skala } a)^2\)</span>$</p></li>
+<li><p><strong>Total Energi (<span class="math notranslate nohighlight">\(E_{\text{total}}\)</span>):</strong>
+Menjumlahkan seluruh energi dari skala 1 sampai 10:
+$<span class="math notranslate nohighlight">\(E_{\text{total}} = \sum_{a=1}^{10} E_a\)</span>$</p></li>
+<li><p><strong>Probabilitas Relatif (<span class="math notranslate nohighlight">\(p_a\)</span>):</strong>
+Menghitung proporsi energi pada tiap skala terhadap total energi:
+$<span class="math notranslate nohighlight">\(p_a = \frac{E_a}{E_{\text{total}}}\)</span>$</p></li>
+<li><p><strong>Shannon Entropy (<span class="math notranslate nohighlight">\(H_{we}\)</span>):</strong>
+Menghitung tingkat ketidakteraturan menggunakan rumus entropi informasi berbasis logaritma basis 2:
+$<span class="math notranslate nohighlight">\(H_{we} = - \sum_{a=1}^{10} p_a \log_2(p_a)\)</span>$</p></li>
+</ol>
+<p>Contoh Perhitungan Manual (Simulasi Sederhana)
+Untuk memahami bagaimana angka akhir terbentuk, mari gunakan <strong>3 skala pertama</strong> (<span class="math notranslate nohighlight">\(a = 1, 2, 3\)</span>):</p>
+<ul class="simple">
+<li><p><strong>Langkah A: Energi per Skala (<span class="math notranslate nohighlight">\(E_a\)</span>) dari Data</strong></p>
+<ul>
+<li><p>Skala 1 (<span class="math notranslate nohighlight">\(E_1\)</span>) = <span class="math notranslate nohighlight">\(2.0\)</span></p></li>
+<li><p>Skala 2 (<span class="math notranslate nohighlight">\(E_2\)</span>) = <span class="math notranslate nohighlight">\(4.0\)</span></p></li>
+<li><p>Skala 3 (<span class="math notranslate nohighlight">\(E_3\)</span>) = <span class="math notranslate nohighlight">\(2.0\)</span></p></li>
+</ul>
+</li>
+<li><p><strong>Langkah B: Total Energi (<span class="math notranslate nohighlight">\(E_{\text{total}}\)</span>)</strong>
+$<span class="math notranslate nohighlight">\(E_{\text{total}} = 2.0 + 4.0 + 2.0 = 8.0\)</span>$</p></li>
+<li><p><strong>Langkah C: Probabilitas Relatif (<span class="math notranslate nohighlight">\(p_a\)</span>)</strong></p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(p_1 = \frac{2.0}{8.0} = 0.25\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_2 = \frac{4.0}{8.0} = 0.50\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_3 = \frac{2.0}{8.0} = 0.25\)</span></p></li>
+</ul>
+</li>
+<li><p><strong>Langkah D: Komponen Shannon Entropy (<span class="math notranslate nohighlight">\(-p_a \log_2 p_a\)</span>)</strong></p>
+<ul>
+<li><p>Skala 1: <span class="math notranslate nohighlight">\(-(0.25 \times \log_2(0.25)) = -(0.25 \times -2.0) = 0.50\)</span></p></li>
+<li><p>Skala 2: <span class="math notranslate nohighlight">\(-(0.50 \times \log_2(0.50)) = -(0.50 \times -1.0) = 0.50\)</span></p></li>
+<li><p>Skala 3: <span class="math notranslate nohighlight">\(-(0.25 \times \log_2(0.25)) = -(0.25 \times -2.0) = 0.50\)</span></p></li>
+</ul>
+</li>
+<li><p><strong>Langkah E: Hasil Akhir Entropi</strong>
+$<span class="math notranslate nohighlight">\(H_{we} = 0.50 + 0.50 + 0.50 = \mathbf{1.50}\)</span>$
+<em>(Catatan: Pada data riil 366 hari polutan Anda dengan skala 1 sampai 10, akumulasi perhitungan ini menghasilkan nilai akhir di kisaran <strong>2.1</strong>).</em></p></li>
+</ul>
+</section>
 <section id="ekstraksi-menjadi-68-fitur">
-<h2>5. Ekstraksi Menjadi 68 Fitur<a class="headerlink" href="#ekstraksi-menjadi-68-fitur" title="Link to this heading">#</a></h2>
+<h2>7. Ekstraksi Menjadi 68 Fitur<a class="headerlink" href="#ekstraksi-menjadi-68-fitur" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -730,7 +923,7 @@ Note: you may need to restart the kernel to use updated packages.
 <span class="kn">import</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.features</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tsfel_features</span>
 
 <span class="c1"># ---------- 1. Muat dan bersihkan data ----------</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;mystorage/NO2-Kerek-Clean.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;NO2-Kerek-Clean.csv&#39;</span><span class="p">)</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -801,10 +994,6 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/esa-snap/lib/python3.12/site-packages/joblib/_multiprocessing_helpers.py:44: UserWarning: [Errno 2] No such file or directory.  joblib will operate in serial mode
-  warnings.warn(&quot;%s.  joblib will operate in serial mode&quot; % (e,))
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah nilai non-numerik/kosong yang dikonversi jadi NaN: 0
 Jumlah fitur yang diminta: 68
 Berhasil! Jumlah fitur yang dihasilkan untuk NO2: 68
@@ -814,7 +1003,7 @@ Berhasil! Jumlah fitur yang dihasilkan untuk NO2: 68
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;mystorage/NO2-Kerek-TSFEL.csv&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;NO2-Kerek-TSFEL.csv&quot;</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -891,15 +1080,347 @@ Berhasil! Jumlah fitur yang dihasilkan untuk NO2: 68
 <p>1 rows × 68 columns</p>
 </div></div></div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.features</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tsfel_features</span>
+
+<span class="c1"># ---------- 1. Muat dan bersihkan data ----------</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;CO-Kerek-Clean.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">target_pollutant</span> <span class="o">=</span> <span class="s1">&#39;CO&#39;</span>
+
+<span class="c1"># --- FIX: paksa kolom target jadi numerik, nilai yang gagal dikonversi -&gt; NaN ---</span>
+<span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+
+<span class="n">n_missing_before</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Jumlah nilai non-numerik/kosong yang dikonversi jadi NaN: </span><span class="si">{</span><span class="n">n_missing_before</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">Q1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">Q3</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+<span class="n">lower_bound</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+<span class="n">upper_bound</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound</span><span class="p">),</span> <span class="n">target_pollutant</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+
+<span class="n">fs</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">signal_1d</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># ---------- 2. Daftar PERSIS fitur yang diminta ----------</span>
+<span class="n">FEATURE_LIST</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;abs_energy auc autocorr average_power calc_centroid calc_max calc_mean</span>
+<span class="s2">calc_median calc_min calc_std calc_var dfa distance ecdf ecdf_percentile ecdf_percentile_count</span>
+<span class="s2">ecdf_slope entropy fundamental_frequency higuchi_fractal_dimension hist_mode human_range_energy</span>
+<span class="s2">hurst_exponent interq_range kurtosis lempel_ziv lpcc max_frequency max_power_spectrum</span>
+<span class="s2">maximum_fractal_length mean_abs_deviation mean_abs_diff mean_diff median_abs_deviation</span>
+<span class="s2">median_abs_diff median_diff median_frequency mfcc mse negative_turning neighbourhood_peaks</span>
+<span class="s2">petrosian_fractal_dimension pk_pk_distance positive_turning power_bandwidth rms skewness slope</span>
+<span class="s2">spectral_centroid spectral_decrease spectral_distance spectral_entropy spectral_kurtosis</span>
+<span class="s2">spectral_positive_turning spectral_roll_off spectral_roll_on spectral_skewness spectral_slope</span>
+<span class="s2">spectral_spread spectral_variation spectrogram_mean_coeff sum_abs_diff wavelet_abs_mean</span>
+<span class="s2">wavelet_energy wavelet_entropy wavelet_std wavelet_var zero_cross&quot;&quot;&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Jumlah fitur yang diminta:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">FEATURE_LIST</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">to_scalar</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;values&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_one</span><span class="p">(</span><span class="n">fn_name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tsfel_features</span><span class="p">,</span> <span class="n">fn_name</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span>
+    <span class="k">if</span> <span class="s2">&quot;fs&quot;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">to_scalar</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+<span class="n">row</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">fn_name</span> <span class="ow">in</span> <span class="n">FEATURE_LIST</span><span class="p">:</span>
+    <span class="n">row</span><span class="p">[</span><span class="n">fn_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract_one</span><span class="p">(</span><span class="n">fn_name</span><span class="p">,</span> <span class="n">signal_1d</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+
+<span class="n">extracted_features_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">row</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Berhasil! Jumlah fitur yang dihasilkan untuk </span><span class="si">{</span><span class="n">target_pollutant</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">extracted_features_final</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">extracted_features_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">target_pollutant</span><span class="si">}</span><span class="s1">-Kerek-TSFEL.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah nilai non-numerik/kosong yang dikonversi jadi NaN: 0
+Jumlah fitur yang diminta: 68
+Berhasil! Jumlah fitur yang dihasilkan untuk CO: 68
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;CO-Kerek-TSFEL.csv&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>abs_energy</th>
+      <th>auc</th>
+      <th>autocorr</th>
+      <th>average_power</th>
+      <th>calc_centroid</th>
+      <th>calc_max</th>
+      <th>calc_mean</th>
+      <th>calc_median</th>
+      <th>calc_min</th>
+      <th>calc_std</th>
+      <th>...</th>
+      <th>spectral_spread</th>
+      <th>spectral_variation</th>
+      <th>spectrogram_mean_coeff</th>
+      <th>sum_abs_diff</th>
+      <th>wavelet_abs_mean</th>
+      <th>wavelet_energy</th>
+      <th>wavelet_entropy</th>
+      <th>wavelet_std</th>
+      <th>wavelet_var</th>
+      <th>zero_cross</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.325552</td>
+      <td>10.822536</td>
+      <td>3.0</td>
+      <td>0.000892</td>
+      <td>185.172183</td>
+      <td>0.038546</td>
+      <td>0.029654</td>
+      <td>0.029505</td>
+      <td>0.021616</td>
+      <td>0.003179</td>
+      <td>...</td>
+      <td>0.130288</td>
+      <td>0.554103</td>
+      <td>0.000015</td>
+      <td>0.704421</td>
+      <td>0.001815</td>
+      <td>0.008006</td>
+      <td>2.144113</td>
+      <td>0.007772</td>
+      <td>0.000069</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 68 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tsfel.feature_extraction.features</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tsfel_features</span>
+
+<span class="c1"># ---------- 1. Muat dan bersihkan data ----------</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;SO2-Kerek-Clean.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">target_pollutant</span> <span class="o">=</span> <span class="s1">&#39;SO2&#39;</span>
+
+<span class="c1"># --- FIX: paksa kolom target jadi numerik, nilai yang gagal dikonversi -&gt; NaN ---</span>
+<span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+
+<span class="n">n_missing_before</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Jumlah nilai non-numerik/kosong yang dikonversi jadi NaN: </span><span class="si">{</span><span class="n">n_missing_before</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">Q1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">Q3</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+<span class="n">lower_bound</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+<span class="n">upper_bound</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound</span><span class="p">),</span> <span class="n">target_pollutant</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+
+<span class="n">fs</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">signal_1d</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">target_pollutant</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># ---------- 2. Daftar PERSIS fitur yang diminta ----------</span>
+<span class="n">FEATURE_LIST</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;abs_energy auc autocorr average_power calc_centroid calc_max calc_mean</span>
+<span class="s2">calc_median calc_min calc_std calc_var dfa distance ecdf ecdf_percentile ecdf_percentile_count</span>
+<span class="s2">ecdf_slope entropy fundamental_frequency higuchi_fractal_dimension hist_mode human_range_energy</span>
+<span class="s2">hurst_exponent interq_range kurtosis lempel_ziv lpcc max_frequency max_power_spectrum</span>
+<span class="s2">maximum_fractal_length mean_abs_deviation mean_abs_diff mean_diff median_abs_deviation</span>
+<span class="s2">median_abs_diff median_diff median_frequency mfcc mse negative_turning neighbourhood_peaks</span>
+<span class="s2">petrosian_fractal_dimension pk_pk_distance positive_turning power_bandwidth rms skewness slope</span>
+<span class="s2">spectral_centroid spectral_decrease spectral_distance spectral_entropy spectral_kurtosis</span>
+<span class="s2">spectral_positive_turning spectral_roll_off spectral_roll_on spectral_skewness spectral_slope</span>
+<span class="s2">spectral_spread spectral_variation spectrogram_mean_coeff sum_abs_diff wavelet_abs_mean</span>
+<span class="s2">wavelet_energy wavelet_entropy wavelet_std wavelet_var zero_cross&quot;&quot;&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Jumlah fitur yang diminta:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">FEATURE_LIST</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">to_scalar</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;values&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_one</span><span class="p">(</span><span class="n">fn_name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tsfel_features</span><span class="p">,</span> <span class="n">fn_name</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span>
+    <span class="k">if</span> <span class="s2">&quot;fs&quot;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">to_scalar</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+<span class="n">row</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">fn_name</span> <span class="ow">in</span> <span class="n">FEATURE_LIST</span><span class="p">:</span>
+    <span class="n">row</span><span class="p">[</span><span class="n">fn_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract_one</span><span class="p">(</span><span class="n">fn_name</span><span class="p">,</span> <span class="n">signal_1d</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+
+<span class="n">extracted_features_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">row</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Berhasil! Jumlah fitur yang dihasilkan untuk </span><span class="si">{</span><span class="n">target_pollutant</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">extracted_features_final</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">extracted_features_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">target_pollutant</span><span class="si">}</span><span class="s1">-Kerek-TSFEL.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah nilai non-numerik/kosong yang dikonversi jadi NaN: 0
+Jumlah fitur yang diminta: 68
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil! Jumlah fitur yang dihasilkan untuk SO2: 68
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;SO2-Kerek-TSFEL.csv&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>abs_energy</th>
+      <th>auc</th>
+      <th>autocorr</th>
+      <th>average_power</th>
+      <th>calc_centroid</th>
+      <th>calc_max</th>
+      <th>calc_mean</th>
+      <th>calc_median</th>
+      <th>calc_min</th>
+      <th>calc_std</th>
+      <th>...</th>
+      <th>spectral_spread</th>
+      <th>spectral_variation</th>
+      <th>spectrogram_mean_coeff</th>
+      <th>sum_abs_diff</th>
+      <th>wavelet_abs_mean</th>
+      <th>wavelet_energy</th>
+      <th>wavelet_entropy</th>
+      <th>wavelet_std</th>
+      <th>wavelet_var</th>
+      <th>zero_cross</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.000005</td>
+      <td>0.028719</td>
+      <td>2.0</td>
+      <td>1.263833e-08</td>
+      <td>209.877355</td>
+      <td>0.000309</td>
+      <td>0.000033</td>
+      <td>0.000023</td>
+      <td>-0.000255</td>
+      <td>0.000107</td>
+      <td>...</td>
+      <td>0.148927</td>
+      <td>0.209776</td>
+      <td>1.899262e-08</td>
+      <td>0.027288</td>
+      <td>8.060801e-07</td>
+      <td>0.000153</td>
+      <td>2.160229</td>
+      <td>0.000153</td>
+      <td>2.464593e-08</td>
+      <td>93.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 68 columns</p>
+</div></div></div>
+</div>
 </section>
 <section id="mengelompokkan-fitur-hasil-ekstraksi-berdasarkan-domain">
-<h2>6. Mengelompokkan Fitur Hasil Ekstraksi Berdasarkan Domain<a class="headerlink" href="#mengelompokkan-fitur-hasil-ekstraksi-berdasarkan-domain" title="Link to this heading">#</a></h2>
+<h2>8. Mengelompokkan Fitur Hasil Ekstraksi Berdasarkan Domain<a class="headerlink" href="#mengelompokkan-fitur-hasil-ekstraksi-berdasarkan-domain" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># ---------- 1. Muat hasil ekstraksi TSFEL ----------</span>
-<span class="n">df_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;mystorage/NO2-Kerek-TSFEL.csv&#39;</span><span class="p">)</span>
+<span class="n">df_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;NO2-Kerek-TSFEL.csv&#39;</span><span class="p">)</span>
 
 <span class="c1"># ---------- 2. Mapping resmi fitur -&gt; domain (sesuai features.json TSFEL) ----------</span>
 <span class="n">FEATURE_DOMAIN_MAP</span> <span class="o">=</span> <span class="p">{</span>
@@ -1012,6 +1533,15 @@ UNKNOWN (0): []
         <p class="prev-next-title">Eksplorasi Data: Integrasi Data menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime</p>
       </div>
     </a>
+    <a class="right-next"
+       href="clustering-polutan.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">K-Means Clustering Polutan</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -1029,11 +1559,13 @@ UNKNOWN (0): []
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outliers-pada-data-kualitas-udara-di-kecamatan-kerek">1. Deteksi Outliers pada Data Kualitas Udara di Kecamatan Kerek</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outliers-pada-no2-untuk-ekstraksi-fitur">2. Deteksi Outliers pada NO2 Untuk Ekstraksi Fitur</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merubah-outliers-no2-menjadi-nan-serta-imputasi-missing-values-dan-outliers-nan">3. Merubah Outliers NO2 Menjadi NaN serta Imputasi Missing Values dan Outliers (NaN)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-library-tsfel-untuk-ekstraksi-fitur">4. Install Library TSFEL Untuk Ekstraksi Fitur</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-menjadi-68-fitur">5. Ekstraksi Menjadi 68 Fitur</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mengelompokkan-fitur-hasil-ekstraksi-berdasarkan-domain">6. Mengelompokkan Fitur Hasil Ekstraksi Berdasarkan Domain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merubah-outliers-menjadi-nan-serta-imputasi-missing-values-dan-outliers-nan">2. Merubah Outliers Menjadi NaN serta Imputasi Missing Values dan Outliers (NaN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-data-sebelum-dan-sesudah-imputasi">3 Visualisasi Data Sebelum dan Sesudah Imputasi</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-timeseries-gabungan-tiga-polutan">4 Visualisasi Timeseries Gabungan Tiga Polutan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-library-tsfel-untuk-ekstraksi-fitur">5. Install Library TSFEL Untuk Ekstraksi Fitur</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-setiap-fitur-serta-contoh-perhitungan-manual">6. Penjelasan Setiap Fitur Serta Contoh Perhitungan Manual</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-menjadi-68-fitur">7. Ekstraksi Menjadi 68 Fitur</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mengelompokkan-fitur-hasil-ekstraksi-berdasarkan-domain">8. Mengelompokkan Fitur Hasil Ekstraksi Berdasarkan Domain</a></li>
 </ul>
   </nav></div>
 
