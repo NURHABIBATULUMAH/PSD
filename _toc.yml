@@ -12,5 +12,6 @@ chapters:
   sections:
   - file: kerek/polutan-kerek
   - file: kerek/cloud-kerek
+  - file: fitur-tsfel
   - file: kerek/ekstraksi-fitur
   - file: kerek/clustering-polutan
