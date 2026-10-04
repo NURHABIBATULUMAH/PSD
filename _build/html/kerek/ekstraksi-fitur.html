@@ -64,7 +64,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="K-Means Clustering Polutan" href="clustering-polutan.html" />
-    <link rel="prev" title="Eksplorasi Data: Integrasi Data menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime" href="cloud-kerek.html" />
+    <link rel="prev" title="Ringkasan Fitur TSFEL dan Rumus Matematika" href="fitur-tsfel.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -191,8 +191,18 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Daerah Kecamatan Kerek</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="polutan-kerek.html">Kolekting Data: Kualitas Polusi Udara di Kecamatan Kerek, Tuban</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cloud-kerek.html">Eksplorasi Data: Integrasi Data menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fitur-tsfel.html">Ringkasan Fitur TSFEL dan Rumus Matematika</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">PreProcessing: Deteksi Outlier &amp; Imputasi Missing Value serta Ekstraksi Fitur Pada NO2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="clustering-polutan.html">K-Means Clustering Polutan</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ekstraksi_2/index.html">Ekstraksi Fitur TSFEL</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ekstraksi_2/reduksi-polutan.html">Ekstraksi Fitur TSFEL Sebanyak 68 Fitur pada 3 Polutan (NO2, SO2, CO)</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../klasifikasi/index.html">Klasfikasi Sawah dan Non-Sawah</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../klasifikasi/klasifikasi-sawah.html">Klasifikasi Spasial Lahan Sawah dan Non-Sawah Menggunakan Citra Sentinel-2A</a></li>
 </ul>
 </details></li>
 </ul>
@@ -690,9 +700,9 @@ Jumlah Outlier : 5
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/81d2b38e3efe5fc3e85499a3e60e56a8d1aed2157686ab60fd714a48a1613ecc.png" src="../_images/81d2b38e3efe5fc3e85499a3e60e56a8d1aed2157686ab60fd714a48a1613ecc.png" />
-<img alt="../_images/33ea36c98da88322d9f49640da33af268da790ba3c878877ea02003ba5506c72.png" src="../_images/33ea36c98da88322d9f49640da33af268da790ba3c878877ea02003ba5506c72.png" />
-<img alt="../_images/b685fc358437983ef966954ed3cec6618f0a99ca829257076ae44b6ff21a1b6b.png" src="../_images/b685fc358437983ef966954ed3cec6618f0a99ca829257076ae44b6ff21a1b6b.png" />
+<img alt="../_images/f1b539f281201e3ebd4d10f9dbbce7e90645f481c3a7495d91d6e16174420a35.png" src="../_images/f1b539f281201e3ebd4d10f9dbbce7e90645f481c3a7495d91d6e16174420a35.png" />
+<img alt="../_images/317732b4d50c210f0761f6abdcb26d6395c32a4acd86634fd3326502ea397590.png" src="../_images/317732b4d50c210f0761f6abdcb26d6395c32a4acd86634fd3326502ea397590.png" />
+<img alt="../_images/1ff9571207c1088b2d57c18a363b32846cd6134030957bf74fc82cbcd1d7f15f.png" src="../_images/1ff9571207c1088b2d57c18a363b32846cd6134030957bf74fc82cbcd1d7f15f.png" />
 </div>
 </div>
 </section>
@@ -752,7 +762,7 @@ Jumlah Outlier : 5
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/df28c34c9be7b65d725679dcd7b921805e44db5266c396e2b2ea5a5719618523.png" src="../_images/df28c34c9be7b65d725679dcd7b921805e44db5266c396e2b2ea5a5719618523.png" />
+<img alt="../_images/fc357e6640ad5b1b4cf6e41c608ca936b859b1926eebd010554e649e4507af5b.png" src="../_images/fc357e6640ad5b1b4cf6e41c608ca936b859b1926eebd010554e649e4507af5b.png" />
 </div>
 </div>
 </section>
@@ -765,53 +775,101 @@ Jumlah Outlier : 5
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: tsfel in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (0.2.0)
-Requirement already satisfied: ipython&gt;=7.4.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (9.10.0)
-Requirement already satisfied: numpy&gt;=1.18.5 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (2.4.2)
-Requirement already satisfied: pandas&gt;=1.5.3 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (2.2.2)
-Requirement already satisfied: PyWavelets&gt;=1.4.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (1.9.0)
-Requirement already satisfied: requests&gt;=2.31.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (2.32.5)
-Requirement already satisfied: scikit-learn&gt;=0.21.3 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (1.8.0)
-Requirement already satisfied: scipy&gt;=1.7.3 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (1.17.1)
-Requirement already satisfied: setuptools&gt;=47.1.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (84.0.0)
-Requirement already satisfied: statsmodels&gt;=0.12.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from tsfel) (0.15.0)
-Requirement already satisfied: colorama&gt;=0.4.4 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.4.6)
-Requirement already satisfied: decorator&gt;=4.3.2 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (5.2.1)
-Requirement already satisfied: ipython-pygments-lexers&gt;=1.0.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (1.1.1)
-Requirement already satisfied: jedi&gt;=0.18.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.19.2)
-Requirement already satisfied: matplotlib-inline&gt;=0.1.5 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.2.1)
-Requirement already satisfied: prompt_toolkit&lt;3.1.0,&gt;=3.0.41 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (3.0.52)
-Requirement already satisfied: pygments&gt;=2.11.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (2.19.2)
-Requirement already satisfied: stack_data&gt;=0.6.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.6.3)
-Requirement already satisfied: traitlets&gt;=5.13.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (5.14.3)
-Requirement already satisfied: wcwidth in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from prompt_toolkit&lt;3.1.0,&gt;=3.0.41-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.6.0)
-Requirement already satisfied: parso&lt;0.9.0,&gt;=0.8.4 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from jedi&gt;=0.18.1-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.8.6)
-Requirement already satisfied: python-dateutil&gt;=2.8.2 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas&gt;=1.5.3-&gt;tsfel) (2.9.0.post0)
-Requirement already satisfied: pytz&gt;=2020.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas&gt;=1.5.3-&gt;tsfel) (2026.2)
-Requirement already satisfied: tzdata&gt;=2022.7 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas&gt;=1.5.3-&gt;tsfel) (2025.3)
-Requirement already satisfied: six&gt;=1.5 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&gt;=1.5.3-&gt;tsfel) (1.17.0)
-Requirement already satisfied: charset_normalizer&lt;4,&gt;=2 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from requests&gt;=2.31.0-&gt;tsfel) (3.4.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from requests&gt;=2.31.0-&gt;tsfel) (3.11)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from requests&gt;=2.31.0-&gt;tsfel) (2.6.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from requests&gt;=2.31.0-&gt;tsfel) (2026.1.4)
-Requirement already satisfied: joblib&gt;=1.3.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from scikit-learn&gt;=0.21.3-&gt;tsfel) (1.5.3)
-Requirement already satisfied: threadpoolctl&gt;=3.2.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from scikit-learn&gt;=0.21.3-&gt;tsfel) (3.6.0)
-Requirement already satisfied: executing&gt;=1.2.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from stack_data&gt;=0.6.0-&gt;ipython&gt;=7.4.0-&gt;tsfel) (2.2.1)
-Requirement already satisfied: asttokens&gt;=2.1.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from stack_data&gt;=0.6.0-&gt;ipython&gt;=7.4.0-&gt;tsfel) (3.0.1)
-Requirement already satisfied: pure-eval in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from stack_data&gt;=0.6.0-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.2.3)
-Requirement already satisfied: patsy&gt;=0.5.6 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from statsmodels&gt;=0.12.0-&gt;tsfel) (1.0.3)
-Requirement already satisfied: packaging&gt;=21.3 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from statsmodels&gt;=0.12.0-&gt;tsfel) (26.0)
-Requirement already satisfied: formulaic&gt;=1.1.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from statsmodels&gt;=0.12.0-&gt;tsfel) (1.2.2)
-Requirement already satisfied: interface-meta&gt;=1.2.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel) (2.0.1)
-Requirement already satisfied: narwhals&gt;=1.17 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel) (2.22.0)
-Requirement already satisfied: typing-extensions&gt;=4.2.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel) (4.15.0)
-Requirement already satisfied: wrapt&gt;=1.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel) (2.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting tsfel
+  Using cached tsfel-0.2.0-py3-none-any.whl.metadata (9.4 kB)
+Requirement already satisfied: ipython&gt;=7.4.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from tsfel) (9.14.1)
+Requirement already satisfied: numpy&gt;=1.18.5 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from tsfel) (2.4.6)
+Requirement already satisfied: pandas&gt;=1.5.3 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from tsfel) (2.3.3)
+Collecting PyWavelets&gt;=1.4.1 (from tsfel)
+  Using cached pywavelets-1.10.0-cp313-cp313-win_amd64.whl.metadata (7.6 kB)
+Requirement already satisfied: requests&gt;=2.31.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from tsfel) (2.32.5)
+Requirement already satisfied: scikit-learn&gt;=0.21.3 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from tsfel) (1.9.0)
+Requirement already satisfied: scipy&gt;=1.7.3 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from tsfel) (1.17.1)
+Requirement already satisfied: setuptools&gt;=47.1.1 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from tsfel) (80.10.2)
+Collecting statsmodels&gt;=0.12.0 (from tsfel)
+  Using cached statsmodels-0.15.0-cp313-cp313-win_amd64.whl.metadata (9.6 kB)
+Requirement already satisfied: colorama&gt;=0.4.4 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.4.6)
+Requirement already satisfied: decorator&gt;=5.1.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (5.3.1)
+Requirement already satisfied: ipython-pygments-lexers&gt;=1.0.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (1.1.1)
+Requirement already satisfied: jedi&gt;=0.18.2 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.19.2)
+Requirement already satisfied: matplotlib-inline&gt;=0.1.6 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.2.2)
+Requirement already satisfied: prompt_toolkit&lt;3.1.0,&gt;=3.0.41 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (3.0.52)
+Requirement already satisfied: psutil&gt;=7 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (7.2.2)
+Requirement already satisfied: pygments&gt;=2.14.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (2.19.2)
+Requirement already satisfied: stack_data&gt;=0.6.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.6.3)
+Requirement already satisfied: traitlets&gt;=5.13.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (5.15.1)
+Requirement already satisfied: wcwidth in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from prompt_toolkit&lt;3.1.0,&gt;=3.0.41-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.8.1)
+Requirement already satisfied: parso&lt;0.9.0,&gt;=0.8.4 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from jedi&gt;=0.18.2-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.8.7)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from pandas&gt;=1.5.3-&gt;tsfel) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from pandas&gt;=1.5.3-&gt;tsfel) (2026.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from pandas&gt;=1.5.3-&gt;tsfel) (2026.2)
+Requirement already satisfied: six&gt;=1.5 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&gt;=1.5.3-&gt;tsfel) (1.17.0)
+Requirement already satisfied: charset_normalizer&lt;4,&gt;=2 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from requests&gt;=2.31.0-&gt;tsfel) (3.4.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from requests&gt;=2.31.0-&gt;tsfel) (3.11)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from requests&gt;=2.31.0-&gt;tsfel) (2.6.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from requests&gt;=2.31.0-&gt;tsfel) (2026.5.20)
+Requirement already satisfied: joblib&gt;=1.4.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from scikit-learn&gt;=0.21.3-&gt;tsfel) (1.5.3)
+Requirement already satisfied: narwhals&gt;=2.0.1 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from scikit-learn&gt;=0.21.3-&gt;tsfel) (2.22.1)
+Requirement already satisfied: threadpoolctl&gt;=3.5.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from scikit-learn&gt;=0.21.3-&gt;tsfel) (3.6.0)
+Requirement already satisfied: executing&gt;=1.2.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from stack_data&gt;=0.6.0-&gt;ipython&gt;=7.4.0-&gt;tsfel) (2.2.1)
+Requirement already satisfied: asttokens&gt;=2.1.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from stack_data&gt;=0.6.0-&gt;ipython&gt;=7.4.0-&gt;tsfel) (3.0.1)
+Requirement already satisfied: pure_eval in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from stack_data&gt;=0.6.0-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.2.3)
+Collecting patsy&gt;=0.5.6 (from statsmodels&gt;=0.12.0-&gt;tsfel)
+  Using cached patsy-1.0.3-py2.py3-none-any.whl.metadata (3.7 kB)
+Requirement already satisfied: packaging&gt;=21.3 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from statsmodels&gt;=0.12.0-&gt;tsfel) (25.0)
+Collecting formulaic&gt;=1.1.0 (from statsmodels&gt;=0.12.0-&gt;tsfel)
+  Using cached formulaic-1.2.2-py3-none-any.whl.metadata (7.0 kB)
+Collecting interface-meta&gt;=1.2.0 (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel)
+  Using cached interface_meta-2.0.1-py3-none-any.whl.metadata (6.4 kB)
+Requirement already satisfied: typing-extensions&gt;=4.2.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel) (4.15.0)
+Collecting wrapt&gt;=1.17.0rc1 (from formulaic&gt;=1.1.0-&gt;statsmodels&gt;=0.12.0-&gt;tsfel)
+  Downloading wrapt-2.4.1-cp313-cp313-win_amd64.whl.metadata (7.6 kB)
+Using cached tsfel-0.2.0-py3-none-any.whl (63 kB)
+Using cached pywavelets-1.10.0-cp313-cp313-win_amd64.whl (4.3 MB)
+Using cached statsmodels-0.15.0-cp313-cp313-win_amd64.whl (11.3 MB)
+Using cached formulaic-1.2.2-py3-none-any.whl (118 kB)
+Using cached interface_meta-2.0.1-py3-none-any.whl (15 kB)
+Using cached patsy-1.0.3-py2.py3-none-any.whl (233 kB)
+Downloading wrapt-2.4.1-cp313-cp313-win_amd64.whl (98 kB)
+Installing collected packages: wrapt, PyWavelets, patsy, interface-meta, formulaic, statsmodels, tsfel
+
+   ----- ---------------------------------- 1/7 [PyWavelets]
+   ----------- ---------------------------- 2/7 [patsy]
+   ----------------- ---------------------- 3/7 [interface-meta]
+   ---------------------- ----------------- 4/7 [formulaic]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------- ----------- 5/7 [statsmodels]
+   ---------------------------------- ----- 6/7 [tsfel]
+   ---------------------------------------- 7/7 [tsfel]
+
+Successfully installed PyWavelets-1.10.0 formulaic-1.2.2 interface-meta-2.0.1 patsy-1.0.3 statsmodels-0.15.0 tsfel-0.2.0 wrapt-2.4.1
 Note: you may need to restart the kernel to use updated packages.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
-WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
-WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
 </pre></div>
 </div>
 </div>
@@ -823,18 +881,13 @@ WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (2.2.2)
-Requirement already satisfied: numpy&gt;=1.26.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas) (2.4.2)
-Requirement already satisfied: python-dateutil&gt;=2.8.2 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas) (2.9.0.post0)
-Requirement already satisfied: pytz&gt;=2020.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas) (2026.2)
-Requirement already satisfied: tzdata&gt;=2022.7 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas) (2025.3)
-Requirement already satisfied: six&gt;=1.5 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas) (1.17.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (2.3.3)
+Requirement already satisfied: numpy&gt;=1.26.0 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from pandas) (2.4.6)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from pandas) (2026.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from pandas) (2026.2)
+Requirement already satisfied: six&gt;=1.5 in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas) (1.17.0)
 Note: you may need to restart the kernel to use updated packages.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
-WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
-WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
 </pre></div>
 </div>
 </div>
@@ -846,13 +899,8 @@ WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (2.4.2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in c:\Users\Fatihul Umam\miniconda3\Lib\site-packages (2.4.6)
 Note: you may need to restart the kernel to use updated packages.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
-WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
-WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
 </pre></div>
 </div>
 </div>
@@ -1326,9 +1374,7 @@ Berhasil! Jumlah fitur yang dihasilkan untuk CO: 68
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah nilai non-numerik/kosong yang dikonversi jadi NaN: 0
 Jumlah fitur yang diminta: 68
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil! Jumlah fitur yang dihasilkan untuk SO2: 68
+Berhasil! Jumlah fitur yang dihasilkan untuk SO2: 68
 </pre></div>
 </div>
 </div>
@@ -1525,12 +1571,12 @@ UNKNOWN (0): []
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="cloud-kerek.html"
+       href="fitur-tsfel.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Eksplorasi Data: Integrasi Data menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime</p>
+        <p class="prev-next-title">Ringkasan Fitur TSFEL dan Rumus Matematika</p>
       </div>
     </a>
     <a class="right-next"

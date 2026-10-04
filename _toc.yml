@@ -15,3 +15,9 @@ chapters:
   - file: kerek/fitur-tsfel
   - file: kerek/ekstraksi-fitur
   - file: kerek/clustering-polutan
+- file: ekstraksi_2/index
+  sections:
+  - file: ekstraksi_2/reduksi-polutan
+- file: klasifikasi/index
+  sections:
+  - file: klasifikasi/klasifikasi-sawah
