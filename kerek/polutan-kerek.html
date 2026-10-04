@@ -196,6 +196,15 @@
 <li class="toctree-l2"><a class="reference internal" href="clustering-polutan.html">K-Means Clustering Polutan</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ekstraksi_2/index.html">Ekstraksi Fitur TSFEL</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ekstraksi_2/reduksi-polutan.html">Ekstraksi Fitur TSFEL Sebanyak 68 Fitur pada 3 Polutan (NO2, SO2, CO)</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../klasifikasi/index.html">Klasfikasi Sawah dan Non-Sawah</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../klasifikasi/klasifikasi-sawah.html">Klasifikasi Spasial Lahan Sawah dan Non-Sawah Menggunakan Citra Sentinel-2A</a></li>
+</ul>
+</details></li>
 </ul>
 
     </div>
@@ -499,35 +508,104 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: openeo in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (0.50.0)
-Requirement already satisfied: requests&gt;=2.26.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from openeo) (2.32.5)
-Requirement already satisfied: urllib3&gt;=1.9.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from openeo) (2.6.3)
-Requirement already satisfied: shapely&gt;=1.6.4 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from openeo) (2.1.2)
-Requirement already satisfied: numpy&gt;=1.17.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from openeo) (2.4.2)
-Requirement already satisfied: xarray&lt;2025.01.2,&gt;=0.12.3 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from openeo) (2025.1.1)
-Requirement already satisfied: pandas&lt;3.0.0,&gt;0.20.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from openeo) (2.2.2)
-Requirement already satisfied: pystac&gt;=1.5.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from openeo) (1.14.3)
-Requirement already satisfied: deprecated&gt;=1.2.12 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from openeo) (1.3.1)
-Requirement already satisfied: oschmod&gt;=0.3.12 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from openeo) (0.3.12)
-Requirement already satisfied: geopandas&gt;=0.14 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from openeo) (1.1.3)
-Requirement already satisfied: python-dateutil&gt;=2.8.2 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas&lt;3.0.0,&gt;0.20.0-&gt;openeo) (2.9.0.post0)
-Requirement already satisfied: pytz&gt;=2020.1 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas&lt;3.0.0,&gt;0.20.0-&gt;openeo) (2026.2)
-Requirement already satisfied: tzdata&gt;=2022.7 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pandas&lt;3.0.0,&gt;0.20.0-&gt;openeo) (2025.3)
-Requirement already satisfied: packaging&gt;=23.2 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from xarray&lt;2025.01.2,&gt;=0.12.3-&gt;openeo) (26.0)
-Requirement already satisfied: wrapt&lt;3,&gt;=1.10 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from deprecated&gt;=1.2.12-&gt;openeo) (2.2.1)
-Requirement already satisfied: pyogrio&gt;=0.7.2 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from geopandas&gt;=0.14-&gt;openeo) (0.12.1)
-Requirement already satisfied: pyproj&gt;=3.5.0 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from geopandas&gt;=0.14-&gt;openeo) (3.7.2)
-Requirement already satisfied: pywin32 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from oschmod&gt;=0.3.12-&gt;openeo) (311)
-Requirement already satisfied: certifi in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from pyogrio&gt;=0.7.2-&gt;geopandas&gt;=0.14-&gt;openeo) (2026.1.4)
-Requirement already satisfied: six&gt;=1.5 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&lt;3.0.0,&gt;0.20.0-&gt;openeo) (1.17.0)
-Requirement already satisfied: charset_normalizer&lt;4,&gt;=2 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from requests&gt;=2.26.0-&gt;openeo) (3.4.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages (from requests&gt;=2.26.0-&gt;openeo) (3.11)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting openeo
+  Downloading openeo-0.51.0-py3-none-any.whl (349 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">349.2/349.2 kB</span> <span class=" -Color -Color-Red">5.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>a <span class=" -Color -Color-Cyan">0:00:01</span>
+?25hRequirement already satisfied: requests&gt;=2.26.0 in /opt/conda/lib/python3.11/site-packages (from openeo) (2.31.0)
+Requirement already satisfied: urllib3&gt;=1.9.0 in /opt/conda/lib/python3.11/site-packages (from openeo) (2.0.3)
+Collecting shapely&gt;=1.6.4 (from openeo)
+  Downloading shapely-2.1.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (3.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3.1/3.1 MB</span> <span class=" -Color -Color-Red">41.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>00:0100:01
+?25hCollecting numpy&gt;=1.17.0 (from openeo)
+  Downloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">16.9/16.9 MB</span> <span class=" -Color -Color-Red">73.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>00:0100:01
+?25hCollecting xarray&lt;2025.01.2,&gt;=0.12.3 (from openeo)
+  Downloading xarray-2025.1.1-py3-none-any.whl (1.2 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.2/1.2 MB</span> <span class=" -Color -Color-Red">77.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hCollecting pandas&lt;3.0.0,&gt;0.20.0 (from openeo)
+  Downloading pandas-2.3.3-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (12.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">12.8/12.8 MB</span> <span class=" -Color -Color-Red">33.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>00:0100:01
+?25hCollecting pystac&gt;=1.5.0 (from openeo)
+  Downloading pystac-1.15.2-py3-none-any.whl (5.7 kB)
+Collecting deprecated&gt;=1.2.12 (from openeo)
+  Downloading deprecated-1.3.1-py2.py3-none-any.whl (11 kB)
+Collecting geopandas&gt;=0.14 (from openeo)
+  Downloading geopandas-1.1.4-py3-none-any.whl (343 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">343.3/343.3 kB</span> <span class=" -Color -Color-Red">37.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hCollecting wrapt&lt;3,&gt;=1.10 (from deprecated&gt;=1.2.12-&gt;openeo)
+  Downloading wrapt-2.4.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (217 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">217.8/217.8 kB</span> <span class=" -Color -Color-Red">25.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hCollecting pyogrio&gt;=0.7.2 (from geopandas&gt;=0.14-&gt;openeo)
+  Downloading pyogrio-0.13.0-cp311-abi3-manylinux_2_28_x86_64.whl (33.3 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">33.3/33.3 MB</span> <span class=" -Color -Color-Red">49.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>00:0100:01
+?25hRequirement already satisfied: packaging in /opt/conda/lib/python3.11/site-packages (from geopandas&gt;=0.14-&gt;openeo) (23.1)
+Collecting pyproj&gt;=3.5.0 (from geopandas&gt;=0.14-&gt;openeo)
+  Downloading pyproj-3.7.2-cp311-cp311-manylinux_2_28_x86_64.whl (9.5 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">9.5/9.5 MB</span> <span class=" -Color -Color-Red">37.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>00:0100:01
+?25hRequirement already satisfied: python-dateutil&gt;=2.8.2 in /opt/conda/lib/python3.11/site-packages (from pandas&lt;3.0.0,&gt;0.20.0-&gt;openeo) (2.8.2)
+Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/lib/python3.11/site-packages (from pandas&lt;3.0.0,&gt;0.20.0-&gt;openeo) (2023.3)
+Requirement already satisfied: tzdata&gt;=2022.7 in /opt/conda/lib/python3.11/site-packages (from pandas&lt;3.0.0,&gt;0.20.0-&gt;openeo) (2026.2)
+Collecting pystac-core&lt;2,&gt;=1.15.0 (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_core-1.15.2-py3-none-any.whl (117 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">117.3/117.3 kB</span> <span class=" -Color -Color-Red">15.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hCollecting pystac-ext-classification (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_classification-2.0.1-py3-none-any.whl (7.4 kB)
+Collecting pystac-ext-datacube (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_datacube-2.2.1-py3-none-any.whl (7.1 kB)
+Collecting pystac-ext-eo (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_eo-1.1.1-py3-none-any.whl (7.7 kB)
+Collecting pystac-ext-file (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_file-2.1.1-py3-none-any.whl (5.8 kB)
+Collecting pystac-ext-grid (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_grid-1.1.1-py3-none-any.whl (3.6 kB)
+Collecting pystac-ext-item-assets (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_item_assets-1.0.1-py3-none-any.whl (3.7 kB)
+Collecting pystac-ext-label (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_label-1.0.2-py3-none-any.whl (8.2 kB)
+Collecting pystac-ext-mgrs (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_mgrs-1.0.1-py3-none-any.whl (4.1 kB)
+Collecting pystac-ext-mlm (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_mlm-1.4.1-py3-none-any.whl (13 kB)
+Collecting pystac-ext-pointcloud (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_pointcloud-1.0.1-py3-none-any.whl (6.5 kB)
+Collecting pystac-ext-projection (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_projection-2.0.1-py3-none-any.whl (7.4 kB)
+Collecting pystac-ext-raster (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_raster-1.1.1-py3-none-any.whl (6.8 kB)
+Collecting pystac-ext-render (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_render-2.0.0-py3-none-any.whl (5.0 kB)
+Collecting pystac-ext-sar (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_sar-1.0.1-py3-none-any.whl (6.5 kB)
+Collecting pystac-ext-sat (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_sat-1.0.1-py3-none-any.whl (4.9 kB)
+Collecting pystac-ext-scientific (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_scientific-1.0.1-py3-none-any.whl (5.5 kB)
+Collecting pystac-ext-storage (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_storage-2.0.1-py3-none-any.whl (7.6 kB)
+Collecting pystac-ext-table (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_table-1.2.1-py3-none-any.whl (4.7 kB)
+Collecting pystac-ext-timestamps (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_timestamps-1.1.1-py3-none-any.whl (4.6 kB)
+Collecting pystac-ext-version (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_version-1.2.1-py3-none-any.whl (5.8 kB)
+Collecting pystac-ext-view (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_view-1.0.1-py3-none-any.whl (4.8 kB)
+Collecting pystac-ext-xarray-assets (from pystac&gt;=1.5.0-&gt;openeo)
+  Downloading pystac_ext_xarray_assets-1.0.1-py3-none-any.whl (3.9 kB)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/lib/python3.11/site-packages (from requests&gt;=2.26.0-&gt;openeo) (3.2.0)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/lib/python3.11/site-packages (from requests&gt;=2.26.0-&gt;openeo) (3.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/lib/python3.11/site-packages (from requests&gt;=2.26.0-&gt;openeo) (2026.5.20)
+Collecting packaging (from geopandas&gt;=0.14-&gt;openeo)
+  Downloading packaging-26.3-py3-none-any.whl (129 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">130.0/130.0 kB</span> <span class=" -Color -Color-Red">25.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hRequirement already satisfied: six&gt;=1.5 in /opt/conda/lib/python3.11/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&lt;3.0.0,&gt;0.20.0-&gt;openeo) (1.16.0)
+Installing collected packages: wrapt, pyproj, packaging, numpy, shapely, pystac-core, pyogrio, pandas, deprecated, xarray, pystac-ext-xarray-assets, pystac-ext-view, pystac-ext-version, pystac-ext-timestamps, pystac-ext-table, pystac-ext-storage, pystac-ext-scientific, pystac-ext-sat, pystac-ext-sar, pystac-ext-render, pystac-ext-raster, pystac-ext-projection, pystac-ext-pointcloud, pystac-ext-mgrs, pystac-ext-label, pystac-ext-item-assets, pystac-ext-grid, pystac-ext-file, pystac-ext-datacube, geopandas, pystac-ext-eo, pystac-ext-classification, pystac-ext-mlm, pystac, openeo
+  Attempting uninstall: packaging
+    Found existing installation: packaging 23.1
+    Uninstalling packaging-23.1:
+      Successfully uninstalled packaging-23.1
+Successfully installed deprecated-1.3.1 geopandas-1.1.4 numpy-2.4.6 openeo-0.51.0 packaging-26.3 pandas-2.3.3 pyogrio-0.13.0 pyproj-3.7.2 pystac-1.15.2 pystac-core-1.15.2 pystac-ext-classification-2.0.1 pystac-ext-datacube-2.2.1 pystac-ext-eo-1.1.1 pystac-ext-file-2.1.1 pystac-ext-grid-1.1.1 pystac-ext-item-assets-1.0.1 pystac-ext-label-1.0.2 pystac-ext-mgrs-1.0.1 pystac-ext-mlm-1.4.1 pystac-ext-pointcloud-1.0.1 pystac-ext-projection-2.0.1 pystac-ext-raster-1.1.1 pystac-ext-render-2.0.0 pystac-ext-sar-1.0.1 pystac-ext-sat-1.0.1 pystac-ext-scientific-1.0.1 pystac-ext-storage-2.0.1 pystac-ext-table-1.2.1 pystac-ext-timestamps-1.1.1 pystac-ext-version-1.2.1 pystac-ext-view-1.0.1 pystac-ext-xarray-assets-1.0.1 shapely-2.1.2 wrapt-2.4.0 xarray-2025.1.1
 Note: you may need to restart the kernel to use updated packages.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
-WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
-WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.12.10\Lib\site-packages)
 </pre></div>
 </div>
 </div>
@@ -554,7 +632,7 @@ WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Authenticated using refresh token.
+<div class="output text_html">Visit <a href="https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=PRLU-GGPK" title="Authenticate at https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=PRLU-GGPK" target="_blank" rel="noopener noreferrer">https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=PRLU-GGPK</a> <a href="#" onclick="navigator.clipboard.writeText('https://identity.dataspace.copernicus.eu/auth/realms/CDSE/device?user_code=PRLU-GGPK');return false;" title="Copy authentication URL to clipboard">&#128203;</a> to authenticate.</div><div class="output text_html">✅ Authorized successfully</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Authenticated using device code flow.
 </pre></div>
 </div>
 </div>
@@ -613,19 +691,20 @@ WARNING: Ignoring invalid distribution ~andas (C:\Users\LENOVO\.pyenv\pyenv-win\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:00 Job &#39;j-26092723561948e48efbb7bfc4b77a68&#39;: send &#39;start&#39;
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:03 Job &#39;j-26092723561948e48efbb7bfc4b77a68&#39;: queued (progress 0%)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:09 Job &#39;j-26092723561948e48efbb7bfc4b77a68&#39;: queued (progress 0%)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:15 Job &#39;j-26092723561948e48efbb7bfc4b77a68&#39;: queued (progress 0%)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:23 Job &#39;j-26092723561948e48efbb7bfc4b77a68&#39;: queued (progress 0%)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:00 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: send &#39;start&#39;
+0:00:03 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: queued (progress 0%)
+0:00:09 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: queued (progress 0%)
+0:00:15 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: queued (progress 0%)
+0:00:24 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: queued (progress 0%)
+0:00:33 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: queued (progress 0%)
+0:00:46 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: queued (progress 0%)
+0:01:01 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: running (progress N/A)
+0:01:20 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: running (progress N/A)
+0:01:44 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: running (progress N/A)
+0:02:14 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: running (progress N/A)
+0:02:51 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: running (progress N/A)
+0:03:38 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: running (progress N/A)
+0:04:38 Job &#39;j-260907125506459f89c2cd1e0c8b7896&#39;: finished (progress 100%)
 </pre></div>
 </div>
 </div>
