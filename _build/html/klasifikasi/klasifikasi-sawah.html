@@ -671,7 +671,7 @@ Berhasil diunduh: sentinel2_sawah_nonsawah.tif
 <p>Akuisisi citra dilakukan menggunakan <em>bounding box</em> gabungan dari ke-100 titik sampel pada koleksi <strong><code class="docutils literal notranslate"><span class="pre">SENTINEL2_L2A</span></code></strong> (<em>Bottom-of-Atmosphere Reflectance</em>) dengan batas tutupan awan maksimum <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">10%</span></code> dan agregasi temporal <code class="docutils literal notranslate"><span class="pre">median_time()</span></code> untuk menghasilkan komposit citra bebas awan berformat <strong>GeoTIFF (<code class="docutils literal notranslate"><span class="pre">.tif</span></code>)</strong>.</p>
 <section id="fitur-spektral-dan-indeks-turunan-yang-diekstrak">
 <h3>Fitur Spektral dan Indeks Turunan yang Diekstrak:<a class="headerlink" href="#fitur-spektral-dan-indeks-turunan-yang-diekstrak" title="Link to this heading">#</a></h3>
-<ol class="arabic simple">
+<ol class="arabic">
 <li><p><strong>Band Spektral Utama:</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">B02</span></code> (<em>Blue</em> - 490 nm), <code class="docutils literal notranslate"><span class="pre">B03</span></code> (<em>Green</em> - 560 nm), <code class="docutils literal notranslate"><span class="pre">B04</span></code> (<em>Red</em> - 665 nm) dengan resolusi spasial 10 meter.</p></li>
@@ -679,10 +679,14 @@ Berhasil diunduh: sentinel2_sawah_nonsawah.tif
 <li><p><code class="docutils literal notranslate"><span class="pre">B11</span></code> (<em>Short-Wave Infrared / SWIR</em> - 1610 nm) untuk mendeteksi kelembapan tanah dan genangan air.</p></li>
 </ul>
 </li>
-<li><p><strong>Normalized Difference Vegetation Index (NDVI):</strong>
-$<span class="math notranslate nohighlight">\(\text{NDVI} = \frac{B08 - B04}{B08 + B04}\)</span>$</p></li>
-<li><p><strong>Normalized Difference Water Index (NDWI):</strong>
-$<span class="math notranslate nohighlight">\(\text{NDWI} = \frac{B03 - B08}{B03 + B08}\)</span>$</p></li>
+<li><p><strong>Normalized Difference Vegetation Index (NDVI):</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{NDVI} = \frac{B08 - B04}{B08 + B04}\]</div>
+</li>
+<li><p><strong>Normalized Difference Water Index (NDWI):</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{NDWI} = \frac{B03 - B08}{B03 + B08}\]</div>
+</li>
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -929,12 +933,6 @@ Note: you may need to restart the kernel to use updated packages.
 <section id="hasil-evaluasi-klasifikasi-2-kelas-random-forest">
 <h2>3. Hasil Evaluasi Klasifikasi 2 Kelas (Random Forest)<a class="headerlink" href="#hasil-evaluasi-klasifikasi-2-kelas-random-forest" title="Link to this heading">#</a></h2>
 <p>Dataset 100 sampel dibagi menggunakan skema <em>Stratified Train-Test Split</em> dengan proporsi <strong>80% Data Latih (80 sampel: 40 Sawah, 40 Non-Sawah)</strong> dan <strong>20% Data Uji (20 sampel: 10 Sawah, 10 Non-Sawah)</strong>.</p>
-<figure class="align-default" id="fig-eval-sawah">
-<a class="reference internal image-reference" href="klasifikasi/evaluasi_klasifikasi_sawah.png"><img alt="klasifikasi/evaluasi_klasifikasi_sawah.png" src="klasifikasi/evaluasi_klasifikasi_sawah.png" style="width: 95%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Confusion Matrix pada Data Uji dan Tingkat Kepentingan Fitur (Feature Importance) Sentinel-2A.</span><a class="headerlink" href="#fig-eval-sawah" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcolors</span>

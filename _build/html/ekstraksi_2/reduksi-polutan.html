@@ -678,7 +678,7 @@ document.write(`
 <p><img alt="Foto Saya" src="../_images/37-poli.png" /></p>
 <section id="penjelasan-alur-node-pipeline-pada-knime">
 <h3>Penjelasan Alur Node (<em>Pipeline</em>) pada KNIME:<a class="headerlink" href="#penjelasan-alur-node-pipeline-pada-knime" title="Link to this heading">#</a></h3>
-<ol class="arabic simple">
+<ol class="arabic">
 <li><p><strong>MySQL Connector &amp; DB Table Selector (<code class="docutils literal notranslate"><span class="pre">LINIER</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">POLYNOMIAL</span></code>):</strong></p>
 <ul class="simple">
 <li><p>Menghubungkan KNIME langsung ke server database MySQL untuk mengambil tabel hasil ekstraksi <strong>204 fitur</strong> dari 3 polutan udara pada <strong>37 titik daerah pengamatan</strong>.</p></li>
@@ -703,10 +703,17 @@ document.write(`
 </li>
 <li><p><strong>Blok Eksperimen Looping Klaster (<span class="math notranslate nohighlight">\(k = 2 \text{ s.d. } 6\)</span>):</strong></p>
 <ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">Counting</span> <span class="pre">Loop</span> <span class="pre">Start</span></code>:</strong> Mengatur perulangan sebanyak 5 iterasi (<span class="math notranslate nohighlight">\(\text{Iteration } 0 \text{ s.d. } 4\)</span>).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">Math</span> <span class="pre">Formula</span> <span class="pre">(Variable)</span></code>:</strong> Mengubah nomor iterasi menjadi variabel jumlah klaster dinamis dengan persamaan:
-$<span class="math notranslate nohighlight">\(k = \text{currentIteration} + 2\)</span><span class="math notranslate nohighlight">\(
-sehingga menguji nilai \)</span>k = 2, 3, 4, 5, \text{ dan } 6$ secara berurutan.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Counting</span> <span class="pre">Loop</span> <span class="pre">Start</span></code>:</strong> Mengatur perulangan sebanyak 5 iterasi</p></li>
+</ul>
+<p>(<span class="math notranslate nohighlight">\(\text{Iteration } 0 \text{ s.d. } 4\)</span>).</p>
+<ul>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Math</span> <span class="pre">Formula</span> <span class="pre">(Variable)</span></code>:</strong> Mengubah nomor iterasi menjadi variabel jumlah klaster dinamis dengan persamaan:</p>
+<div class="math notranslate nohighlight">
+\[k = \text{currentIteration} + 2\]</div>
+<p>sehingga menguji nilai</p>
+<p><span class="math notranslate nohighlight">\(k = 2, 3, 4, 5, \text{ dan } 6\)</span></p>
+<p>secara berurutan.</p>
+</li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">k-Means</span></code> (di dalam Loop):</strong> Menerima <em>Flow Variable</em> nilai <span class="math notranslate nohighlight">\(k\)</span> untuk mengelompokkan 37 titik daerah pada masing-masing iterasi.</p></li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">Silhouette</span> <span class="pre">Coefficient</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">Loop</span> <span class="pre">End</span></code>:</strong> Menghitung skor <em>Overall Silhouette Coefficient</em> (Port 2) pada setiap iterasi dan menggabungkan ke-5 hasil pengujian ke dalam tabel ringkasan akhir di node <code class="docutils literal notranslate"><span class="pre">Loop</span> <span class="pre">End</span></code>.</p></li>
 </ul>
