@@ -21,3 +21,6 @@ chapters:
 - file: klasifikasi/index
   sections:
   - file: klasifikasi/klasifikasi-sawah
+- file: uts-klasifikasi/index
+  sections:
+  - file: uts-klasifikasi/uts-klasifikasi
