@@ -1,0 +1,131 @@
+import folium
+import numpy as np
+import pandas as pd
+from shapely.validation import make_valid
+
+print("Mempersiapkan Peta Evaluasi Poligon...")
+
+# ==============================================================================
+# 1. PERSIAPAN DATA SPASIAL & PENGGABUNGAN HASIL PREDIKSI
+# ==============================================================================
+# Salin GeoDataFrame agar tidak merusak data asli
+gdf_eval = gdf_gabungan.copy()
+
+# Pastikan geometri valid dan disederhanakan agar peta web tidak berat
+gdf_eval["geometry"] = gdf_eval.geometry.apply(lambda x: x if x.is_valid else make_valid(x))
+gdf_eval["geometry"] = gdf_eval.geometry.simplify(0.00003, preserve_topology=True)
+
+# Tambahkan ID unik, NDVI, dan NDWI untuk popup
+gdf_eval["poligon_id"] = [f"{row['label_teks'][:3].upper()}_{i:03d}" for i, row in gdf_eval.iterrows()]
+gdf_eval["NDVI"] = df_dataset["NDVI"]
+gdf_eval["NDWI"] = df_dataset["NDWI"]
+
+# Menandai mana Data Latih (Train) dan mana Data Uji (Test) berdasarkan index X_test
+gdf_eval["subset"] = "train"
+gdf_eval.loc[X_test.index, "subset"] = "test"
+
+# Memasukkan hasil prediksi dan status kebenaran (HANYA untuk Data Uji)
+gdf_eval["kelas_prediksi"] = np.nan
+gdf_eval.loc[X_test.index, "kelas_prediksi"] = y_pred
+
+gdf_eval["benar"] = np.nan
+gdf_eval.loc[X_test.index, "benar"] = (y_test == y_pred)
+
+# Mengambil probabilitas keyakinan model (Gradient Boosting)
+probabilitas = model_gb.predict_proba(X_test)
+keyakinan = np.max(probabilitas, axis=1)
+gdf_eval["keyakinan"] = np.nan
+gdf_eval.loc[X_test.index, "keyakinan"] = keyakinan
+
+# ==============================================================================
+# 2. KONFIGURASI WARNA & FUNGSI POPUP HTML
+# ==============================================================================
+WARNA_KELAS = {
+    "Sawah": "#90EE90",          # Hijau muda
+    "Bangunan": "#FF0000",       # Merah
+    "Lahan Hijau": "#008000",    # Hijau tua
+    "Mangrove": "#006400",       # Hijau sangat tua/gelap
+    "Ranu": "#ADD8E6",           # Biru muda
+    "Perairan Laut": "#0000FF",  # Biru tua
+}
+
+def teks_tip(r):
+    if r["subset"] == "test":
+        simbol = "✓ Benar" if r["benar"] else f"✗ SALAH (Prediksi: {r['kelas_prediksi']})"
+        return f"[Data Uji] {r['poligon_id']} | Asli: {r['label_teks']} | {simbol}"
+    return f"[Data Latih] {r['poligon_id']} | Kelas: {r['label_teks']}"
+
+def teks_popup(r):
+    is_test = r["subset"] == "test"
+    
+    if is_test:
+        subset_badge = "<span style='background:#0d6efd; color:white; padding:2px 6px; border-radius:3px; font-size:11px;'>Data Uji</span>"
+        status_badge = (
+            "<span style='background:#28a745; color:white; padding:2px 6px; border-radius:3px; font-size:11px;'>Benar</span>" if r["benar"] 
+            else "<span style='background:#dc3545; color:white; padding:2px 6px; border-radius:3px; font-size:11px;'>SALAH</span>"
+        )
+        pred_val = f"<b style='color:#0d6efd;'>{r['kelas_prediksi']}</b>"
+        keyak_val = f"{r['keyakinan']:.1%}"
+    else:
+        subset_badge = "<span style='background:#6c757d; color:white; padding:2px 6px; border-radius:3px; font-size:11px;'>Data Latih</span>"
+        status_badge = "<span style='color:#6c757d;'>Training</span>"
+        pred_val = "<span style='color:#6c757d;'>- (Data Latih)</span>"
+        keyak_val = "-"
+
+    return f"""
+        <div style='font-family: sans-serif; font-size:12px; min-width:210px; line-height:1.5;'>
+            <div style='font-size:13px; font-weight:bold; margin-bottom:4px;'>{r['poligon_id']}</div>
+            <div style='margin-bottom:6px;'>{subset_badge} {status_badge}</div>
+            <table style='width:100%; border-collapse:collapse; font-size:12px;'>
+                <tr style='border-top:1px solid #dee2e6;'><td style='padding:2px 0; color:#6c757d;'>Kelas Asli:</td><td style='padding:2px 0; font-weight:bold;'>{r['label_teks']}</td></tr>
+                <tr style='border-top:1px solid #dee2e6;'><td style='padding:2px 0; color:#6c757d;'>Prediksi GB:</td><td style='padding:2px 0;'>{pred_val}</td></tr>
+                <tr style='border-top:1px solid #dee2e6;'><td style='padding:2px 0; color:#6c757d;'>Keyakinan:</td><td style='padding:2px 0;'>{keyak_val}</td></tr>
+                <tr style='border-top:1px solid #dee2e6;'><td style='padding:2px 0; color:#6c757d;'>Nilai NDVI:</td><td style='padding:2px 0;'>{r['NDVI']:.3f}</td></tr>
+                <tr style='border-top:1px solid #dee2e6;'><td style='padding:2px 0; color:#6c757d;'>Nilai NDWI:</td><td style='padding:2px 0;'>{r['NDWI']:.3f}</td></tr>
+            </table>
+        </div>
+        """
+
+gdf_eval["tip"] = gdf_eval.apply(teks_tip, axis=1)
+gdf_eval["popup"] = gdf_eval.apply(teks_popup, axis=1)
+
+# ==============================================================================
+# 3. PEMBUATAN PETA FOLIUM
+# ==============================================================================
+minx, miny, maxx, maxy = gdf_eval.total_bounds
+peta_evaluasi = folium.Map(location=[(miny + maxy) / 2, (minx + maxx) / 2], zoom_start=8)
+
+# Base Map Google Satellite
+folium.TileLayer(
+    tiles='https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+    attr='Google',
+    name='Google Satellite'
+).add_to(peta_evaluasi)
+
+# A. Layer Tiap Kelas (Poligon)
+for nama, warna in WARNA_KELAS.items():
+    sub = gdf_eval[gdf_eval["label_teks"] == nama]
+    fg = folium.FeatureGroup(name=f"Kelas: {nama} ({len(sub)} poligon)")
+    folium.GeoJson(
+        sub[["tip", "popup", "geometry"]],
+        style_function=lambda f, w=warna: {
+            "color": "#333", "weight": 1.2, "fillColor": w, "fillOpacity": 0.75,
+        },
+        highlight_function=lambda f: {"weight": 3, "fillOpacity": 0.95},
+        tooltip=folium.GeoJsonTooltip(fields=["tip"], labels=False),
+        popup=folium.GeoJsonPopup(fields=["popup"], labels=False, max_width=300),
+    ).add_to(fg)
+    fg.add_to(peta_evaluasi)
+
+# B. Sorotan Poligon Data Uji (Garis Batas Biru Tebal)
+sub_uji = gdf_eval[gdf_eval["subset"] == "test"]
+fg_uji = folium.FeatureGroup(name=f"Sorot Data Uji ({len(sub_uji)} poligon)", show=True)
+folium.GeoJson(
+    sub_uji[["tip", "geometry"]],
+    style_function=lambda f: {"color": "#0d6efd", "weight": 3, "fill": False},
+).add_to(fg_uji)
+fg_uji.add_to(peta_evaluasi)
+
+# C. Sorotan Poligon Salah Klasifikasi (Garis Batas Oranye Putus-putus & Marker)
+sub_salah = gdf_eval[gdf_eval["benar"] == False]
+fg_salah = folium.FeatureGroup(name=f"Salah Klasifikasi ({len(
