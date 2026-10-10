@@ -38,8 +38,12 @@ with tab1:
     
     @st.cache_data
     def load_data():
-        # Pastikan file CSV ini ada di folder Anda
-        return pd.read_csv("dataset_uts_klasifikasi.csv")
+        # Membaca direktori tempat app.py ini berada
+        import os
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(BASE_DIR, "dataset_uts_klasifikasi.csv")
+            
+        return pd.read_csv(file_path)
 
     try:
         df = load_data()
@@ -119,7 +123,10 @@ with tab2:
     ).add_to(peta_regional)
 
     # Tambahkan overlay gambar raster jika file gambarnya tersedia
-    file_raster = "peta_klasifikasi_raster_jatim.png"
+    # Contoh untuk gambar di Tab 3:
+    import os
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    file_raster = os.path.join(BASE_DIR, "peta_klasifikasi_raster_jatim.png")
     if os.path.exists(file_raster):
         # Koordinat Batas Wilayah Jatim (Sesuaikan jika Bounding Box Anda berbeda)
         bounds_jatim = [[-8.85, 111.00], [-6.75, 114.65]] 
@@ -151,7 +158,10 @@ with tab3:
         st.info("**Algoritma Utama: Gradient Boosting Classifier**")
 
     # Menampilkan Gambar Confusion Matrix yang sudah diekspor dari Jupyter Notebook
-    file_cm = "visualisasi_confusion_matrix.png"
+    # Contoh untuk gambar di Tab 3:
+    import os
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    file_cm = os.path.join(BASE_DIR, "visualisasi_confusion_matrix.png")
     if os.path.exists(file_cm):
         st.image(Image.open(file_cm), caption="Heatmap Confusion Matrix (Kesalahan dan Keberhasilan Tebakan Model)", use_container_width=True)
     else:
