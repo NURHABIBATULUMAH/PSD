@@ -183,5 +183,5 @@ with tab4:
     Persiapan meliputi penyelarasan CRS (EPSG:4326) dan ekstraksi fitur titik (*centroid*). Data dipecah menjadi 80% *training* dan 20% *testing*. Algoritma **Gradient Boosting Classifier** digunakan karena mampu mempelajari pola non-linear pada data reflektansi spektral berdimensi tinggi.
 
     ## 4. Evaluation & Deployment
-    Model dievaluasi menggunakan *Classification Report* dan *Confusion Matrix*. Sistem kemudian di- *deploy* ke dalam format *dashboard* web GIS interaktif menggunakan Streamlit untuk memfasilitasi pengambilan keputusan spasial secara *real-time*.
+    Model dievaluasi menggunakan *Classification Report* dan *Confusion Matrix*.  Setelah model selesai dilatih menggunakan 240 data latih (training), performanya diukur menggunakan 60 data uji (testing) yang belum pernah dilihat oleh algoritma sebelumnya.
     """)
