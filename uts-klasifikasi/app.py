@@ -35,6 +35,7 @@ warna_kelas = {
 # ==============================================================================
 with tab1:
     st.subheader("Peta Sebaran Titik Sampel & Hasil Prediksi")
+    st.markdown("Menampilkan seluruh poligon sampel dari 6 kelas tutupan lahan. Menampilkan seluruh poligon sampel dari 6 kelas tutupan lahan.")
     
     @st.cache_data
     def load_data():
