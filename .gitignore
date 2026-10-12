@@ -1,1 +1,8 @@
 venv
+hasil_citra_uts/
+hasil_citra_uts_v2/
+*.tif
+*.pkl
+*.zip
+*.html
+__pycache__/
