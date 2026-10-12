@@ -1,8 +1,10 @@
 venv
-hasil_citra_uts/
-hasil_citra_uts_v2/
+# Abaikan file raster, model, dan arsip besar
 *.tif
 *.pkl
 *.zip
+hasil_citra_uts/
+hasil_citra_uts_v2/
 *.html
 __pycache__/
+.ipynb_checkpoints/
