@@ -1,15 +1,18 @@
-venv
-# Abaikan file raster, model, dan arsip besar
-*.tif
-*.pkl
-*.zip
-hasil_citra_uts/
-hasil_citra_uts_v2/
-*.html
+# Virtual Environment & Cache
+venv/
 __pycache__/
 .ipynb_checkpoints/
-# File model dan data besar
-*.pkl
+
+# File Arsip, Raster, dan Model Besar
+*.zip
 *.tif
+*.pkl
+
+# Folder Output / Hasil
+hasil_citra_uts/
+hasil_citra_uts_v2/
 uts-klasifikasi/hasil_citra_uts/
 uts-klasifikasi/hasil_citra_uts_v2/
+
+# Lainnya
+*.html
