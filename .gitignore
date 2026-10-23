@@ -8,3 +8,8 @@ hasil_citra_uts_v2/
 *.html
 __pycache__/
 .ipynb_checkpoints/
+# File model dan data besar
+*.pkl
+*.tif
+uts-klasifikasi/hasil_citra_uts/
+uts-klasifikasi/hasil_citra_uts_v2/
