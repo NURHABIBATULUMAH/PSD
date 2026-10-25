@@ -27,4 +27,4 @@ chapters:
   - file: uts-klasifikasi/uts-klasifikasi5
 - file: klasifikasi_audio/index
   sections:
-  - file: klasifikasi_audio/ekstraksi-audio
+  - file: klasifikasi_audio/ekstraksi_audio
