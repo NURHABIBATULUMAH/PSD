@@ -1,4 +1,4 @@
-# Klasfikasi 
+# Klasfikasi Citra
 
 Halaman ini memuat dokumentasi dan tahapan analisis data
 
