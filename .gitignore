@@ -7,6 +7,7 @@ __pycache__/
 *.zip
 *.tif
 *.pkl
+*.csv
 
 # Folder Output / Hasil
 hasil_citra_uts/
