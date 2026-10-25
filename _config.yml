@@ -6,6 +6,9 @@ author: Nurhabibatul Umah
 copyright: "2026"
 logo: logo.jpeg
 
+url: "https://nurhabibatulumah.github.io"
+baseurl: "/PSD/"
+
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
