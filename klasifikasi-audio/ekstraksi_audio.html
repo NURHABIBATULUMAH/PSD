@@ -1,0 +1,1892 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Klasifikasi Audio Berisik vs Non-Berisik &#8212; Profile habiba</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=ab63e892" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'klasifikasi-audio/ekstraksi_audio';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Klasfikasi Audio" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.jpeg" class="logo__image only-light" alt="Profile habiba - Home"/>
+    <script>document.write(`<img src="../_static/logo.jpeg" class="logo__image only-dark" alt="Profile habiba - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Profile
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tuban/index.html">Kabupaten Tuban</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tuban/polutan.html">Kolekting Data: Kualitas Polusi Udara di Daerah Tuban</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tuban/cloud-polutan.html">Eksplorasi Data: Integrasi Data menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../kerek/index.html">Daerah Kecamatan Kerek</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../kerek/polutan-kerek.html">Kolekting Data: Kualitas Polusi Udara di Kecamatan Kerek, Tuban</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kerek/cloud-kerek.html">Eksplorasi Data: Integrasi Data menggunakan Aiven Cloud PostgreSQL, pgAdmin, dan Knime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kerek/fitur-tsfel.html">Ringkasan Fitur TSFEL dan Rumus Matematika</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kerek/ekstraksi-fitur.html">PreProcessing: Deteksi Outlier &amp; Imputasi Missing Value serta Ekstraksi Fitur Pada NO2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kerek/clustering-polutan.html">K-Means Clustering Polutan</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ekstraksi_2/index.html">Ekstraksi Fitur TSFEL</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ekstraksi_2/reduksi-polutan.html">Ekstraksi Fitur TSFEL Sebanyak 68 Fitur pada 3 Polutan (NO2, SO2, CO)</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../klasifikasi/index.html">Klasfikasi Sawah dan Non-Sawah</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../klasifikasi/klasifikasi-sawah.html">Klasifikasi Spasial Lahan Sawah dan Non-Sawah Menggunakan Citra Sentinel-2A</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../uts-klasifikasi/index.html">Klasfikasi Citra</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../uts-klasifikasi/uts-klasifikasi.html">UTS : Sistem Informasi Geografis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../uts-klasifikasi/uts-klasifikasi5.html">UTS : Sistem Informasi Geografis Menggunakan Piksel</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Klasfikasi Audio</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Klasifikasi Audio Berisik vs Non-Berisik</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/NURHABIBATULUMAH/PSD" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/NURHABIBATULUMAH/PSD/issues/new?title=Issue%20on%20page%20%2Fklasifikasi-audio/ekstraksi_audio.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/klasifikasi-audio/ekstraksi_audio.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Klasifikasi Audio Berisik vs Non-Berisik</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bussiness-understanding">1. Bussiness Understanding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang">1.1 Latar Belakang</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan">1.2 Tujuan</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-understanding">2. Data Understanding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-sample-data">2.1 Ringkasan Sample Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-audio">2.2 Ekstraksi Fitur Audio</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-root-mean-square">2.2.1 RMS (Root Mean Square)</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#a-definisi-rms">a. Definisi RMS</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#b-rumus-matematis">b. Rumus Matematis :</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#c-contoh-perhitungan">c. Contoh Perhitungan</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-centroid">2.2.2 Spectral Centroid</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#a-definisi-spectral-centroid">a. Definisi Spectral Centroid</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">b. Rumus Matematis :</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">c. Contoh Perhitungan</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#zcr-zero-crossing-rate">2.2.3 ZCR (Zero Crossing Rate)</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#a-definisi-zcr-zero-crossing-rate">a. Definisi ZCR (Zero Crossing Rate)</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">b. Rumus Matematis</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#c-contoh-perhitungan-manual">c. Contoh Perhitungan Manual</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mfcc-mel-frequency-cepstral-coefficients">2.2.4 MFCC (Mel-Frequency Cepstral Coefficients)</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#a-definisi-mfcc">a. Definisi MFCC</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">b. Rumus Matematis</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">c. Contoh Perhitungan Manual</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-time-series-fitur">2.3 Visualisasi Time-Series Fitur</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-menggunakan-sample-berisik">2.3.1 Visualisasi Menggunakan Sample <code class="docutils literal notranslate"><span class="pre">berisik</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-menggunakan-sample-non-berisik">2.3.2 Visualisasi Menggunakan Sample <code class="docutils literal notranslate"><span class="pre">non-berisik</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing-ekstraksi-fitur">3. PreProcessing &amp; Ekstraksi Fitur</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-audio-berlabel-berisik">3.1 Ekstraksi Fitur Audio Berlabel <code class="docutils literal notranslate"><span class="pre">berisik</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-audio-berlabel-non-berisik">3.2 Ekstraksi Fitur Audio Berlabel <code class="docutils literal notranslate"><span class="pre">non-berisik</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penggabungan-file-berlabel-berisik-dan-non-berisik">3.3 Penggabungan File berlabel <code class="docutils literal notranslate"><span class="pre">berisik</span></code> dan <code class="docutils literal notranslate"><span class="pre">non-berisik</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seleksi-fitur">3.4 Seleksi Fitur</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pemodelan-menggunakan-support-vector-machine-svm-dan-evaluasi-model">4. Pemodelan Menggunakan Support Vector Machine (SVM) dan Evaluasi Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uji-testing-model">5. Uji Testing Model</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="klasifikasi-audio-berisik-vs-non-berisik">
+<h1>Klasifikasi Audio Berisik vs Non-Berisik<a class="headerlink" href="#klasifikasi-audio-berisik-vs-non-berisik" title="Link to this heading">#</a></h1>
+<section id="bussiness-understanding">
+<h2>1. Bussiness Understanding<a class="headerlink" href="#bussiness-understanding" title="Link to this heading">#</a></h2>
+<section id="latar-belakang">
+<h3>1.1 Latar Belakang<a class="headerlink" href="#latar-belakang" title="Link to this heading">#</a></h3>
+<p>Lingkungan laboratorium di Universitas Trunojoyo Madura (UTM) memiliki dinamika akustik yang beragam. Dalam kondisi operasional normal, suasana lab diisi oleh aktivitas mahasiswa seperti berdiskusi, berkolaborasi, bermain, serta suara operasional perangkat keras seperti pendingin ruangan (AC).</p>
+<p>Kondisi suara di dalam laboratorium dapat dikategorikan secara garis besar menjadi dua kondisi utama:</p>
+<ol class="arabic simple">
+<li><p>Kondisi Non-Berisik (Tenang/Hening): Suasana ketika mahasiswa fokus bekerja secara mandiri, didominasi oleh latar belakang yang konstan dan stabil (steady-state background noise) seperti dengungan AC dan diskusi ringan mahasiswa.</p></li>
+<li><p>Kondisi Berisik (Rame/Gaduh): Suasana ketika terjadi interaksi sosial yang intensif, diskusi kelompok yang ramai, gelak tawa, atau aktivitas bergerak yang menghasilkan energi akustik impulsif dan fluktuatif.</p></li>
+</ol>
+<p>Kemampuan sistem cerdas untuk mengenali dan mengklasifikasikan kondisi akustik ini secara otomatis sangat berguna untuk pemantauan tingkat kebisingan ruangan,  pengelolaan fasilitas kampus yang adaptif, maupun sebagai sistem pendukung manajemen kualitas kenyamanan belajar.</p>
+</section>
+<section id="tujuan">
+<h3>1.2 Tujuan<a class="headerlink" href="#tujuan" title="Link to this heading">#</a></h3>
+<p>Tujuan dari proyek ini adalah membangun sistem klasifikasi biner berbasis <strong>Machine Learning</strong> menggunakan algoritma <strong>Support Vector Machine (SVM)</strong> untuk mendeteksi apakah suatu sampel rekaman audio laboratorium di lingkungan UTM termasuk dalam kategori berisik atau non-berisik berdasarkan ekstraksi fitur akustik (<code class="docutils literal notranslate"><span class="pre">RMS</span></code>, <code class="docutils literal notranslate"><span class="pre">Spectral</span> <span class="pre">Centroid</span></code>, <code class="docutils literal notranslate"><span class="pre">ZCR</span></code>, dan <code class="docutils literal notranslate"><span class="pre">MFCC</span></code>).</p>
+</section>
+</section>
+<section id="data-understanding">
+<h2>2. Data Understanding<a class="headerlink" href="#data-understanding" title="Link to this heading">#</a></h2>
+<p>Dataset terdiri atas rekaman suara riil berformat <code class="docutils literal notranslate"><span class="pre">.mp3</span></code> dengan laju percontohan (sampling rate) <span class="math notranslate nohighlight">\(f_s = 22050\text{ Hz}\)</span>, dikelompokkan ke dalam dua kelas biner:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">berisik</span></code>: Rekaman lingkungan berisik</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">non-berisik</span></code>: Rekaman lingkungan hening/tenang</p></li>
+</ul>
+<section id="ringkasan-sample-data">
+<h3>2.1 Ringkasan Sample Data<a class="headerlink" href="#ringkasan-sample-data" title="Link to this heading">#</a></h3>
+<p>Total Sample Audio <code class="docutils literal notranslate"><span class="pre">200</span></code> sample audio yang terdiri dari:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Kelas</span> <span class="pre">Berisik</span> <span class="pre">100</span> <span class="pre">sample</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Kelas</span> <span class="pre">Non-Berisik</span> <span class="pre">100</span> <span class="pre">sample</span></code></p></li>
+</ul>
+</section>
+<section id="ekstraksi-fitur-audio">
+<h3>2.2 Ekstraksi Fitur Audio<a class="headerlink" href="#ekstraksi-fitur-audio" title="Link to this heading">#</a></h3>
+<section id="rms-root-mean-square">
+<h4>2.2.1 RMS (Root Mean Square)<a class="headerlink" href="#rms-root-mean-square" title="Link to this heading">#</a></h4>
+<section id="a-definisi-rms">
+<h5>a. Definisi RMS<a class="headerlink" href="#a-definisi-rms" title="Link to this heading">#</a></h5>
+<p>Root Mean Square (RMS) adalah ukuran daya rata-rata atau energi efektif dari sinyal audio dalam suatu jendela waktu (frame). Dalam persepsi manusia, RMS berkorelasi langsung dengan tingkat kenyaringan (loudness) suara:</p>
+<ul class="simple">
+<li><p>Audio <code class="docutils literal notranslate"><span class="pre">berisik</span></code> Ketika banyak mahasiswa bersuara bersamaan, tertawa, atau berseru, amplitudo gelombang naik secara signifikan. Nilai rata-rata RMS akan jauh lebih tinggi dibanding kondisi tenang.</p></li>
+<li><p>Audio <code class="docutils literal notranslate"><span class="pre">non-berisik</span></code> Hanya terdengar dengungan AC, kipas PC lab, atau ketikan tuts keyboard sesekali, dan mahasiswa yang berdiskusi tidak ramai sehingga RMS mendekati nol (amplitudo rendah).</p></li>
+</ul>
+</section>
+<section id="b-rumus-matematis">
+<h5>b. Rumus Matematis :<a class="headerlink" href="#b-rumus-matematis" title="Link to this heading">#</a></h5>
+<p>Untuk sebuah frame sinyal diskret <span class="math notranslate nohighlight">\(x[n]\)</span> dengan panjang <span class="math notranslate nohighlight">\(N\)</span> sampel, nilai RMS dihitung sebagai:</p>
+<div class="math notranslate nohighlight">
+\[RMS = \sqrt{\frac{1}{N} \sum_{n=0}^{N-1} \vert{}x[n]\vert{}^2}\]</div>
+<p>Di mana:</p>
+<p><span class="math notranslate nohighlight">\(N\)</span> = panjang frame (misal: 2048 sampel)</p>
+<p><span class="math notranslate nohighlight">\(x[n]\)</span> = amplitudo sinyal audio pada sampel ke-<span class="math notranslate nohighlight">\(n\)</span></p>
+</section>
+<section id="c-contoh-perhitungan">
+<h5>c. Contoh Perhitungan<a class="headerlink" href="#c-contoh-perhitungan" title="Link to this heading">#</a></h5>
+<p>Misalkan kita memiliki satu frame kecil berisi 5 sampel sinyal:</p>
+<div class="math notranslate nohighlight">
+\[x = [0.1, -0.2, 0.4, -0.3, 0.1]\]</div>
+<ol class="arabic simple">
+<li><p>Kuadratkan setiap sampel (<span class="math notranslate nohighlight">\(x[n]^2\)</span>):</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[x = [0.1^2, -0.2^2, 0.4^2, -0.3^2, 0.1^2]\]</div>
+<div class="math notranslate nohighlight">
+\[x = [0.01, 0.04, 0.16, 0.09, 0.01]\]</div>
+<ol class="arabic simple" start="2">
+<li><p>Hitung jumlah kuadrat (<span class="math notranslate nohighlight">\(\sum \vert{}x[n]\vert{}^2\)</span>):</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\sum = 0.01 + 0.04 + 0.16 + 0.09 + 0.01 = 0.31\]</div>
+<ol class="arabic simple" start="3">
+<li><p>Bagi dengan jumlah sampel (<span class="math notranslate nohighlight">\(N = 5\)</span>):</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\text{Mean} = \frac{0.31}{5} = 0.062\]</div>
+<ol class="arabic simple" start="4">
+<li><p>Akar Kuadrat Hasilnya:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[RMS = \sqrt{0.062} \approx 0.24899\]</div>
+</section>
+</section>
+<section id="spectral-centroid">
+<h4>2.2.2 Spectral Centroid<a class="headerlink" href="#spectral-centroid" title="Link to this heading">#</a></h4>
+<section id="a-definisi-spectral-centroid">
+<h5>a. Definisi Spectral Centroid<a class="headerlink" href="#a-definisi-spectral-centroid" title="Link to this heading">#</a></h5>
+<p>Spectral Centroid adalah ukuran yang menunjukkan letak pusat massa (titik berat frekuensi) dari suatu spektrum suara. Dalam persepsi manusia, Spectral Centroid diasosiasikan dengan “kecerahan” (brightness) suara.</p>
+<ul class="simple">
+<li><p>Audio <code class="docutils literal notranslate"><span class="pre">berisik</span></code> Suara tawa melengking, gesekan kaki meja/kursi lab ke lantai keramik, atau teriakan menghasilkan komponen frekuensi menengah-tinggi yang dominan. Ini menarik titik berat spektrum ke frekuensi yang lebih tinggi (Hz besar).</p></li>
+<li><p>Audio <code class="docutils literal notranslate"><span class="pre">non-berisik</span></code> Lab kosong/hening biasanya didominasi oleh suara berfrekuensi rendah (low-frequency rumble) dari perangkat komputer atau ventilasi udara, sehingga centroid-nya lebih rendah.</p></li>
+</ul>
+<p>Cara Kerja Pada Code:</p>
+<p><code class="docutils literal notranslate"><span class="pre">centroid</span> <span class="pre">=</span> <span class="pre">librosa.feature.spectral_centroid(y=y,</span> <span class="pre">sr=sr)[0]</span></code></p>
+<p>Penjelasan:</p>
+<p>Sinyal dibagi per frame <code class="docutils literal notranslate"><span class="pre">(frame_length</span> <span class="pre">=</span> <span class="pre">2048,</span> <span class="pre">hop_length</span> <span class="pre">=</span> <span class="pre">512)</span></code>. Sinyal tiap frame diubah dari domain waktu ke domain frekuensi menggunakan STFT (Short-Time Fourier Transform). Dihitung nilai spectral centroid (dalam satuan Hertz / Hz) untuk tiap frame. Di tahap pembuatan dataset, dirata-ratakan dengan np.mean(centroid) untuk mewakili 1 file audio.</p>
+</section>
+<section id="id1">
+<h5>b. Rumus Matematis :<a class="headerlink" href="#id1" title="Link to this heading">#</a></h5>
+<p>Untuk sebuah frame ke-<span class="math notranslate nohighlight">\(t\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\text{Centroid}_t = \frac{\sum_{k=0}^{N-1} f(k) \cdot \vert{}S_t(k)\vert{}}{\sum_{k=0}^{N-1} \vert{}S_t(k)\vert{}}\]</div>
+<p>Di mana:</p>
+<p><span class="math notranslate nohighlight">\(f(k)\)</span>: Frekuensi tengah pada bin/pita frekuensi ke-<span class="math notranslate nohighlight">\(k\)</span> (dalam Hz)</p>
+<p><span class="math notranslate nohighlight">\(\vert{}S_t(k)\vert{}\)</span>: Magnitudo (besaran energi) spektrum pada bin ke-<span class="math notranslate nohighlight">\(k\)</span></p>
+<p>Prinsip rumus ini sama persis dengan rata-rata tertimbang (weighted average): frekuensi dikalikan magnitudonya, lalu dibagi total magnitudo.</p>
+</section>
+<section id="id2">
+<h5>c. Contoh Perhitungan<a class="headerlink" href="#id2" title="Link to this heading">#</a></h5>
+<p>Misalkan pada satu frame hasil Fourier Transform, terdapat 3 pita frekuensi (<span class="math notranslate nohighlight">\(k=0, 1, 2\)</span>):</p>
+<ul class="simple">
+<li><p>Bin <span class="math notranslate nohighlight">\((k)\)</span> = <span class="math notranslate nohighlight">\(1, 2, 3\)</span></p></li>
+<li><p>Frekuensi <span class="math notranslate nohighlight">\(f(k) (Hz)\)</span> = <span class="math notranslate nohighlight">\(500Hz, 1000Hz, 2000Hz\)</span></p></li>
+<li><p>Magnitudo <span class="math notranslate nohighlight">\(\vert{}S_t(k)\vert{}\)</span> = <span class="math notranslate nohighlight">\(2, 5, 1\)</span></p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>Hitung pembilang (Jumlah Frekuensi <span class="math notranslate nohighlight">\(\times\)</span> Magnitudo):</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\text{Pembilang} = (500 \times 2) + (1000 \times 5) + (2000 \times 1) = 1000 + 5000 + 2000 = 8000\]</div>
+<ol class="arabic simple" start="2">
+<li><p>Hitung penyebut (Total Magnitudo):</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\text{Penyebut} = 2 + 5 + 1 = 8\]</div>
+<ol class="arabic simple" start="3">
+<li><p>Hitung Centroid:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\text{Centroid} = \frac{8000}{8} = 1000\text{ Hz}\]</div>
+<p>Artinya, pusat energi frekuensi pada frame ini berada di sekitar 1000 Hz.</p>
+</section>
+</section>
+<section id="zcr-zero-crossing-rate">
+<h4>2.2.3 ZCR (Zero Crossing Rate)<a class="headerlink" href="#zcr-zero-crossing-rate" title="Link to this heading">#</a></h4>
+<section id="a-definisi-zcr-zero-crossing-rate">
+<h5>a. Definisi ZCR (Zero Crossing Rate)<a class="headerlink" href="#a-definisi-zcr-zero-crossing-rate" title="Link to this heading">#</a></h5>
+<p>Zero Crossing Rate (ZCR) adalah laju atau tingkat seberapa sering sinyal audio gelombang domain waktu berpindah tanda dari positif ke negatif atau sebaliknya (memotong garis amplitudo nol) dalam rentang waktu tertentu.</p>
+<ul class="simple">
+<li><p>Audio <code class="docutils literal notranslate"><span class="pre">berisik</span></code> Obrolan banyak orang yang bertumpuk (babble noise), suara tawa terbahak-bahak, dan gesekan benda menghasilkan gelombang acak yang sering berganti tanda positif-negatif, sehingga ZCR cenderung lebih tinggi dan bervariasi.</p></li>
+<li><p>Audio <code class="docutils literal notranslate"><span class="pre">non-berisik</span></code> Gelombang suara latar lab cenderung stabil dan monoton, menghasilkan ZCR yang lebih teratur dan rendah.</p></li>
+</ul>
+<p>Cara Kerja Pada Code:</p>
+<p><code class="docutils literal notranslate"><span class="pre">zcr</span> <span class="pre">=</span> <span class="pre">librosa.feature.zero_crossing_rate(y=y)[0]</span></code></p>
+<p>Penjelasan:</p>
+<p>Sinyal dibagi per frame <code class="docutils literal notranslate"><span class="pre">(frame_length</span> <span class="pre">=</span> <span class="pre">2048,</span> <span class="pre">hop_length</span> <span class="pre">=</span> <span class="pre">512)</span></code>. Dihitung rasio berapa kali sinyal berganti tanda dibagi panjang frame. Pada pembuatan dataset, dirata-ratakan dengan <code class="docutils literal notranslate"><span class="pre">np.mean(zcr)</span></code>.</p>
+</section>
+<section id="id3">
+<h5>b. Rumus Matematis<a class="headerlink" href="#id3" title="Link to this heading">#</a></h5>
+<p>Untuk frame ke-<span class="math notranslate nohighlight">\(t\)</span> dengan panjang sample <span class="math notranslate nohighlight">\(K\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\text{ZCR}_t = \frac{1}{2(K - 1)} \sum_{n=1}^{K-1} \left\vert{} \text{sgn}(y_t[n]) - \text{sgn}(y_t[n-1]) \right\vert{}\]</div>
+<p>Di mana fungsi tanda <span class="math notranslate nohighlight">\(\text{sgn}(x)\)</span> didefinisikan:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{sgn}(x) = \begin{cases} 1, &amp; \text{jika } x \ge 0 \\ -1, &amp; \text{jika } x &lt; 0 \end{cases}\end{split}\]</div>
+<ul class="simple">
+<li><p>Jika dua sampel berturutan tandanya berbeda (misal <span class="math notranslate nohighlight">\(+1\)</span> dan <span class="math notranslate nohighlight">\(-1\)</span>), maka <span class="math notranslate nohighlight">\(\vert{}1 - (-1)\vert{} = 2\)</span></p></li>
+<li><p>Faktor <span class="math notranslate nohighlight">\(\frac{1}{2}\)</span> menormalkannya menjadi hitungan <span class="math notranslate nohighlight">\(1\)</span> perpotongan</p></li>
+<li><p>Pembagian dengan <span class="math notranslate nohighlight">\((K-1)\)</span> menghasilkan nilai rasio rentang <span class="math notranslate nohighlight">\(0\)</span> sampai <span class="math notranslate nohighlight">\(1\)</span></p></li>
+</ul>
+</section>
+<section id="c-contoh-perhitungan-manual">
+<h5>c. Contoh Perhitungan Manual<a class="headerlink" href="#c-contoh-perhitungan-manual" title="Link to this heading">#</a></h5>
+<p>Misalkan sebuah frame pendek memiliki <span class="math notranslate nohighlight">\(K = 5\)</span> sampel amplitudo:</p>
+<div class="math notranslate nohighlight">
+\[y = [0.2, -0.4, 0.1, 0.3, -0.2]\]</div>
+<ol class="arabic simple">
+<li><p>Cek Perubahan Tanda antar sample berturutan</p></li>
+</ol>
+<ul class="simple">
+<li><p>Sampel 1 (<span class="math notranslate nohighlight">\(0.2\)</span>) ke Sampel 2 (<span class="math notranslate nohighlight">\(-0.4\)</span>): Berubah tanda (Positif <span class="math notranslate nohighlight">\(\rightarrow\)</span> Negatif) <span class="math notranslate nohighlight">\(\rightarrow\)</span> Hitung = 1</p></li>
+<li><p>Sampel 2 (<span class="math notranslate nohighlight">\(-0.4\)</span>) ke Sampel 3 (<span class="math notranslate nohighlight">\(0.1\)</span>): Berubah tanda (Negatif <span class="math notranslate nohighlight">\(\rightarrow\)</span> Positif) <span class="math notranslate nohighlight">\(\rightarrow\)</span> Hitung = 1</p></li>
+<li><p>Sampel 3 (<span class="math notranslate nohighlight">\(0.1\)</span>) ke Sampel 4 (<span class="math notranslate nohighlight">\(0.3\)</span>): Tidak berubah (Positif <span class="math notranslate nohighlight">\(\rightarrow\)</span> Positif) <span class="math notranslate nohighlight">\(\rightarrow\)</span> Hitung = 0</p></li>
+<li><p>Sampel 4 (<span class="math notranslate nohighlight">\(0.3\)</span>) ke Sampel 5 (<span class="math notranslate nohighlight">\(-0.2\)</span>): Berubah tanda (Positif <span class="math notranslate nohighlight">\(\rightarrow\)</span> Negatif) <span class="math notranslate nohighlight">\(\rightarrow\)</span> Hitung = 1</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>Total Perpotongan Nol</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\text{Total crossing} = 1 + 1 + 0 + 1 = 3\]</div>
+<ol class="arabic simple" start="3">
+<li><p>Hitung ZCR</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\text{ZCR} = \frac{3}{K - 1} = \frac{3}{5 - 1} = \frac{3}{4} = 0.75\]</div>
+<p>Nilai ZCR frame tersebut adalah 0.75 (artinya 75% dari transisi sampel memotong garis nol).</p>
+</section>
+</section>
+<section id="mfcc-mel-frequency-cepstral-coefficients">
+<h4>2.2.4 MFCC (Mel-Frequency Cepstral Coefficients)<a class="headerlink" href="#mfcc-mel-frequency-cepstral-coefficients" title="Link to this heading">#</a></h4>
+<section id="a-definisi-mfcc">
+<h5>a. Definisi MFCC<a class="headerlink" href="#a-definisi-mfcc" title="Link to this heading">#</a></h5>
+<p>MFCC adalah fitur representasi spektrum suara yang meniru cara pendengaran manusia (koklea telinga) mempersepsikan frekuensi. Telinga manusia sangat sensitif membedakan nada pada frekuensi rendah (di bawah <span class="math notranslate nohighlight">\(1000\text{ Hz}\)</span>), tetapi kurang sensitif membedakan perubahan nada pada frekuensi tinggi. Pada data ini, diambil 13 koefisien <code class="docutils literal notranslate"><span class="pre">(n_mfcc=13)</span></code> yang merepresentasikan amplop spektrum (spectral envelope), bentuk timbre suara, dan resonansi akustik. MFCC sangat efektif membedakan “suara manusia yang sedang bersahut-sahutan/bercanda” dari “suara dengung mesin/perangkat lab”, bahkan jika desibel (RMS) AC lab kebetulan cukup keras.</p>
+<p>Cara Kerja Pada Code:</p>
+<p><code class="docutils literal notranslate"><span class="pre">mfcc</span> <span class="pre">=</span> <span class="pre">librosa.feature.mfcc(y=y,</span> <span class="pre">sr=sr,</span> <span class="pre">n_mfcc=13)</span></code></p>
+<p>Penjelasan:</p>
+<p>Output mfcc berbentuk matriks <span class="math notranslate nohighlight">\((13 \times M)\)</span>, di mana baris 1 s.d. 13 adalah koefisien <code class="docutils literal notranslate"><span class="pre">mfcc_1</span></code> sampai <code class="docutils literal notranslate"><span class="pre">mfcc_13</span></code>, dan kolom <span class="math notranslate nohighlight">\(M\)</span> adalah jumlah frame.</p>
+</section>
+<section id="id4">
+<h5>b. Rumus Matematis<a class="headerlink" href="#id4" title="Link to this heading">#</a></h5>
+<p>Proses pembentukan MFCC terdiri dari 5 tahapan berurutan:</p>
+<ol class="arabic simple">
+<li><p>Fourier Transform (STFT)</p></li>
+</ol>
+<p>Sinyal per-frame diubah ke spektrum daya (Power Spectrum):</p>
+<div class="math notranslate nohighlight">
+\[P(k) = \vert{}S(k)\vert{}^2\]</div>
+<ol class="arabic simple" start="2">
+<li><p>Konversi ke skala Mel</p></li>
+</ol>
+<p>Frekuensi <span class="math notranslate nohighlight">\(f\)</span> (dalam Hz) diubah ke skala Mel <span class="math notranslate nohighlight">\(m\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[m = 2595 \cdot \log_{10} \left(1 + \frac{f}{700}\right)\]</div>
+<ol class="arabic simple" start="3">
+<li><p>Mel-Filterbank:</p></li>
+</ol>
+<p>Spektrum daya dilewatkan pada susunan filter segitiga (biasanya 40 atau 128 filter Mel). Energi pada setiap filter ke-<span class="math notranslate nohighlight">\(m\)</span> dijumlahkan:</p>
+<div class="math notranslate nohighlight">
+\[E(m) = \sum_{k} P(k) \cdot H_m(k)\]</div>
+<ol class="arabic simple" start="4">
+<li><p>Logarithmic Compression:</p></li>
+</ol>
+<p>Mengambil logaritma dari energi filterbank (karena telinga manusia mendengar kenyaringan suara secara logaritmik/desibel):</p>
+<div class="math notranslate nohighlight">
+\[\widetilde{E}(m) = \ln(E(m))\]</div>
+<ol class="arabic simple" start="5">
+<li><p>Discrete Cosine Transform (DCT):</p></li>
+</ol>
+<p>DCT diterapkan pada energi logaritma tersebut untuk mereduksi korelasi antar filter dan memisahkan amplop spektrum:</p>
+<div class="math notranslate nohighlight">
+\[c_n = \sum_{m=1}^{M_{\text{filters}}} \widetilde{E}(m) \cdot \cos\left[ \frac{\pi n}{M_{\text{filters}}} \left(m - \frac{1}{2}\right) \right]\]</div>
+<p>Di mana <span class="math notranslate nohighlight">\(n = 1, 2, \dots, 13\)</span> adalah koefisien MFCC ke-<span class="math notranslate nohighlight">\(n\)</span>.</p>
+</section>
+<section id="id5">
+<h5>c. Contoh Perhitungan Manual<a class="headerlink" href="#id5" title="Link to this heading">#</a></h5>
+<p>Misalkan setelah melalui Mel-Filterbank dan logaritma, didapatkan nilai log-energi pada 3 filter Mel (<span class="math notranslate nohighlight">\(M_{\text{filters}} = 3\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[\widetilde{E} = [\widetilde{E}_1, \widetilde{E}_2, \widetilde{E}_3] = [3.0, 2.0, 1.0]\]</div>
+<p>Kita hitung koefisien MFCC ke-1 (<span class="math notranslate nohighlight">\(n = 1\)</span>):</p>
+<p>Rumus per suku:</p>
+<div class="math notranslate nohighlight">
+\[c_1 = \sum_{m=1}^{3} \widetilde{E}_m \cdot \cos\left( \frac{\pi \cdot 1}{3} \left(m - 0.5\right) \right)\]</div>
+<ul class="simple">
+<li><p>Untuk <span class="math notranslate nohighlight">\(m = 1\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{sudut} = \frac{\pi}{3}(1 - 0.5) = \frac{\pi}{6} = 30^\circ \implies \cos(30^\circ) \approx 0.866\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Suku 1} = 3.0 \times 0.866 = 2.598\]</div>
+<ul class="simple">
+<li><p>Untuk <span class="math notranslate nohighlight">\(m = 2\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{sudut} = \frac{\pi}{3}(2 - 0.5) = \frac{\pi}{2} = 90^\circ \implies \cos(90^\circ) = 0\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Suku 2} = 2.0 \times 0 = 0\]</div>
+<ul class="simple">
+<li><p>Untuk <span class="math notranslate nohighlight">\(m = 3\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{sudut} = \frac{\pi}{3}(3 - 0.5) = \frac{5\pi}{6} = 150^\circ \implies \cos(150^\circ) \approx -0.866\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Suku 3} = 1.0 \times (-0.866) = -0.866\]</div>
+<ul class="simple">
+<li><p>Hasil <span class="math notranslate nohighlight">\(c_1\)</span> (MFCC 1):</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[c_1 = 2.598 + 0 + (-0.866) = 1.732\]</div>
+<p>Proses yang sama diulang untuk <span class="math notranslate nohighlight">\(n = 2, 3, \dots, 13\)</span> untuk menghasilkan 13 koefisien MFCC.</p>
+</section>
+</section>
+</section>
+<section id="visualisasi-time-series-fitur">
+<h3>2.3 Visualisasi Time-Series Fitur<a class="headerlink" href="#visualisasi-time-series-fitur" title="Link to this heading">#</a></h3>
+<p>Visualisasi time-series membedah perilaku audio secara dinamis per jendela waktu (time-frame):</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Waveform</span></code> (Amplitudo vs Waktu): Memetakan deviasi tekanan udara. Audio berisik memiliki kerapatan amplitudo tinggi sepanjang rekaman.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RMS</span></code> vs <code class="docutils literal notranslate"><span class="pre">Waktu</span></code>: Menampilkan fluktuasi energi sesaat; puncak-puncak tajam menandai suara impulsif atau desau konstan.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Spectral</span> <span class="pre">Centroid</span></code> vs <code class="docutils literal notranslate"><span class="pre">Waktu</span></code>: Menunjukkan variasi pusat frekuensi dari waktu ke waktu.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Zero</span> <span class="pre">Crossing</span> <span class="pre">Rate</span></code> vs <code class="docutils literal notranslate"><span class="pre">Waktu</span></code>: Menilai tingkat keacakan sinyal audio sepanjang durasi rekaman.</p></li>
+</ol>
+<section id="visualisasi-menggunakan-sample-berisik">
+<h4>2.3.1 Visualisasi Menggunakan Sample <code class="docutils literal notranslate"><span class="pre">berisik</span></code><a class="headerlink" href="#visualisasi-menggunakan-sample-berisik" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">librosa.display</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># 1. Muat file audio</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;berisik/24-003 berisik (1).mp3&quot;</span>  <span class="c1"># Ganti dengan file audio Anda</span>
+<span class="n">y</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="mi">22050</span><span class="p">)</span>
+
+<span class="c1"># 2. Ekstraksi fitur per-frame (jangan dirata-ratakan)</span>
+<span class="n">rms</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">rms</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">centroid</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_centroid</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">zcr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">zero_crossing_rate</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># 3. Hitung sumbu waktu (detik) untuk tiap frame</span>
+<span class="n">frames</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rms</span><span class="p">))</span>
+<span class="n">t_frames</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">frames_to_time</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)</span>
+<span class="n">t_wave</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">sr</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+<span class="c1"># 4. Plot Visualisasi Time Series</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Subplot 1: Waveform (Bentuk Gelombang Amplitudo)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_wave</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Waveform (Amplitudo vs Waktu)&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Amplitudo&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># Subplot 2: RMS (Energi / Kenyaringan Suara)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_frames</span><span class="p">,</span> <span class="n">rms</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Root Mean Square (RMS / Kenyaringan) vs Waktu&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;RMS&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># Subplot 3: Spectral Centroid (Kecerahan Frekuensi)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_frames</span><span class="p">,</span> <span class="n">centroid</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Spectral Centroid (Hz) vs Waktu&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frekuensi (Hz)&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># Subplot 4: Zero Crossing Rate</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_frames</span><span class="p">,</span> <span class="n">zcr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Zero Crossing Rate (ZCR) vs Waktu&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Waktu (detik)&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;ZCR&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\LENOVO\miniforge3\Lib\site-packages\tqdm\auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div>
+</div>
+<img alt="../_images/5bbfdd7ef43e1e9f7a7e5bf4471fc489ac18742c12f26a3a6b37afecce8ddbbf.png" src="../_images/5bbfdd7ef43e1e9f7a7e5bf4471fc489ac18742c12f26a3a6b37afecce8ddbbf.png" />
+</div>
+</div>
+</section>
+<section id="visualisasi-menggunakan-sample-non-berisik">
+<h4>2.3.2 Visualisasi Menggunakan Sample <code class="docutils literal notranslate"><span class="pre">non-berisik</span></code><a class="headerlink" href="#visualisasi-menggunakan-sample-non-berisik" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">librosa.display</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># 1. Muat file audio</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;non-berisik/24-003 sunyi 2.mp3&quot;</span>  <span class="c1"># Ganti dengan file audio Anda</span>
+<span class="n">y</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="mi">22050</span><span class="p">)</span>
+
+<span class="c1"># 2. Ekstraksi fitur per-frame (jangan dirata-ratakan)</span>
+<span class="n">rms</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">rms</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">centroid</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_centroid</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">zcr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">zero_crossing_rate</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># 3. Hitung sumbu waktu (detik) untuk tiap frame</span>
+<span class="n">frames</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rms</span><span class="p">))</span>
+<span class="n">t_frames</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">frames_to_time</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)</span>
+<span class="n">t_wave</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">sr</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+<span class="c1"># 4. Plot Visualisasi Time Series</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Subplot 1: Waveform (Bentuk Gelombang Amplitudo)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_wave</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Waveform (Amplitudo vs Waktu)&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Amplitudo&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># Subplot 2: RMS (Energi / Kenyaringan Suara)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_frames</span><span class="p">,</span> <span class="n">rms</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Root Mean Square (RMS / Kenyaringan) vs Waktu&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;RMS&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># Subplot 3: Spectral Centroid (Kecerahan Frekuensi)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_frames</span><span class="p">,</span> <span class="n">centroid</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Spectral Centroid (Hz) vs Waktu&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frekuensi (Hz)&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># Subplot 4: Zero Crossing Rate</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_frames</span><span class="p">,</span> <span class="n">zcr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Zero Crossing Rate (ZCR) vs Waktu&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Waktu (detik)&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;ZCR&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/40f48f67d3966a17bb1a3d15e08880657d464fc714e8560dc0c057a3b954921b.png" src="../_images/40f48f67d3966a17bb1a3d15e08880657d464fc714e8560dc0c057a3b954921b.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="preprocessing-ekstraksi-fitur">
+<h2>3. PreProcessing &amp; Ekstraksi Fitur<a class="headerlink" href="#preprocessing-ekstraksi-fitur" title="Link to this heading">#</a></h2>
+<p>Memuat file audio <code class="docutils literal notranslate"><span class="pre">.mp3</span></code> kondisi lab UTM menggunakan pustaka <code class="docutils literal notranslate"><span class="pre">librosa</span></code> pada sampling rate terstandarisasi <span class="math notranslate nohighlight">\(22050\text{ Hz}\)</span>. Mengekstraksi parameter numerik yaitu <code class="docutils literal notranslate"><span class="pre">RMS</span></code>, <code class="docutils literal notranslate"><span class="pre">Spectral</span> <span class="pre">Centroid</span></code>, <code class="docutils literal notranslate"><span class="pre">ZCR</span></code>, dan <code class="docutils literal notranslate"><span class="pre">13</span> <span class="pre">koefisien</span> <span class="pre">MFCC</span></code> (total 16 fitur). Melakukan averaging (rata-rata per file audio) guna merepresentasikan karakteristik satu file ke dalam satu baris data tabular.</p>
+<section id="ekstraksi-fitur-audio-berlabel-berisik">
+<h3>3.1 Ekstraksi Fitur Audio Berlabel <code class="docutils literal notranslate"><span class="pre">berisik</span></code><a class="headerlink" href="#ekstraksi-fitur-audio-berlabel-berisik" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_features_from_mp3_folder</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;berisik&quot;</span><span class="p">):</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder_path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.mp3&#39;</span><span class="p">):</span>
+            <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+            
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Muat file MP3</span>
+                <span class="n">y</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="mi">22050</span><span class="p">)</span>
+
+                <span class="c1"># Ekstraksi 4 fitur utama</span>
+                <span class="n">rms</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">rms</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+                <span class="n">centroid</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_centroid</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)</span>
+                <span class="n">zcr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">zero_crossing_rate</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+                <span class="n">mfcc</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">mfcc</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">n_mfcc</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+                <span class="n">row_data</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="n">file</span><span class="p">,</span>
+                    <span class="s1">&#39;rms&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rms</span><span class="p">),</span>
+                    <span class="s1">&#39;centroid&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">centroid</span><span class="p">),</span>
+                    <span class="s1">&#39;zcr&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">zcr</span><span class="p">),</span>
+                    <span class="p">}</span>
+
+                <span class="c1"># Masukkan 13 koefisien MFCC langsung</span>
+                <span class="n">mfcc_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mfcc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mfcc_mean</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">row_data</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;mfcc_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+                <span class="c1"># Masukkan label di akhir dictionary</span>
+                <span class="n">row_data</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+
+                <span class="n">dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_data</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Selesai: </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error memproses </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+<span class="c1"># Jalankan untuk folder yang diinginkan</span>
+<span class="n">folder_mp3</span> <span class="o">=</span> <span class="s2">&quot;berisik&quot;</span>
+<span class="n">label_target</span> <span class="o">=</span> <span class="s2">&quot;berisik&quot;</span>  <span class="c1"># Sesuaikan label kelasnya</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">extract_features_from_mp3_folder</span><span class="p">(</span><span class="n">folder_mp3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label_target</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;fitur_mp3_berisik.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Data berhasil disimpan ke &#39;fitur_mp3_berisik.csv&#39;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Selesai: 24-003 berisik (1).mp3
+Selesai: 24-003 berisik (2).mp3
+Selesai: 24-003 berisik (3).mp3
+Selesai: 24-006 berisik 1.mp3
+Selesai: 24-006 berisik 2.mp3
+Selesai: 24-006 berisik 3.mp3
+Selesai: 24-007 berisikk 1.mp3
+Selesai: 24-007 berisikkk 2.mp3
+Selesai: 24-007 berisikkk 3.mp3
+Selesai: 24-026 berisik 1.mp3
+Selesai: 24-026 berisik 2.mp3
+Selesai: 24-026 berisik 3.mp3
+Selesai: 24-027_berisik1.mp3
+Selesai: 24-027_berisik2.mp3
+Selesai: 24-027_berisik3.mp3
+Selesai: 24-031 berisik 1.mp3
+Selesai: 24-031 berisik 2.mp3
+Selesai: 24-031 berisik 3.mp3
+Selesai: 24-034 berisik 1.mp3
+Selesai: 24-034 berisik 2.mp3
+Selesai: 24-034 berisik 3.mp3
+Selesai: 24-053 berisik 1.mp3
+Selesai: 24-053 berisik 3.mp3
+Selesai: 24-068 Berisik 1.mp3
+Selesai: 24-068 Berisik 2.mp3
+Selesai: 24-068 Berisik 3.mp3
+Selesai: 24-071 berisik 1.mp3
+Selesai: 24-071 berisik 2.mp3
+Selesai: 24-071 berisik 3.mp3
+Selesai: 24-078_Berisik 1.mp3
+Selesai: 24-078_Berisik 2.mp3
+Selesai: 24-078_Berisik 3.mp3
+Selesai: 24-079 berisik 1.mp3
+Selesai: 24-079 berisik 2.mp3
+Selesai: 24-079 berisik 3.mp3
+Selesai: 24-081 berisik 1.mp3
+Selesai: 24-081 berisik 2.mp3
+Selesai: 24-081 berisik 3.mp3
+Selesai: 24-087 berisik 1.mp3
+Selesai: 24-087 berisik 2.mp3
+Selesai: 24-087 berisik 3.mp3
+Selesai: 24-098 berisik 1.mp3
+Selesai: 24-098 berisik 2.mp3
+Selesai: 24-098 berisik 3.mp3
+Selesai: 24-100 berisik 1.mp3
+Selesai: 24-100 berisik 2.mp3
+Selesai: 24-100 berisik 3.mp3
+Selesai: 24-101_rame 1.mp3
+Selesai: 24-101_rame 2.mp3
+Selesai: 24-101_rame 3.mp3
+Selesai: 24-115 sampel berisik 3.mp3
+Selesai: 24-115_Sampel berisik 1.mp3
+Selesai: 24-115_sampel berisik 2.mp3
+Selesai: 24-118 berisik 1.mp3
+Selesai: 24-118 berisik 2.mp3
+Selesai: 24-118 berisik 3.mp3
+Selesai: 24-119 berisik 1.mp3
+Selesai: 24-119 berisik 2.mp3
+Selesai: 24-119 berisik 3.mp3
+Selesai: 24-123 berisik 1.mp3
+Selesai: 24-123 berisik 3.mp3
+Selesai: 24-125_Berisik-1.mp3
+Selesai: 24-125_Berisik-2.mp3
+Selesai: 24-125_Berisik-3.mp3
+Selesai: 24-131 berisik 1.mp3
+Selesai: 24-131 berisik 2.mp3
+Selesai: 24-131 berisik 3.mp3
+Selesai: 24-137 berisik 1.mp3
+Selesai: 24-137 berisik 2.mp3
+Selesai: 24-137 berisik 3.mp3
+Selesai: 24-141 berisik (1).mp3
+Selesai: 24-141 berisik (2).mp3
+Selesai: 24-141 berisik (3).mp3
+Selesai: 24-145 berisik 1.mp3
+Selesai: 24-145 berisik 2.mp3
+Selesai: 24-145 berisik 3.mp3
+Selesai: 24-157 Berisik 1.mp3
+Selesai: 24-157 Berisik 2.mp3
+Selesai: 24-157 Berisik 3.mp3
+Selesai: 24-168_Berisik.mp3
+Selesai: 24-168_Berisik1.mp3
+Selesai: 24-168_Berisik2.mp3
+Selesai: 24-169_berisik 3.mp3
+Selesai: 24-179 berisik 1.mp3
+Selesai: 24-179 berisik 2.mp3
+Selesai: 24-179 berisik 3.mp3
+Selesai: 24-190 berisik 1.mp3
+Selesai: 24-190 berisik 2.mp3
+Selesai: 24-190 berisik 3.mp3
+Selesai: 24-196 berisik 1.mp3
+Selesai: 24-196 berisik 2.mp3
+Selesai: 24-196 berisik 3.mp3
+Selesai: 24-201 berisik 1.mp3
+Selesai: 24-201 berisik 2.mp3
+Selesai: 24-201 berisik 3.mp3
+Selesai: 24-202_berisik 1.MP3
+Selesai: 24-202_berisik 2.MP3
+Selesai: 24-202_berisik 3.MP3
+Selesai: 24-228 berisik 2.mp3
+Selesai: 24-228 berisik 3.mp3
+
+Data berhasil disimpan ke &#39;fitur_mp3_berisik.csv&#39;
+                 filename       rms     centroid       zcr      mfcc_1  \
+0  24-003 berisik (1).mp3  0.041927  1776.163429  0.080559 -250.627151   
+1  24-003 berisik (2).mp3  0.077233  2139.964632  0.154330 -249.558960   
+2  24-003 berisik (3).mp3  0.052135  2903.134804  0.247083 -293.058319   
+3    24-006 berisik 1.mp3  0.040988  1633.079897  0.073244 -222.703964   
+4    24-006 berisik 2.mp3  0.031052  1556.646616  0.066416 -268.134918   
+
+       mfcc_2     mfcc_3     mfcc_4     mfcc_5     mfcc_6     mfcc_7  \
+0  120.914436  -9.590172  27.369043 -20.541693   5.484090 -32.874554   
+1  102.709534 -37.556194  50.116222 -44.167381  -9.462996  -6.492321   
+2   76.971207 -41.692486  66.040207 -49.335503  13.920297   2.662207   
+3  135.411743 -18.900648  16.273146  -5.238391 -16.367920 -10.030425   
+4  138.813049 -14.539213  12.454968  -5.976729 -10.712892  -7.195327   
+
+      mfcc_8     mfcc_9   mfcc_10   mfcc_11   mfcc_12    mfcc_13    label  
+0   9.873696 -26.182013  0.607527 -6.765872 -3.110506 -12.017166  berisik  
+1 -30.143507  -7.921756 -5.370039 -9.528197 -4.491858 -10.374249  berisik  
+2 -30.004095   8.760519 -5.757773 -7.517850  5.630898 -12.978749  berisik  
+3 -14.209368  -8.115923 -4.073036 -8.133345 -6.630834 -10.592667  berisik  
+4  -9.759558  -6.152554 -4.901328 -9.027675 -8.292122 -11.157440  berisik  
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ekstraksi-fitur-audio-berlabel-non-berisik">
+<h3>3.2 Ekstraksi Fitur Audio Berlabel <code class="docutils literal notranslate"><span class="pre">non-berisik</span></code><a class="headerlink" href="#ekstraksi-fitur-audio-berlabel-non-berisik" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_features_from_mp3_folder</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;non-berisik&quot;</span><span class="p">):</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder_path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.mp3&#39;</span><span class="p">):</span>
+            <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+            
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Muat file MP3</span>
+                <span class="n">y</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="mi">22050</span><span class="p">)</span>
+
+                <span class="c1"># Ekstraksi 4 fitur utama</span>
+                <span class="n">rms</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">rms</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+                <span class="n">centroid</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_centroid</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)</span>
+                <span class="n">zcr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">zero_crossing_rate</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+                <span class="n">mfcc</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">mfcc</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">n_mfcc</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+                <span class="n">row_data</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="n">file</span><span class="p">,</span>
+                    <span class="s1">&#39;rms&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rms</span><span class="p">),</span>
+                    <span class="s1">&#39;centroid&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">centroid</span><span class="p">),</span>
+                    <span class="s1">&#39;zcr&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">zcr</span><span class="p">),</span>
+                    <span class="p">}</span>
+
+                <span class="c1"># Masukkan 13 koefisien MFCC langsung</span>
+                <span class="n">mfcc_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mfcc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mfcc_mean</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">row_data</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;mfcc_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+                <span class="c1"># Masukkan label di akhir dictionary</span>
+                <span class="n">row_data</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+
+                <span class="n">dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_data</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Selesai: </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error memproses </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+<span class="c1"># Jalankan untuk folder yang diinginkan</span>
+<span class="n">folder_mp3</span> <span class="o">=</span> <span class="s2">&quot;non-berisik&quot;</span>
+<span class="n">label_target</span> <span class="o">=</span> <span class="s2">&quot;non-berisik&quot;</span>  <span class="c1"># Sesuaikan label kelasnya</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">extract_features_from_mp3_folder</span><span class="p">(</span><span class="n">folder_mp3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label_target</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;fitur_mp3_non_berisik.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Data berhasil disimpan ke &#39;fitur_mp3_non_berisik.csv&#39;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Selesai: 24-003 sunyi 2.mp3
+Selesai: 24-003 sunyi 3.mp3
+Selesai: 24-006 non-berisik 1.mp3
+Selesai: 24-006 non-berisik 2.mp3
+Selesai: 24-006 non-berisik 3.mp3
+Selesai: 24-007 non-berisik 1.mp3
+Selesai: 24-007 non-berisik 2.mp3
+Selesai: 24-007 non-berisik 3.mp3
+Selesai: 24-026 non-berisik 1.mp3
+Selesai: 24-026 non-berisik 2.mp3
+Selesai: 24-026 non-berisik 3.mp3
+Selesai: 24-027_non-berisik1.mp3
+Selesai: 24-027_non-berisik2.mp3
+Selesai: 24-027_non-berisik3.mp3
+Selesai: 24-031 non-berisik 1.mp3
+Selesai: 24-031 non-berisik 2.mp3
+Selesai: 24-031 non-berisik 3.mp3
+Selesai: 24-034 non-berisik 1.mp3
+Selesai: 24-034 non-berisik 2.mp3
+Selesai: 24-034 non-berisik 3.mp3
+Selesai: 24-053 non-berisik 1.mp3
+Selesai: 24-053 non-berisik 2.mp3
+Selesai: 24-053 non-berisik 3.mp3
+Selesai: 24-068 non-berisik 1.mp3
+Selesai: 24-068 non-berisik 2.mp3
+Selesai: 24-068 non-berisik 3.mp3
+Selesai: 24-071 non berisik 1.mp3
+Selesai: 24-071 non berisik 2.mp3
+Selesai: 24-071 non berisik 3.mp3
+Selesai: 24-078_NonBerisik 1.mp3
+Selesai: 24-078_NonBerisik 2.mp3
+Selesai: 24-078_NonBerisik 3.mp3
+Selesai: 24-079  non-berisik 1.mp3
+Selesai: 24-079  non-berisik 2.mp3
+Selesai: 24-079  non-berisik 3.mp3
+Selesai: 24-081 non-berisik 1.mp3
+Selesai: 24-081 non-berisik 2.mp3
+Selesai: 24-081 non-berisik 3.mp3
+Selesai: 24-087 non berisik 1.mp3
+Selesai: 24-087 non berisik 2.mp3
+Selesai: 24-087 non berisik 3.mp3
+Selesai: 24-098 non-berisik 1.mp3
+Selesai: 24-098 non-berisik 2.mp3
+Selesai: 24-098 non-berisik 3.mp3
+Selesai: 24-100 non-berisik 1.mp3
+Selesai: 24-100 non-berisik 2.mp3
+Selesai: 24-100 non-berisik 3.mp3
+Selesai: 24-101_sepi 1.mp3
+Selesai: 24-101_sepi 2.mp3
+Selesai: 24-101_sepi 3.mp3
+Selesai: 24-115_ sampel non berisik 1.mp3
+Selesai: 24-115_sampel no berisik 3.mp3
+Selesai: 24-115_sampel non berisik 2.mp3
+Selesai: 24-118 non-berisik 1.mp3
+Selesai: 24-118 non-berisik 3.mp3
+Selesai: 24-118_ga_rame_part2.mp3
+Selesai: 24-119 non-berisik 1.mp3
+Selesai: 24-119 non-berisik 2.mp3
+Selesai: 24-119 non-berisik 3.mp3
+Selesai: 24-125_Non-Berisik-1.mp3
+Selesai: 24-125_Non-Berisik-2.mp3
+Selesai: 24-125_Non-Berisik-3.mp3
+Selesai: 24-131 non-berisik 1.mp3
+Selesai: 24-131 non-berisik 2.mp3
+Selesai: 24-131 non-berisik 3.mp3
+Selesai: 24-137 non-berisik 1.mp3
+Selesai: 24-137 non-berisik 2.mp3
+Selesai: 24-137 non-berisik 3.mp3
+Selesai: 24-141 non-berisik (1).mp3
+Selesai: 24-141 non-berisik (2).mp3
+Selesai: 24-141 non-berisik (3).mp3
+Selesai: 24-145 _non-berisik 1 .mp3
+Selesai: 24-145 _non-berisik 3.mp3
+Selesai: 24-145 _non-berisik2.mp3
+Selesai: 24-157 non  berisik 1.mp3
+Selesai: 24-157 non berisik 2.mp3
+Selesai: 24-157 non-berisik 3.mp3
+Selesai: 24-168_Non-Berisik.mp3
+Selesai: 24-168_Non-Berisik1.mp3
+Selesai: 24-168_Non-Berisik2.mp3
+Selesai: 24-169 non berisik 1.mp3
+Selesai: 24-169_non berisik 2.mp3
+Selesai: 24-169_non berisik 3.mp3
+Selesai: 24-179 sepi 1.mp3
+Selesai: 24-179 sepi 2.mp3
+Selesai: 24-179 sepi 3.mp3
+Selesai: 24-190 non-berisik 1.mp3
+Selesai: 24-190 non-berisik 2.mp3
+Selesai: 24-190 non-berisik 3.mp3
+Selesai: 24-196 non berisik 1.mp3
+Selesai: 24-196 non berisik 2.mp3
+Selesai: 24-196 non berisik 3.mp3
+Selesai: 24-201 non berisik 1.mp3
+Selesai: 24-201 non berisik 2.mp3
+Selesai: 24-201 non berisik 3.mp3
+Selesai: 24-202_non berisik 1.MP3
+Selesai: 24-202_non berisik 2.MP3
+Selesai: 24-202_non berisik 3.MP3
+Selesai: 24-228 non-berisik 2.mp3
+Selesai: 24-228 non-berisik 3.mp3
+
+Data berhasil disimpan ke &#39;fitur_mp3_non_berisik.csv&#39;
+                   filename       rms     centroid       zcr      mfcc_1  \
+0        24-003 sunyi 2.mp3  0.021035  1726.611800  0.084064 -326.731201   
+1        24-003 sunyi 3.mp3  0.015946  1788.419223  0.099719 -429.050476   
+2  24-006 non-berisik 1.mp3  0.007561  1166.126124  0.049150 -445.210205   
+3  24-006 non-berisik 2.mp3  0.011549  1580.709569  0.069997 -328.207153   
+4  24-006 non-berisik 3.mp3  0.001085  1207.141482  0.051948 -609.900024   
+
+       mfcc_2     mfcc_3     mfcc_4     mfcc_5    mfcc_6     mfcc_7  \
+0  135.663147  -1.363045  20.251846 -24.477364  5.254280 -37.513248   
+1  116.019875 -16.015259  53.491116 -14.354749  6.330445   4.649079   
+2  167.584244  14.228352  -1.109438  -0.593798 -0.335853  -1.984317   
+3  137.426117 -23.207958  35.640038   7.475575 -0.552915  -0.447093   
+4  164.415436   4.509985   3.458214  -0.161325  0.808937  -2.141632   
+
+      mfcc_8     mfcc_9   mfcc_10    mfcc_11   mfcc_12    mfcc_13        label  
+0  15.586481 -33.115509  0.012472 -13.534455 -7.205749  -6.263880  non-berisik  
+1 -23.042854   6.229817 -5.501351  -4.804015  3.700076  -5.798766  non-berisik  
+2   1.350621  -4.895419 -3.191066  -7.520096 -2.943910 -10.746140  non-berisik  
+3   5.640928  -1.257809 -2.954595  -6.249613 -0.882307  -7.658722  non-berisik  
+4  -1.428731  -2.353710 -2.041852  -3.341058 -2.720376  -7.138988  non-berisik  
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="penggabungan-file-berlabel-berisik-dan-non-berisik">
+<h3>3.3 Penggabungan File berlabel <code class="docutils literal notranslate"><span class="pre">berisik</span></code> dan <code class="docutils literal notranslate"><span class="pre">non-berisik</span></code><a class="headerlink" href="#penggabungan-file-berlabel-berisik-dan-non-berisik" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># 1. Baca kedua file CSV hasil ekstraksi</span>
+<span class="n">df_berisik</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;fitur_mp3_berisik.csv&quot;</span><span class="p">)</span>
+<span class="n">df_non_berisik</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;fitur_mp3_non_berisik.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># 2. Pastikan kolom label sudah terisi dengan benar (opsional jika sudah ada)</span>
+<span class="n">df_berisik</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;berisik&#39;</span>
+<span class="n">df_non_berisik</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;non-berisik&#39;</span>
+
+<span class="c1"># 3. Gabungkan kedua dataframe menjadi satu</span>
+<span class="n">df_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_berisik</span><span class="p">,</span> <span class="n">df_non_berisik</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 4. Acak urutan baris data agar label tidak berkumpul di satu sisi (disarankan)</span>
+<span class="n">df_final</span> <span class="o">=</span> <span class="n">df_final</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 5. Simpan ke satu file CSV utama</span>
+<span class="n">df_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;dataset_audio_final.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Penggabungan selesai!&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total baris data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_final</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Distribusi kelas:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Contoh 5 baris pertama:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_final</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Penggabungan selesai!
+Total baris data: 200
+
+Distribusi kelas:
+label
+berisik        100
+non-berisik    100
+Name: count, dtype: int64
+
+Contoh 5 baris pertama:
+                   filename       rms     centroid       zcr      mfcc_1  \
+0      24-202_berisik 1.MP3  0.039446  2332.918964  0.112436 -223.110340   
+1      24-031 berisik 1.mp3  0.244896  1739.843446  0.070094  -62.173183   
+2      24-078_Berisik 2.mp3  0.089509  1789.151732  0.102397 -202.780530   
+3  24-119 non-berisik 3.mp3  0.029280  1930.658290  0.076982 -250.625000   
+4  24-071 non berisik 3.mp3  0.007862  2286.734913  0.076706 -366.981500   
+
+       mfcc_2     mfcc_3     mfcc_4     mfcc_5     mfcc_6     mfcc_7  \
+0   95.422646 -18.105993  14.040424 -11.892736 -11.998929  -7.546864   
+1  121.653680  -0.846771  19.761806   6.068880   0.267776  -3.729231   
+2  114.147804 -44.899210  19.832167 -26.086739  -2.822680 -11.758299   
+3  115.553170  -4.067587  24.176480  -1.427832  -5.453652  -9.229185   
+4   94.904400  20.217993  13.697345   8.323528   9.186717   6.357799   
+
+      mfcc_8     mfcc_9   mfcc_10    mfcc_11   mfcc_12    mfcc_13        label  
+0 -15.916689 -13.008577 -0.519287 -16.003721 -2.946146 -14.215968      berisik  
+1  -1.174192  -8.582246  5.158830  -2.388205  0.267583  -1.905865      berisik  
+2 -14.014122 -10.631048  1.085060  -4.357111 -5.749655  -4.889346      berisik  
+3  -8.681022 -11.794099  0.539244 -13.292537 -0.073057 -11.509541  non-berisik  
+4   7.347946  -2.686240  4.684205   1.323113  3.543107  -1.113313  non-berisik  
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="seleksi-fitur">
+<h3>3.4 Seleksi Fitur<a class="headerlink" href="#seleksi-fitur" title="Link to this heading">#</a></h3>
+<p>Dalam pengembangan sistem klasifikasi audio laboratorium Universitas Trunojoyo Madura ini, tidak dilakukan seleksi fitur menggunakan metode apapun. Berdasarkan eksperimen dan pengujian empiris yang telah dilakukan, penerapan seleksi fitur justru berdampak negatif terhadap performa model, di mana akurasi klasifikasi SVM mengalami penurunan yang signifikan.</p>
+<p>Alasan utama mengapa seluruh 16 fitur dipertahankan secara utuh (full-feature set) karena Ke-16 fitur yang diekstraksi—yang mencakup RMS (energi/kenyaringan), Spectral Centroid (titik berat frekuensi), ZCR (tingkat perpotongan nol), serta 13 koefisien MFCC—masing-masing membawa informasi karakteristik spektral dan temporal yang spesifik dari suara lingkungan laboratorium UTM (seperti dengungan perangkat lab vs suara aktivitas interaksi mahasiswa). Dengan total hanya 16 fitur, dimensi data tergolong sangat kecil dan ringan untuk diproses oleh algoritma SVM. Oleh karena itu, penggunaan seluruh fitur secara langsung (raw features)</p>
+</section>
+</section>
+<section id="pemodelan-menggunakan-support-vector-machine-svm-dan-evaluasi-model">
+<h2>4. Pemodelan Menggunakan Support Vector Machine (SVM) dan Evaluasi Model<a class="headerlink" href="#pemodelan-menggunakan-support-vector-machine-svm-dan-evaluasi-model" title="Link to this heading">#</a></h2>
+<p>Model klasifikasi yang digunakan adalah <strong>Support Vector Machine (SVM)</strong> dengan kernel <strong>Radial Basis Function (RBF)</strong>. Pembagian Data (Data Splitting) <strong>80% data latih (training)</strong> dan <strong>20% data uji (testing)</strong>. Menerapkan <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> agar seluruh rentang fitur memiliki mean nol dan variansi satu, mencegah dominasi skala fitur tertentu terhadap performa SVM. Menggunakan <code class="docutils literal notranslate"><span class="pre">Stratified</span> <span class="pre">K-Fold</span></code> (<span class="math notranslate nohighlight">\(k = 5\)</span>) untuk memastikan distribusi kelas seimbang pada setiap iterasi.</p>
+<p>Setelah dilakukan pemodelan, maka akan dilakukan evaluasi model menggunakan metrik standar klasifikasi (confusion matriks) yang terdiri dari:</p>
+<ul class="simple">
+<li><p>Akurasi (Accuracy): Persentase total prediksi benar terhadap keseluruhan data uji.</p></li>
+<li><p>Presisi (Precision): Ketepatan model dalam memprediksi kelas positif.</p></li>
+<li><p>Recall (Sensitivity): Kemampuan model menemukan kembali suatu kelas tertentu.</p></li>
+<li><p>F1-Score: Perimbangan harmonis antara Presisi dan Recall.</p></li>
+<li><p>Confusion Matrix: Matriks visualisasi performa prediksi benar vs salah untuk tiap kelas.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">joblib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">StratifiedKFold</span><span class="p">,</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.svm</span><span class="w"> </span><span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">confusion_matrix</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">65</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PROSES TRAINING DAN EVALUASI MODEL SVM (16 FITUR)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">65</span><span class="p">)</span>
+
+<span class="c1"># 1. Muat Dataset Final (16 Fitur Asli)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;dataset_audio_final.csv&quot;</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+
+<span class="c1"># 2. Split Data (80% Train, 20% Test)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span>
+<span class="p">)</span>
+
+<span class="c1"># 3. Cetak Jumlah Data Training dan Testing</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Jumlah Data Training (Latih) : </span><span class="si">{</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> sampel&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Jumlah Data Testing (Uji)    : </span><span class="si">{</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> sampel&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">65</span><span class="p">)</span>
+
+<span class="c1"># 4. Standarisasi Fitur</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># 5. Inisialisasi Model Tuned SVM (Parameter optimal: C=2.0, gamma=0.1)</span>
+<span class="n">svm_model</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span>
+    <span class="n">C</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span>
+    <span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">class_weight</span><span class="o">=</span><span class="s1">&#39;balanced&#39;</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+
+<span class="c1"># Cross-Validation 5-Fold</span>
+<span class="n">cv</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">svm_model</span><span class="p">,</span> <span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+
+<span class="c1"># Training Model pada Data Latih</span>
+<span class="n">svm_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Prediksi untuk Evaluasi</span>
+<span class="n">y_train_pred</span> <span class="o">=</span> <span class="n">svm_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">)</span>
+<span class="n">y_test_pred</span> <span class="o">=</span> <span class="n">svm_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)</span>
+
+<span class="n">train_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">)</span>
+<span class="n">test_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skor Cross-Validation (5-Fold) : </span><span class="si">{</span><span class="n">cv_scores</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train Accuracy                 : </span><span class="si">{</span><span class="n">train_acc</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Accuracy                  : </span><span class="si">{</span><span class="n">test_acc</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">65</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Classification Report (pada Data Uji):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">))</span>
+
+<span class="c1"># Visualisasi Confusion Matrix</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
+    <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">),</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span>
+    <span class="n">xticklabels</span><span class="o">=</span><span class="n">svm_model</span><span class="o">.</span><span class="n">classes_</span><span class="p">,</span> <span class="n">yticklabels</span><span class="o">=</span><span class="n">svm_model</span><span class="o">.</span><span class="n">classes_</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Confusion Matrix - Tuned SVM</span><span class="se">\n</span><span class="s2">(Test Accuracy: </span><span class="si">{</span><span class="n">test_acc</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Prediksi Model&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Label Aktual&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 6. Simpan Model, Scaler, dan Nama Kolom Fitur untuk Keperluan Testing</span>
+<span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">svm_model</span><span class="p">,</span> <span class="s2">&quot;svm_audio_model.pkl&quot;</span><span class="p">)</span>
+<span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">scaler</span><span class="p">,</span> <span class="s2">&quot;audio_scaler.pkl&quot;</span><span class="p">)</span>
+<span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="s2">&quot;feature_names.pkl&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model SVM dan artefak pendukung berhasil disimpan!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=================================================================
+PROSES TRAINING DAN EVALUASI MODEL SVM (16 FITUR)
+=================================================================
+Jumlah Data Training (Latih) : 160 sampel
+Jumlah Data Testing (Uji)    : 40 sampel
+-----------------------------------------------------------------
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\LENOVO\miniforge3\Lib\site-packages\sklearn\svm\_base.py:239: FutureWarning: The `probability` parameter was deprecated in 1.9 and will be removed in version 1.11. Use `CalibratedClassifierCV(SVC(), ensemble=False)` instead of `SVC(probability=True)`
+  warnings.warn(
+c:\Users\LENOVO\miniforge3\Lib\site-packages\sklearn\svm\_base.py:239: FutureWarning: The `probability` parameter was deprecated in 1.9 and will be removed in version 1.11. Use `CalibratedClassifierCV(SVC(), ensemble=False)` instead of `SVC(probability=True)`
+  warnings.warn(
+c:\Users\LENOVO\miniforge3\Lib\site-packages\sklearn\svm\_base.py:239: FutureWarning: The `probability` parameter was deprecated in 1.9 and will be removed in version 1.11. Use `CalibratedClassifierCV(SVC(), ensemble=False)` instead of `SVC(probability=True)`
+  warnings.warn(
+c:\Users\LENOVO\miniforge3\Lib\site-packages\sklearn\svm\_base.py:239: FutureWarning: The `probability` parameter was deprecated in 1.9 and will be removed in version 1.11. Use `CalibratedClassifierCV(SVC(), ensemble=False)` instead of `SVC(probability=True)`
+  warnings.warn(
+c:\Users\LENOVO\miniforge3\Lib\site-packages\sklearn\svm\_base.py:239: FutureWarning: The `probability` parameter was deprecated in 1.9 and will be removed in version 1.11. Use `CalibratedClassifierCV(SVC(), ensemble=False)` instead of `SVC(probability=True)`
+  warnings.warn(
+c:\Users\LENOVO\miniforge3\Lib\site-packages\sklearn\svm\_base.py:239: FutureWarning: The `probability` parameter was deprecated in 1.9 and will be removed in version 1.11. Use `CalibratedClassifierCV(SVC(), ensemble=False)` instead of `SVC(probability=True)`
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Skor Cross-Validation (5-Fold) : 85.00%
+Train Accuracy                 : 94.38%
+Test Accuracy                  : 80.00%
+-----------------------------------------------------------------
+
+Classification Report (pada Data Uji):
+              precision    recall  f1-score   support
+
+     berisik       0.88      0.70      0.78        20
+ non-berisik       0.75      0.90      0.82        20
+
+    accuracy                           0.80        40
+   macro avg       0.81      0.80      0.80        40
+weighted avg       0.81      0.80      0.80        40
+</pre></div>
+</div>
+<img alt="../_images/e546ed906513f025ea13bfd0e4cc57959595ca4513ed0ab6c06f5e888478ec3c.png" src="../_images/e546ed906513f025ea13bfd0e4cc57959595ca4513ed0ab6c06f5e888478ec3c.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model SVM dan artefak pendukung berhasil disimpan!
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="uji-testing-model">
+<h2>5. Uji Testing Model<a class="headerlink" href="#uji-testing-model" title="Link to this heading">#</a></h2>
+<p>Dari model yang telah dibuat, maka akan dilakukan pengujian menggunakan file baru ataupun file yang menjadi sample</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">joblib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">predict_single_audio</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fungsi helper untuk memproses dan memprediksi satu file audio.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;File tidak ditemukan: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mf">0.0</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Muat artefak yang tersimpan dari training</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;svm_audio_model.pkl&quot;</span><span class="p">)</span>
+        <span class="n">loaded_scaler</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;audio_scaler.pkl&quot;</span><span class="p">)</span>
+        <span class="n">feature_names</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;feature_names.pkl&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Load file audio (sampling rate 22050 Hz)</span>
+        <span class="n">y_audio</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="mi">22050</span><span class="p">)</span>
+
+        <span class="c1"># Ekstraksi 16 fitur asli (hanya nilai mean)</span>
+        <span class="n">rms</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">rms</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y_audio</span><span class="p">)</span>
+        <span class="n">centroid</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_centroid</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y_audio</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)</span>
+        <span class="n">zcr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">zero_crossing_rate</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y_audio</span><span class="p">)</span>
+        <span class="n">mfcc</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">mfcc</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y_audio</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">n_mfcc</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+        <span class="n">row_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;rms&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rms</span><span class="p">),</span>
+            <span class="s1">&#39;centroid&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">centroid</span><span class="p">),</span>
+            <span class="s1">&#39;zcr&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">zcr</span><span class="p">),</span>
+        <span class="p">}</span>
+        
+        <span class="n">mfcc_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mfcc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mfcc_mean</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">row_data</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;mfcc_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+        <span class="c1"># Susun ke DataFrame sesuai urutan kolom saat training</span>
+        <span class="n">df_input</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">row_data</span><span class="p">])[</span><span class="n">feature_names</span><span class="p">]</span>
+
+        <span class="c1"># Standarisasi dan Prediksi</span>
+        <span class="n">input_scaled</span> <span class="o">=</span> <span class="n">loaded_scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df_input</span><span class="p">)</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">input_scaled</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">confidence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">input_scaled</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
+
+        <span class="k">return</span> <span class="n">prediction</span><span class="p">,</span> <span class="n">confidence</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mf">0.0</span>
+
+
+<span class="c1"># ==========================================</span>
+<span class="c1"># A. PENGUJIAN PER SATU AUDIO (.mp3)</span>
+<span class="c1"># ==========================================</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. PENGUJIAN SATU FILE AUDIO&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="n">test_file</span> <span class="o">=</span> <span class="s2">&quot;berisik/24-003 berisik (1).mp3&quot;</span> 
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Menguji file: </span><span class="si">{</span><span class="n">test_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">hasil_pred</span><span class="p">,</span> <span class="n">keyakinan</span> <span class="o">=</span> <span class="n">predict_single_audio</span><span class="p">(</span><span class="n">test_file</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hasil_pred</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;Error&quot;</span> <span class="ow">in</span> <span class="n">hasil_pred</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">hasil_pred</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; -&gt; Prediksi Kelas   : </span><span class="si">{</span><span class="n">hasil_pred</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; -&gt; Tingkat Keyakinan : </span><span class="si">{</span><span class="n">keyakinan</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># ==========================================</span>
+<span class="c1"># B. PENGUJIAN SEKALIGUS SATU FOLDER + EVALUASI KESALAHAN</span>
+<span class="c1"># ==========================================</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. PENGUJIAN SEKALIGUS SATU FOLDER (DENGAN RINGKASAN EVALUASI)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Tentukan folder yang ingin diuji (Pastikan nama foldernya sama dengan label aktualnya, misal &#39;berisik&#39; atau &#39;non-berisik&#39;)</span>
+<span class="n">test_folder</span> <span class="o">=</span> <span class="s2">&quot;berisik&quot;</span> 
+<span class="n">actual_label</span> <span class="o">=</span> <span class="n">test_folder</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="c1"># Label asli berdasarkan nama folder</span>
+
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">test_folder</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Memindai folder &#39;</span><span class="si">{</span><span class="n">test_folder</span><span class="si">}</span><span class="s2">&#39; (Label Aktual Seharusnya: </span><span class="si">{</span><span class="n">actual_label</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">)...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="n">total_files</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">correct_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">incorrect_count</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">test_folder</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.mp3&#39;</span><span class="p">):</span>
+            <span class="n">total_files</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">path_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">test_folder</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+            <span class="n">pred</span><span class="p">,</span> <span class="n">conf</span> <span class="o">=</span> <span class="n">predict_single_audio</span><span class="p">(</span><span class="n">path_file</span><span class="p">)</span>
+            
+            <span class="c1"># Cek apakah prediksi cocok dengan label folder</span>
+            <span class="k">if</span> <span class="n">pred</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">actual_label</span><span class="p">:</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;BENAR&quot;</span>
+                <span class="n">correct_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;SALAH (Melenceng)&quot;</span>
+                <span class="n">incorrect_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2"> --&gt; Prediksi: </span><span class="si">{</span><span class="n">pred</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">conf</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%) | [</span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+            
+    <span class="c1"># Tampilkan Ringkasan Evaluasi Folder</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RINGKASAN EVALUASI FOLDER:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total File Diuji      : </span><span class="si">{</span><span class="n">total_files</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prediksi Sesuai       : </span><span class="si">{</span><span class="n">correct_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prediksi Meleset (Miss): </span><span class="si">{</span><span class="n">incorrect_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">total_files</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">folder_acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">correct_count</span> <span class="o">/</span> <span class="n">total_files</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Akurasi Folder Ini    : </span><span class="si">{</span><span class="n">folder_acc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Folder &#39;</span><span class="si">{</span><span class="n">test_folder</span><span class="si">}</span><span class="s2">&#39; tidak ditemukan.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==================================================
+1. PENGUJIAN SATU FILE AUDIO
+==================================================
+Menguji file: berisik/24-003 berisik (1).mp3
+ -&gt; Prediksi Kelas   : BERISIK
+ -&gt; Tingkat Keyakinan : 86.17%
+
+==================================================
+2. PENGUJIAN SEKALIGUS SATU FOLDER (DENGAN RINGKASAN EVALUASI)
+==================================================
+Memindai folder &#39;berisik&#39; (Label Aktual Seharusnya: BERISIK)...
+
+ - 24-003 berisik (1).mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-003 berisik (2).mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-003 berisik (3).mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-006 berisik 1.mp3 --&gt; Prediksi: BERISIK (85.65%) | [BENAR]
+ - 24-006 berisik 2.mp3 --&gt; Prediksi: BERISIK (61.39%) | [BENAR]
+ - 24-006 berisik 3.mp3 --&gt; Prediksi: NON-BERISIK (82.10%) | [SALAH (Melenceng)]
+ - 24-007 berisikk 1.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-007 berisikkk 2.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-007 berisikkk 3.mp3 --&gt; Prediksi: BERISIK (86.62%) | [BENAR]
+ - 24-026 berisik 1.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-026 berisik 2.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-026 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-027_berisik1.mp3 --&gt; Prediksi: BERISIK (88.22%) | [BENAR]
+ - 24-027_berisik2.mp3 --&gt; Prediksi: BERISIK (54.03%) | [BENAR]
+ - 24-027_berisik3.mp3 --&gt; Prediksi: NON-BERISIK (64.80%) | [SALAH (Melenceng)]
+ - 24-031 berisik 1.mp3 --&gt; Prediksi: BERISIK (85.98%) | [BENAR]
+ - 24-031 berisik 2.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-031 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-034 berisik 1.mp3 --&gt; Prediksi: BERISIK (52.85%) | [BENAR]
+ - 24-034 berisik 2.mp3 --&gt; Prediksi: BERISIK (53.58%) | [BENAR]
+ - 24-034 berisik 3.mp3 --&gt; Prediksi: NON-BERISIK (73.84%) | [SALAH (Melenceng)]
+ - 24-053 berisik 1.mp3 --&gt; Prediksi: BERISIK (81.56%) | [BENAR]
+ - 24-053 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-068 Berisik 1.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-068 Berisik 2.mp3 --&gt; Prediksi: BERISIK (72.54%) | [BENAR]
+ - 24-068 Berisik 3.mp3 --&gt; Prediksi: BERISIK (78.29%) | [BENAR]
+ - 24-071 berisik 1.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-071 berisik 2.mp3 --&gt; Prediksi: BERISIK (90.98%) | [BENAR]
+ - 24-071 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-078_Berisik 1.mp3 --&gt; Prediksi: BERISIK (87.92%) | [BENAR]
+ - 24-078_Berisik 2.mp3 --&gt; Prediksi: BERISIK (87.72%) | [BENAR]
+ - 24-078_Berisik 3.mp3 --&gt; Prediksi: BERISIK (92.51%) | [BENAR]
+ - 24-079 berisik 1.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-079 berisik 2.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-079 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-081 berisik 1.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-081 berisik 2.mp3 --&gt; Prediksi: BERISIK (92.08%) | [BENAR]
+ - 24-081 berisik 3.mp3 --&gt; Prediksi: BERISIK (91.44%) | [BENAR]
+ - 24-087 berisik 1.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-087 berisik 2.mp3 --&gt; Prediksi: BERISIK (57.93%) | [BENAR]
+ - 24-087 berisik 3.mp3 --&gt; Prediksi: BERISIK (87.94%) | [BENAR]
+ - 24-098 berisik 1.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-098 berisik 2.mp3 --&gt; Prediksi: BERISIK (90.98%) | [BENAR]
+ - 24-098 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-100 berisik 1.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-100 berisik 2.mp3 --&gt; Prediksi: BERISIK (86.19%) | [BENAR]
+ - 24-100 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-101_rame 1.mp3 --&gt; Prediksi: BERISIK (84.09%) | [BENAR]
+ - 24-101_rame 2.mp3 --&gt; Prediksi: NON-BERISIK (78.57%) | [SALAH (Melenceng)]
+ - 24-101_rame 3.mp3 --&gt; Prediksi: BERISIK (61.24%) | [BENAR]
+ - 24-115 sampel berisik 3.mp3 --&gt; Prediksi: BERISIK (76.64%) | [BENAR]
+ - 24-115_Sampel berisik 1.mp3 --&gt; Prediksi: BERISIK (85.96%) | [BENAR]
+ - 24-115_sampel berisik 2.mp3 --&gt; Prediksi: NON-BERISIK (88.46%) | [SALAH (Melenceng)]
+ - 24-118 berisik 1.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-118 berisik 2.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-118 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-119 berisik 1.mp3 --&gt; Prediksi: BERISIK (88.53%) | [BENAR]
+ - 24-119 berisik 2.mp3 --&gt; Prediksi: BERISIK (88.99%) | [BENAR]
+ - 24-119 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.54%) | [BENAR]
+ - 24-123 berisik 1.mp3 --&gt; Prediksi: BERISIK (92.20%) | [BENAR]
+ - 24-123 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-125_Berisik-1.mp3 --&gt; Prediksi: BERISIK (82.17%) | [BENAR]
+ - 24-125_Berisik-2.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-125_Berisik-3.mp3 --&gt; Prediksi: BERISIK (77.09%) | [BENAR]
+ - 24-131 berisik 1.mp3 --&gt; Prediksi: BERISIK (91.83%) | [BENAR]
+ - 24-131 berisik 2.mp3 --&gt; Prediksi: BERISIK (90.32%) | [BENAR]
+ - 24-131 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-137 berisik 1.mp3 --&gt; Prediksi: BERISIK (92.41%) | [BENAR]
+ - 24-137 berisik 2.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-137 berisik 3.mp3 --&gt; Prediksi: BERISIK (92.54%) | [BENAR]
+ - 24-141 berisik (1).mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-141 berisik (2).mp3 --&gt; Prediksi: BERISIK (87.87%) | [BENAR]
+ - 24-141 berisik (3).mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-145 berisik 1.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-145 berisik 2.mp3 --&gt; Prediksi: BERISIK (90.64%) | [BENAR]
+ - 24-145 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-157 Berisik 1.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-157 Berisik 2.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-157 Berisik 3.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-168_Berisik.mp3 --&gt; Prediksi: NON-BERISIK (85.19%) | [SALAH (Melenceng)]
+ - 24-168_Berisik1.mp3 --&gt; Prediksi: NON-BERISIK (86.95%) | [SALAH (Melenceng)]
+ - 24-168_Berisik2.mp3 --&gt; Prediksi: NON-BERISIK (83.05%) | [SALAH (Melenceng)]
+ - 24-169_berisik 3.mp3 --&gt; Prediksi: BERISIK (89.37%) | [BENAR]
+ - 24-179 berisik 1.mp3 --&gt; Prediksi: BERISIK (50.00%) | [BENAR]
+ - 24-179 berisik 2.mp3 --&gt; Prediksi: NON-BERISIK (62.62%) | [SALAH (Melenceng)]
+ - 24-179 berisik 3.mp3 --&gt; Prediksi: NON-BERISIK (51.95%) | [SALAH (Melenceng)]
+ - 24-190 berisik 1.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+ - 24-190 berisik 2.mp3 --&gt; Prediksi: BERISIK (95.17%) | [BENAR]
+ - 24-190 berisik 3.mp3 --&gt; Prediksi: BERISIK (76.64%) | [BENAR]
+ - 24-196 berisik 1.mp3 --&gt; Prediksi: BERISIK (89.07%) | [BENAR]
+ - 24-196 berisik 2.mp3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-196 berisik 3.mp3 --&gt; Prediksi: BERISIK (89.98%) | [BENAR]
+ - 24-201 berisik 1.mp3 --&gt; Prediksi: BERISIK (93.29%) | [BENAR]
+ - 24-201 berisik 2.mp3 --&gt; Prediksi: BERISIK (92.20%) | [BENAR]
+ - 24-201 berisik 3.mp3 --&gt; Prediksi: BERISIK (88.32%) | [BENAR]
+ - 24-202_berisik 1.MP3 --&gt; Prediksi: BERISIK (72.47%) | [BENAR]
+ - 24-202_berisik 2.MP3 --&gt; Prediksi: BERISIK (86.17%) | [BENAR]
+ - 24-202_berisik 3.MP3 --&gt; Prediksi: BERISIK (83.68%) | [BENAR]
+ - 24-228 berisik 2.mp3 --&gt; Prediksi: BERISIK (84.23%) | [BENAR]
+ - 24-228 berisik 3.mp3 --&gt; Prediksi: BERISIK (86.18%) | [BENAR]
+
+==================================================
+RINGKASAN EVALUASI FOLDER:
+Total File Diuji      : 100
+Prediksi Sesuai       : 90
+Prediksi Meleset (Miss): 10
+Akurasi Folder Ini    : 90.00%
+==================================================
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./klasifikasi-audio"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Klasfikasi Audio</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bussiness-understanding">1. Bussiness Understanding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang">1.1 Latar Belakang</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan">1.2 Tujuan</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-understanding">2. Data Understanding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-sample-data">2.1 Ringkasan Sample Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-audio">2.2 Ekstraksi Fitur Audio</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-root-mean-square">2.2.1 RMS (Root Mean Square)</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#a-definisi-rms">a. Definisi RMS</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#b-rumus-matematis">b. Rumus Matematis :</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#c-contoh-perhitungan">c. Contoh Perhitungan</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-centroid">2.2.2 Spectral Centroid</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#a-definisi-spectral-centroid">a. Definisi Spectral Centroid</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">b. Rumus Matematis :</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">c. Contoh Perhitungan</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#zcr-zero-crossing-rate">2.2.3 ZCR (Zero Crossing Rate)</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#a-definisi-zcr-zero-crossing-rate">a. Definisi ZCR (Zero Crossing Rate)</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">b. Rumus Matematis</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#c-contoh-perhitungan-manual">c. Contoh Perhitungan Manual</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mfcc-mel-frequency-cepstral-coefficients">2.2.4 MFCC (Mel-Frequency Cepstral Coefficients)</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#a-definisi-mfcc">a. Definisi MFCC</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">b. Rumus Matematis</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">c. Contoh Perhitungan Manual</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-time-series-fitur">2.3 Visualisasi Time-Series Fitur</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-menggunakan-sample-berisik">2.3.1 Visualisasi Menggunakan Sample <code class="docutils literal notranslate"><span class="pre">berisik</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-menggunakan-sample-non-berisik">2.3.2 Visualisasi Menggunakan Sample <code class="docutils literal notranslate"><span class="pre">non-berisik</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing-ekstraksi-fitur">3. PreProcessing &amp; Ekstraksi Fitur</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-audio-berlabel-berisik">3.1 Ekstraksi Fitur Audio Berlabel <code class="docutils literal notranslate"><span class="pre">berisik</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-audio-berlabel-non-berisik">3.2 Ekstraksi Fitur Audio Berlabel <code class="docutils literal notranslate"><span class="pre">non-berisik</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penggabungan-file-berlabel-berisik-dan-non-berisik">3.3 Penggabungan File berlabel <code class="docutils literal notranslate"><span class="pre">berisik</span></code> dan <code class="docutils literal notranslate"><span class="pre">non-berisik</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seleksi-fitur">3.4 Seleksi Fitur</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pemodelan-menggunakan-support-vector-machine-svm-dan-evaluasi-model">4. Pemodelan Menggunakan Support Vector Machine (SVM) dan Evaluasi Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uji-testing-model">5. Uji Testing Model</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nurhabibatul Umah
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
