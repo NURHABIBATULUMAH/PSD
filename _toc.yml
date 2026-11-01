@@ -28,3 +28,6 @@ chapters:
 - file: klasifikasi_audio/index
   sections:
   - file: klasifikasi_audio/ekstraksi_audio
+- file: sistem_klasifikasi_audio/index
+  sections: 
+  - file: sistem_klasifikasi_audio/ekstraksi_audio_ensemble
