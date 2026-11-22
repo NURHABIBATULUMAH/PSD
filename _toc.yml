@@ -31,3 +31,6 @@ chapters:
 - file: sistem_klasifikasi_audio/index
   sections: 
   - file: sistem_klasifikasi_audio/ekstraksi_audio_ensemble
+- file: PSD_Citra_Predik/index
+  sections: 
+  - file: PSD_Citra_Predik/Klasifikasi
