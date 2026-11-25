@@ -8,12 +8,39 @@ __pycache__/
 *.tif
 *.pkl
 *.csv
+*.jpeg
+*.jpg
+*.png
+*.mp3
 
 # Folder Output / Hasil
 hasil_citra_uts/
 hasil_citra_uts_v2/
 uts-klasifikasi/hasil_citra_uts/
 uts-klasifikasi/hasil_citra_uts_v2/
+klasifikasi_audio/berisik
+klasifikasi_audio/non-berisik/
+klasifikasi_citra/berantakan/
+klasifikasi_citra/rapi/
+PSD_Citra_Predik/data/berantakan/
+PSD_Citra_Predik/data/BERANTAKAN-1/Kelompok 1/
+PSD_Citra_Predik/data/BERANTAKAN-1/Kelompok 2/
+PSD_Citra_Predik/data/BERANTAKAN-1/Kelompok 3/
+PSD_Citra_Predik/data/BERANTAKAN-1/Kelompok 4/
+PSD_Citra_Predik/data/BERANTAKAN-1/Kelompok 5/
+PSD_Citra_Predik/data/BERANTAKAN-1/Kelompok 6/
+PSD_Citra_Predik/data/BERANTAKAN-1/Kelompok 7/
+PSD_Citra_Predik/data/rapi/
+PSD_Citra_Predik/data/RAPI-1/Kelompok 1/
+PSD_Citra_Predik/data/RAPI-1/Kelompok 2/
+PSD_Citra_Predik/data/RAPI-1/Kelompok 3/
+PSD_Citra_Predik/data/RAPI-1/Kelompok 4/
+PSD_Citra_Predik/data/RAPI-1/Kelompok 5/
+PSD_Citra_Predik/data/RAPI-1/Kelompok 6/
+PSD_Citra_Predik/data/RAPI-1/Kelompok 7/
+PSD_Citra_Predik/data-1/berantakan/
+PSD_Citra_Predik/data-1/rapi/
+
 
 # Lainnya
 *.html
